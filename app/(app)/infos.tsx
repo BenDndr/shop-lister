@@ -10,17 +10,17 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 export default function InfosScreen() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+      headerBackgroundColor={{ light: '#C8C0FC', dark: '#3F28D8' }}
       headerImage={
         <IconSymbol
           size={310}
-          color="#808080"
+          color="#3F28D8"
           name="chevron.left.forwardslash.chevron.right"
           style={styles.headerImage}
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Infos</ThemedText>
+        <ThemedText type="title">Infos test</ThemedText>
       </ThemedView>
       <ThemedText>This app includes example code to help you get started.</ThemedText>
       <Collapsible title="File-based routing">
