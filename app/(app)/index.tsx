@@ -5,7 +5,8 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import { addItem, resetItems } from '../../store/slices/itemsSlice'
+import { addItem, resetItems } from '@/store/slices/itemsSlice'
+import { Colors } from '@/constants/Colors';
 
 export default function HomeScreen() {
 
@@ -30,7 +31,7 @@ export default function HomeScreen() {
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: Colors.orange100, dark: Colors.blue700 }}
       headerImage={
         <Image
           source={require('@/assets/images/partial-react-logo.png')}
@@ -38,12 +39,12 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome To this mess!</ThemedText>
+        <ThemedText type="title">Shop List</ThemedText>
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Add Item</ThemedText>
-        <TouchableOpacity onPress={incrementItems} style={{backgroundColor: '#C8C0FC', borderRadius: 8, width: "100%", height: 60, justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity onPress={incrementItems} style={{backgroundColor: Colors.pink100, borderRadius: 8, width: "100%", height: 60, justifyContent: 'center', alignItems: 'center'}}>
             <Text>Add item</Text>
         </TouchableOpacity>
       </ThemedView>
