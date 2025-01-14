@@ -1,6 +1,7 @@
 import { View, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { IconSymbol } from '../ui/IconSymbol';
+import { Colors } from '@/constants/Colors';
 
 interface CustomTabBarProps extends BottomTabBarProps {
 
@@ -72,12 +73,12 @@ const TabBar: React.FC<CustomTabBarProps>  = ({ state, descriptors, navigation }
             // testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{...styles.tabContainer, borderBottomColor: isFocused ? '#E51EB9' : 'transparent'}}
+            style={{...styles.tabContainer, borderBottomColor: isFocused ? Colors.pink500 : 'transparent'}}
             key={index}
           >
 
             {/* <Image source={isFocused ? iconFocused : icon} style={styles.tabBarIcons} /> */}
-            <IconSymbol size={28} name="house.fill" color={isFocused ? "#E51EB9" : "#C8C0FC"} />
+            <IconSymbol size={28} name="house.fill" color={isFocused ? Colors.pink500 : Colors.orange300} />
 
           </TouchableOpacity>
         );

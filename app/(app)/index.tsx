@@ -51,7 +51,7 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 2: View Items</ThemedText>
         {
-          store.items.length > 0 && store.items.map((item: any, index: number) => {
+          store.items?.length > 0 && store.items.map((item: any, index: number) => {
             return (
               <ThemedText key={index}>
                 {item.name}
@@ -62,7 +62,7 @@ export default function HomeScreen() {
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 3: Clean list</ThemedText>
-          <TouchableOpacity onPress={clearList} style={{backgroundColor: '#C8C0FC', borderRadius: 8, width: "100%", height: 60, justifyContent: 'center', alignItems: 'center'}}>
+          <TouchableOpacity onPress={clearList} style={{backgroundColor: Colors.blue100, borderRadius: 8, width: "100%", height: 60, justifyContent: 'center', alignItems: 'center'}}>
               <Text>Reset item</Text>
           </TouchableOpacity>
       </ThemedView>
