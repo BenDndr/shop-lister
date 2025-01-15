@@ -31,6 +31,18 @@ export default function AppLayout() {
       tabBar={(props) => <TabBar {...props}/>}
       >
       <Tabs.Screen
+        name="list"
+        options={{
+          title: 'List',
+        }}
+      />
+      <Tabs.Screen
+        name="parameters"
+        options={{
+          title: 'Parameters',
+        }}
+      />
+      <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
