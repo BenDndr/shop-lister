@@ -10,23 +10,22 @@ import { Colors } from '@/constants/Colors';
 
 export default function HomeScreen() {
 
-  const store = useAppSelector((state) => state)
+  const items = useAppSelector((state) => state.items)
   const dispatch = useAppDispatch()
   
 
   useEffect(() => {
-    console.log("store", store)
-    console.log("store.items", store.items)
+    console.log("store.items", items)
   }, [])
 
   const incrementItems = () => {
     dispatch(addItem())
-    console.log(store)
+    console.log(items)
   }
 
   const clearList = () => {
     dispatch(resetItems())
-    console.log("store", store)
+    console.log("store", items)
   }
 
   return (
@@ -51,7 +50,7 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 2: View Items</ThemedText>
         {
-          store.items?.length > 0 && store.items.map((item: any, index: number) => {
+          items?.length > 0 && items.map((item: any, index: number) => {
             return (
               <ThemedText key={index}>
                 {item.name}

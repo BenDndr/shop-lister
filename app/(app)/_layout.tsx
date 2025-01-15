@@ -54,12 +54,6 @@ export default function AppLayout() {
           title: 'Explore',
         }}
       />
-      <Tabs.Screen
-        name="infos"
-        options={{
-          title: 'Infos',
-        }}
-      />
     </Tabs>
   );
 }
