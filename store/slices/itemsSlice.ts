@@ -7,7 +7,7 @@ const initialState: ItemsState = {
 };
 
 export const itemsSlice = createSlice({
-  name: 'Bill',
+  name: 'items',
   initialState,
   reducers: {
     addItem: (state) => {

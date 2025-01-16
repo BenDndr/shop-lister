@@ -31,16 +31,14 @@ export default function RootLayout() {
   }
 
   return (
-    // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <StatusBar style="auto" />
-          <Stack>
-            <Stack.Screen name="(app)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </PersistGate>
-       </Provider>
-    /* </ThemeProvider> */
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <StatusBar style="auto" />
+        <Stack>
+          <Stack.Screen name="(app)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </PersistGate>
+    </Provider>
   );
 }
