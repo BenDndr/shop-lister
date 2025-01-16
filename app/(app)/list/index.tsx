@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faList } from '@fortawesome/free-solid-svg-icons'
 
 export default function ListIndex() {
 
@@ -15,6 +17,7 @@ export default function ListIndex() {
                 </View>
                 <View style={styles.content}>
                     <Text>Index</Text>
+                    <FontAwesomeIcon icon={faList} />
                 </View>
             </LinearGradient>
         </View>

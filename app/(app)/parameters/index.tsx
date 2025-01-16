@@ -1,6 +1,9 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faMugSaucer } from '@fortawesome/free-solid-svg-icons'
+
 
 export default function ParametersIndex() {
 
@@ -11,6 +14,7 @@ export default function ParametersIndex() {
                 style={styles.gradient}
             >
                 <Text>Parameters</Text>
+                <FontAwesomeIcon icon={faMugSaucer} />
             </LinearGradient>
         </View>
     )
