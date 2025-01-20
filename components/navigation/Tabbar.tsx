@@ -1,6 +1,5 @@
-import { View, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { IconSymbol } from '../ui/IconSymbol';
 import { Colors } from '@/constants/Colors';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faList, faGear, faBook } from '@fortawesome/free-solid-svg-icons'

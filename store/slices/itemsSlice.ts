@@ -1,23 +1,36 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-type ItemsState = Record<string, any>
-  
-const initialState: ItemsState = {
-    items: []
+interface ItemsState {
+  name: string;
+}
+
+interface State {
+  items: ItemsState[];
+  discardedItems: ItemsState[];
+}
+
+const initialState: State = {
+  items: [],
+  discardedItems: []
 };
 
 export const itemsSlice = createSlice({
   name: 'items',
   initialState,
   reducers: {
-    addItem: (state) => {
-        state.push({ name: "bread" });
+    addItem: (state, action: PayloadAction<string>) => {
+      state.items.push({ name: action.payload });
     },
-    resetItems: (state) => {
-        return [];
+    removeSpecificItem: (state, action: PayloadAction<string>) => {
+      state.items = state.items.filter((item: ItemsState) => {
+        return item.name !== action.payload; // Return true for items to keep
+      });
+    },
+    resetItems: () => {
+        return initialState;
     }
   },
 })
 
-export const { addItem, resetItems } = itemsSlice.actions
+export const { addItem, resetItems, removeSpecificItem } = itemsSlice.actions
 export default itemsSlice.reducer

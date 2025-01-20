@@ -1,16 +1,17 @@
-import { Image, StyleSheet, Platform, TouchableOpacity, Text } from 'react-native';
+import { Image, StyleSheet, TextInput, TouchableOpacity, Text, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import { addItem, resetItems } from '@/store/slices/itemsSlice'
+import { addItem, resetItems, removeSpecificItem } from '@/store/slices/itemsSlice'
 import { Colors } from '@/constants/Colors';
 
 export default function HomeScreen() {
 
   const items = useAppSelector((state) => state.items)
   const dispatch = useAppDispatch()
+  const [itemToAdd, setItemToAdd] = useState("")
   
 
   useEffect(() => {
@@ -18,8 +19,15 @@ export default function HomeScreen() {
   }, [])
 
   const incrementItems = () => {
-    dispatch(addItem())
+    dispatch(addItem(itemToAdd))
     console.log(items)
+    setItemToAdd("")
+  }
+
+  const removeItem = (itemName: string) => {
+    dispatch(removeSpecificItem(itemName))
+    console.log(items)
+    setItemToAdd("")
   }
 
   const clearList = () => {
@@ -41,6 +49,12 @@ export default function HomeScreen() {
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Add Item</ThemedText>
+        <TextInput 
+          style={styles.input}
+          placeholder='Item name'
+          onChangeText={(e) => setItemToAdd(e)}
+          value={itemToAdd}
+        ></TextInput>
         <TouchableOpacity onPress={incrementItems} style={{backgroundColor: Colors.pink100, borderRadius: 8, width: "100%", height: 60, justifyContent: 'center', alignItems: 'center'}}>
             <Text>Add item</Text>
         </TouchableOpacity>
@@ -48,11 +62,16 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 2: View Items</ThemedText>
         {
-          items?.length > 0 && items.map((item: any, index: number) => {
+          items.items?.length > 0 && items.items.map((item: any, index: number) => {
             return (
-              <ThemedText key={index}>
-                {item.name}
-              </ThemedText>          
+              <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: Colors.pink700, padding: 5, borderRadius: 10}}>
+                <Text key={index}>
+                  {item.name}
+                </Text>
+                <TouchableOpacity style={{ width: 40, height: 40, borderRadius: 10, justifyContent: 'center', alignItems: 'center', padding: 5, backgroundColor: Colors.pink700}} onPress={() => removeItem(item.name)}>
+                  <Text style={{color: 'white'}}>X</Text>  
+                </TouchableOpacity>      
+              </View>
             )
           })
         }
@@ -72,6 +91,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+  },
+  input: {
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: Colors.grey300,
+    padding: 10
   },
   stepContainer: {
     gap: 8,
