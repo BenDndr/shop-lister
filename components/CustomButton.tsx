@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, TouchableHighlight, Pressable } from "react-native";
+import { TouchableOpacity, StyleSheet, Vibration } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -6,12 +6,20 @@ type Props = {
     text: string
     color: {color1: string, color2: string}
     onPress: () => void
+    lightText?: boolean
+    hapticFeel?: boolean
 }
 
-export function CustomButton({text, color, onPress} : Props) {
+export function CustomButton({text, color, onPress, lightText, hapticFeel} : Props) {
+
+    const onPressIn = () => {
+        onPress()
+        hapticFeel && Vibration.vibrate(10);
+    }
+
     return (
         <TouchableOpacity 
-            onPress={onPress} 
+            onPress={onPressIn} 
             style={{...styles.container, shadowColor: color.color1, backgroundColor: color.color2}}
             activeOpacity={.6}
         >
@@ -21,7 +29,7 @@ export function CustomButton({text, color, onPress} : Props) {
                 start={{x: 0.5, y: 0.5}}
                 end={{x: -0.5, y: 1}}
             >
-                <ThemedText>{text}</ThemedText>
+                <ThemedText light={lightText}>{text}</ThemedText>
             </LinearGradient>
         </TouchableOpacity>
     );
@@ -36,7 +44,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     button: {
-        width: 300,
+        width: '100%', // To fix
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',

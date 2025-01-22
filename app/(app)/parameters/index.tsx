@@ -16,7 +16,7 @@ export default function ParametersIndex() {
             >
                 <Text>Parameters</Text>
                 <FontAwesomeIcon icon={faMugSaucer} />
-                <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"Take me home to dinner !"} onPress={() => console.log("Hello")}/>
+                <CustomButton lightText hapticFeel color={{color1: Colors.pink300, color2: Colors.pink100}} text={"Take me home to dinner !"} onPress={() => console.log("Hello")}/>
             </LinearGradient>
         </View>
     )
