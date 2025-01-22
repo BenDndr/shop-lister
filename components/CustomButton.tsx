@@ -12,12 +12,12 @@ export function CustomButton({text, color, onPress} : Props) {
     return (
         <TouchableOpacity 
             onPress={onPress} 
-            style={{...styles.container, shadowColor: color.color1}}
+            style={{...styles.container, shadowColor: color.color1, backgroundColor: color.color2}}
             activeOpacity={.6}
         >
             <LinearGradient
                 colors={[color.color1, color.color2]}
-                style={{...styles.button, borderLeftColor: color.color2, borderTopColor: color.color2}}
+                style={styles.button}
                 start={{x: 0.5, y: 0.5}}
                 end={{x: -0.5, y: 1}}
             >
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         borderRadius: 16,
-        borderTopWidth: 1,
-        borderLeftWidth: 1,
+        top: 1,
+        left: 1,
     }
 })
