@@ -8,7 +8,6 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/components/ThemedView';
-import { useBottomTabOverflow } from '@/components/ui/TabBarBackground';
 
 const HEADER_HEIGHT = 250;
 
@@ -24,7 +23,7 @@ export default function ParallaxScrollView({
 }: Props) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
-  const bottom = useBottomTabOverflow();
+  const bottom = 0;
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
