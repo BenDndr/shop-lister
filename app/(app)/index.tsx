@@ -46,7 +46,7 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Shop List</ThemedText>
+        <ThemedText type="title">Shop Listerd</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Add Item</ThemedText>
@@ -56,9 +56,6 @@ export default function HomeScreen() {
           onChangeText={(e) => setItemToAdd(e)}
           value={itemToAdd}
         ></TextInput>
-        {/* <TouchableOpacity onPress={incrementItems} style={{backgroundColor: Colors.pink100, borderRadius: 8, width: "100%", height: 60, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>Add item</Text>
-        </TouchableOpacity> */}
         <CustomButton lightText text="Add item" color={{color1: Colors.pink300, color2: Colors.pink100}} onPress={incrementItems}/>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>

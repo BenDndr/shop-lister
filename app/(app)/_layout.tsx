@@ -1,10 +1,5 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
 import TabBar from '@/components/navigation/TabBar';
 
 
@@ -12,17 +7,10 @@ export default function AppLayout() {
 
   return (
     <Tabs
+      initialRouteName="list"
       screenOptions={{
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
+        tabBarHideOnKeyboard: false,
       }}
       tabBar={(props) => <TabBar {...props}/>}
       >

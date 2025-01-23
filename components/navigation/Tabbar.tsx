@@ -47,11 +47,12 @@ const TabBar: React.FC<CustomTabBarProps>  = ({ state, descriptors, navigation }
             // testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{...styles.tabContainer, borderBottomColor: isFocused ? Colors.pink500 : 'transparent'}}
+            style={styles.tabContainer}
             key={index}
           >
-
-            <FontAwesomeIcon icon={route.name == "list" ? faList : route.name == "parameters" ? faGear : faBook} color={isFocused ? Colors.pink500 : Colors.orange300} size={25}/>
+            <View style={{...styles.iconConatainer, borderBottomColor: isFocused ? Colors.pink500 : 'transparent'}}>
+              <FontAwesomeIcon icon={route.name == "list" ? faList : route.name == "parameters" ? faGear : faBook} color={isFocused ? Colors.pink500 : Colors.orange500} size={25}/>
+            </View>
 
           </TouchableOpacity>
         );
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: 'white',
-    bottom: 30,
+    bottom: 15,
     width: '95%',
     marginHorizontal: '2.5%',
     paddingVertical: 15,
@@ -88,22 +89,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 30,
   },
-  burgerIcon: {
-    width: 35,
-    height: 35,
-    resizeMode: 'contain',
+  iconConatainer: {
+    height: '100%', 
+    borderBottomWidth: 3, 
+    justifyContent: 'center',
   },
   tabContainer: {
     height: 60,
+    width: 60,
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottomWidth: 3,
   },
-  tabBarIcons: {
-    width: 40,
-    height: 40,
-    resizeMode: 'contain',
-  }
 })
 
 export default TabBar

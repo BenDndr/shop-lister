@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -14,8 +14,12 @@ export default function ParametersIndex() {
                 colors={[Colors.blue300, Colors.blue100]}
                 style={styles.gradient}
             >
-                <Text>Parameters</Text>
+                <Text>Parametersd</Text>
                 <FontAwesomeIcon icon={faMugSaucer} />
+                <TextInput
+                    placeholder='Item name'
+                    onChangeText={(e) => console.log(e)}
+                />
                 <CustomButton lightText hapticFeel color={{color1: Colors.pink300, color2: Colors.pink100}} text={"Take me home to dinner !"} onPress={() => console.log("Hello")}/>
             </LinearGradient>
         </View>
