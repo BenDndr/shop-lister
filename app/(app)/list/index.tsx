@@ -3,15 +3,13 @@ import { Colors } from '@/constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faList } from '@fortawesome/free-solid-svg-icons'
+import { PageContainer } from '@/components/PageContainer';
 
 export default function ListIndex() {
 
     return (
         <View style={{flex: 1, backgroundColor: Colors.pink100}}>
-            <LinearGradient
-                colors={[Colors.pink300, Colors.pink100]}
-                style={styles.gradient}
-            >
+           <PageContainer color1={Colors.pink300} color2={Colors.pink100} gradient>
                 <View style={styles.paralaxHeader}>
 
                 </View>
@@ -19,21 +17,13 @@ export default function ListIndex() {
                     <Text>Index</Text>
                     <FontAwesomeIcon icon={faList} />
                 </View>
-            </LinearGradient>
+           </PageContainer>
+            
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    gradient: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        height: '100%',
-        justifyContent: 'center', 
-        alignItems: 'center'
-    },
     paralaxHeader: {
 
     },

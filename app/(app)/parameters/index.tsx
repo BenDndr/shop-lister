@@ -4,16 +4,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faMugSaucer } from '@fortawesome/free-solid-svg-icons'
 import { CustomButton } from '@/components/CustomButton';
-
+import { PageContainer } from '@/components/PageContainer';
 
 export default function ParametersIndex() {
 
     return (
         <View style={{flex: 1}}>
-            <LinearGradient
-                colors={[Colors.blue300, Colors.blue100]}
-                style={styles.gradient}
-            >
+            <PageContainer color1={Colors.blue300} color2={Colors.blue100} gradient>
                 <Text>Parametersd</Text>
                 <FontAwesomeIcon icon={faMugSaucer} />
                 <TextInput
@@ -21,19 +18,11 @@ export default function ParametersIndex() {
                     onChangeText={(e) => console.log(e)}
                 />
                 <CustomButton lightText hapticFeel color={{color1: Colors.pink300, color2: Colors.pink100}} text={"Take me home to dinner !"} onPress={() => console.log("Hello")}/>
-            </LinearGradient>
+            </PageContainer>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    gradient: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        height: '100%',
-        justifyContent: 'center', 
-        alignItems: 'center'
-    }
+
 })
