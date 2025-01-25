@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
         padding: 8,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '100%',
     },
     removeButton: {
         padding: 8,

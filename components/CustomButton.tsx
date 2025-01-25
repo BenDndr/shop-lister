@@ -8,9 +8,10 @@ export type Props = {
     onPress: () => void
     lightText?: boolean
     hapticFeel?: boolean
+    style?: object
 }
 
-export function CustomButton({text, color, onPress, lightText, hapticFeel} : Props) {
+export function CustomButton({text, color, onPress, lightText, hapticFeel, style} : Props) {
 
     const onPressIn = () => {
         onPress()
@@ -20,7 +21,7 @@ export function CustomButton({text, color, onPress, lightText, hapticFeel} : Pro
     return (
         <TouchableOpacity 
             onPress={onPressIn} 
-            style={{...styles.container, shadowColor: color.color1, backgroundColor: color.color2}}
+            style={{...styles.container, shadowColor: color.color1, backgroundColor: color.color2, ...style}}
             activeOpacity={.6}
         >
             <LinearGradient
