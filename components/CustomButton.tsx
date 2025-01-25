@@ -2,7 +2,7 @@ import { TouchableOpacity, StyleSheet, Vibration } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { LinearGradient } from 'expo-linear-gradient';
 
-type Props = {
+export type Props = {
     text: string
     color: {color1: string, color2: string}
     onPress: () => void
