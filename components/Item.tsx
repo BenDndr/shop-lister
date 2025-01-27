@@ -1,5 +1,8 @@
 import {View, Text, StyleSheet, TouchableOpacity, StyleProp, ViewStyle} from 'react-native'
 import {Colors} from '@/constants/Colors'
+import { ThemedText } from './ThemedText'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faCheck, faPen } from '@fortawesome/free-solid-svg-icons'
 
 export function Item({
     name, 
@@ -13,27 +16,36 @@ export function Item({
 
     return (
         <TouchableOpacity style={[styles.itemContainer, style]}>
-            <Text>{name}</Text>
-            <TouchableOpacity onPress={remove} style={styles.removeButton}>
-                <Text>X</Text>
-            </TouchableOpacity>
+            <ThemedText>{name}</ThemedText>
+            <View style={styles.actionView}>
+                <TouchableOpacity onPress={() => console.log("edit")} style={{...styles.actionButton, backgroundColor: Colors.blue100}}>
+                    <FontAwesomeIcon icon={faPen} color={Colors.blue900}/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={remove} style={{...styles.actionButton, backgroundColor: Colors.pink300}}>
+                    <FontAwesomeIcon icon={faCheck} color={Colors.pink900}/>
+                </TouchableOpacity>
+            </View>
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
     itemContainer: {
-        borderWidth: 1,
+        backgroundColor: Colors.pink100,
         borderRadius: 10,
-        padding: 8,
+        padding: 6,
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
+        marginBottom: 4
     },
-    removeButton: {
+    actionView: {
+        flexDirection: 'row',
+        gap: 4
+    },
+    actionButton: {
         padding: 8,
-        backgroundColor: Colors.pink500,
         borderRadius: 8
     }
 })
