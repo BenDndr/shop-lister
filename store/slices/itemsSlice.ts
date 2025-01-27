@@ -23,7 +23,7 @@ export const itemsSlice = createSlice({
     },
     removeSpecificItem: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item: ItemsState) => {
-        return item.name !== action.payload; // Return true for items to keep
+        return item.name !== action.payload;
       });
     },
     resetItems: () => {

@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, Vibration } from "react-native";
+import { TouchableOpacity, StyleSheet, Vibration, StyleProp, ViewStyle } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -15,7 +15,7 @@ export function CustomButton({
     onPress: () => void
     lightText?: boolean
     hapticFeel?: boolean
-    style?: object
+    style?: StyleProp<ViewStyle>
 }) {
 
     const onPressIn = () => {
@@ -26,7 +26,7 @@ export function CustomButton({
     return (
         <TouchableOpacity 
             onPress={onPressIn} 
-            style={{...styles.container, shadowColor: color.color1, backgroundColor: color.color2, ...style}}
+            style={[styles.container, {shadowColor: color.color1, backgroundColor: color.color2}, style]}
             activeOpacity={.6}
         >
             <LinearGradient

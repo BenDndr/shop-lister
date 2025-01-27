@@ -9,6 +9,8 @@ import { addItem, resetItems, removeSpecificItem } from '@/store/slices/itemsSli
 import { CustomButton } from '@/components/CustomButton';
 import { CustomInput } from '@/components/CustomInput';
 import { Item } from '@/components/Item';
+import { ThemedText } from '@/components/ThemedText';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ListIndex() {
 
@@ -34,23 +36,27 @@ export default function ListIndex() {
 
     return (
         <View style={{flex: 1, backgroundColor: Colors.pink100}}>
-           <PageContainer color1={Colors.pink300} color2={Colors.pink100} gradient>
-                <View style={styles.paralaxHeader}>
-
-                </View>
-                <ScrollView style={styles.content}>
-                    <Text style={{textAlign: 'center', fontSize: 30}}>Index</Text>
+           <PageContainer style={{backgroundColor: Colors.backGround}}>
+                <LinearGradient
+                    style={styles.paralaxHeader}
+                    colors={[Colors.blue100, Colors.blue300]}
+                >
+                    <ThemedText style={{}} type={"title"} light>MY LIST</ThemedText>
+                </LinearGradient>
+                <View style={styles.content}>
                     {/* <FontAwesomeIcon icon={faList} /> */}
-                    <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
-                    {
-                        items.items.map((item, index) => {
-                            return (
-                                <Item key={index} name={item.name} remove={() => removeItem(item.name)}/>
-                            )
-                        })
-                    }
-                    <CustomButton color={{color1: Colors.blue300, color2: Colors.pink100}} text={"Clear the list"} onPress={clearList} style={{marginTop: 10}} lightText/>
-                </ScrollView>
+                    <CustomInput style={{width: "100%"}} placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
+                    <ScrollView>
+                        {
+                            items.items.map((item, index) => {
+                                return (
+                                    <Item key={index} name={item.name} remove={() => removeItem(item.name)}/>
+                                )
+                            })
+                        }
+                        <CustomButton color={{color1: Colors.blue300, color2: Colors.pink100}} text={"Clear the list"} onPress={clearList} style={{marginTop: 10}} lightText/>
+                    </ScrollView>
+                </View>
            </PageContainer>
             
         </View>
@@ -59,11 +65,15 @@ export default function ListIndex() {
 
 const styles = StyleSheet.create({
     paralaxHeader: {
-        height: 200,
+        height: "20%",
+        justifyContent: 'flex-end',
+        backgroundColor: 'white',
+        width: "100%",
+        paddingLeft: 10
     },
     content: {
-        // justifyContent: 'center',
-        // alignItems: 'center',
         padding: 10,
+        flex: 1,
+        width: "100%",
     }
 })

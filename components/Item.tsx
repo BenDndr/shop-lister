@@ -1,16 +1,18 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, StyleProp, ViewStyle} from 'react-native'
 import {Colors} from '@/constants/Colors'
 
 export function Item({
     name, 
-    remove
+    remove,
+    style
 } : {
     name: string
     remove: () => void
+    style?: StyleProp<ViewStyle>
 }) {
 
     return (
-        <TouchableOpacity style={styles.itemContainer}>
+        <TouchableOpacity style={[styles.itemContainer, style]}>
             <Text>{name}</Text>
             <TouchableOpacity onPress={remove} style={styles.removeButton}>
                 <Text>X</Text>

@@ -1,5 +1,6 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Colors } from '@/constants/Colors';
 
 export function PageContainer({ 
     color1, 
@@ -9,22 +10,22 @@ export function PageContainer({
     style 
 }: {
     gradient?: boolean;
-    color1: string;
-    color2: string;
+    color1?: string;
+    color2?: string;
     children?: React.ReactNode,
-    style?: object
+    style?: StyleProp<ViewStyle>
 }) {
 
 return (
         <View style={{flex: 1}}>
             {gradient ? <LinearGradient
-                colors={[color1, color2]}
-                style={{...styles.background, ...style}}
+                colors={[color1 || Colors.backGround, color2 || Colors.backGround]}
+                style={[styles.background, style]}
             >
                 {children}
             </LinearGradient>
             :
-            <View style={{...styles.background, ...style}}>
+            <View style={[styles.background, style]}>
                 {children}
             </View>
             }
