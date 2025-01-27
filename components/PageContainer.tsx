@@ -1,15 +1,19 @@
 import { View, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export type PageContainerProps = {
+export function PageContainer({ 
+    color1, 
+    color2, 
+    children, 
+    gradient, 
+    style 
+}: {
     gradient?: boolean;
     color1: string;
     color2: string;
     children?: React.ReactNode,
     style?: object
-};
-
-export function PageContainer({ color1, color2, children, gradient, style }: PageContainerProps) {
+}) {
 
 return (
         <View style={{flex: 1}}>

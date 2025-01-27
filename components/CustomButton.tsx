@@ -2,16 +2,21 @@ import { TouchableOpacity, StyleSheet, Vibration } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { LinearGradient } from 'expo-linear-gradient';
 
-export type Props = {
+export function CustomButton({
+    text, 
+    color, 
+    onPress, 
+    lightText, 
+    hapticFeel, 
+    style
+} : {
     text: string
     color: {color1: string, color2: string}
     onPress: () => void
     lightText?: boolean
     hapticFeel?: boolean
     style?: object
-}
-
-export function CustomButton({text, color, onPress, lightText, hapticFeel, style} : Props) {
+}) {
 
     const onPressIn = () => {
         onPress()

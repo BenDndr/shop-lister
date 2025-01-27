@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -38,9 +38,9 @@ export default function ListIndex() {
                 <View style={styles.paralaxHeader}>
 
                 </View>
-                <View style={styles.content}>
-                    <Text>Index</Text>
-                    <FontAwesomeIcon icon={faList} />
+                <ScrollView style={styles.content}>
+                    <Text style={{textAlign: 'center', fontSize: 30}}>Index</Text>
+                    {/* <FontAwesomeIcon icon={faList} /> */}
                     <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
                     {
                         items.items.map((item, index) => {
@@ -49,8 +49,8 @@ export default function ListIndex() {
                             )
                         })
                     }
-                    <CustomButton color={{color1: Colors.blue300, color2: Colors.pink100}} text={"Clear the list"} onPress={clearList} style={{marginTop: 10}}/>
-                </View>
+                    <CustomButton color={{color1: Colors.blue300, color2: Colors.pink100}} text={"Clear the list"} onPress={clearList} style={{marginTop: 10}} lightText/>
+                </ScrollView>
            </PageContainer>
             
         </View>
@@ -59,11 +59,11 @@ export default function ListIndex() {
 
 const styles = StyleSheet.create({
     paralaxHeader: {
-
+        height: 200,
     },
     content: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
         padding: 10,
     }
 })

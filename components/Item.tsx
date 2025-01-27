@@ -1,12 +1,13 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import {Colors} from '@/constants/Colors'
 
-export type ItemsState = {
+export function Item({
+    name, 
+    remove
+} : {
     name: string
     remove: () => void
-}
-
-export function Item({name, remove} : ItemsState) {
+}) {
 
     return (
         <TouchableOpacity style={styles.itemContainer}>

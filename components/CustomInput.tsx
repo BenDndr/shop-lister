@@ -1,14 +1,17 @@
 import {TextInput, StyleSheet} from "react-native"
 import {Colors} from "@/constants/Colors"
 
-export type CustomInputTypes = {
+export function CustomInput({
+    placeholder, 
+    validate, 
+    value, 
+    onChangeText
+}: {
     placeholder: string
     onChangeText?: (e: string) => void
     validate: () => void
     value: string
-}
-
-export function CustomInput({placeholder, validate, value, onChangeText}: CustomInputTypes) {
+}) {
     return (
         <TextInput 
             style={styles.input} 
