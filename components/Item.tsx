@@ -3,7 +3,7 @@ import {Colors} from '@/constants/Colors'
 import { ThemedText } from './ThemedText'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCheck, faPen } from '@fortawesome/free-solid-svg-icons'
-import {useState} from 'react'
+import {useState, useRef, useEffect} from 'react'
 
 export function Item({
     name, 
@@ -27,13 +27,19 @@ export function Item({
     onChangeText?: (e: string) => void
 }) {
 
-    // const [editMode, setEditMode] = useState(false)
-    console.log("EDIT MODE", editMode)
+    const inputRef = useRef<TextInput>(null)
+
+    useEffect(() => {
+        if (editMode && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [editMode]);
 
     return (
         <TouchableOpacity style={[styles.itemContainer, style]}>
             {editMode ? 
-                <TextInput 
+                <TextInput
+                    ref={inputRef}
                     style={styles.editInput} 
                     placeholder={name}
                     value={value} 
@@ -65,7 +71,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
-        marginBottom: 4
+        marginBottom: 4,
     },
     actionView: {
         flexDirection: 'row',
@@ -73,7 +79,11 @@ const styles = StyleSheet.create({
     },
     actionButton: {
         padding: 8,
-        borderRadius: 8
+        borderRadius: 8,
+        height: 40,
+        width: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     editInput: {
         backgroundColor: Colors.backGround,

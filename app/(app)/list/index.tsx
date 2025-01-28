@@ -51,7 +51,7 @@ export default function ListIndex() {
             </View>
             <View style={styles.content}>
                 {/* <FontAwesomeIcon icon={faList} /> */}
-                <CustomInput style={{width: "100%"}} placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
+                <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
                 <ScrollView>
                     {
                         items.items.map((item, index) => {
