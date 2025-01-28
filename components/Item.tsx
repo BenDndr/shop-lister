@@ -1,24 +1,50 @@
-import {View, Text, StyleSheet, TouchableOpacity, StyleProp, ViewStyle} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, StyleProp, ViewStyle, TextInput} from 'react-native'
 import {Colors} from '@/constants/Colors'
 import { ThemedText } from './ThemedText'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCheck, faPen } from '@fortawesome/free-solid-svg-icons'
+import {useState} from 'react'
 
 export function Item({
     name, 
+    index,
+    style,
+    value,
+    editMode,
     remove,
-    style
+    validate,
+    activateEditMode,
+    onChangeText,
 } : {
     name: string
-    remove: () => void
+    index: number
     style?: StyleProp<ViewStyle>
+    value: string
+    editMode: boolean
+    remove: () => void
+    validate?: () => void
+    activateEditMode: (i: number) => void
+    onChangeText?: (e: string) => void
 }) {
+
+    // const [editMode, setEditMode] = useState(false)
+    console.log("EDIT MODE", editMode)
 
     return (
         <TouchableOpacity style={[styles.itemContainer, style]}>
-            <ThemedText>{name}</ThemedText>
+            {editMode ? 
+                <TextInput 
+                    style={styles.editInput} 
+                    placeholder={name}
+                    value={value} 
+                    onSubmitEditing={validate ? validate : undefined}
+                    onChangeText={onChangeText}
+                /> 
+                : 
+                <ThemedText>{name}</ThemedText>
+            }
             <View style={styles.actionView}>
-                <TouchableOpacity onPress={() => console.log("edit")} style={{...styles.actionButton, backgroundColor: Colors.blue100}}>
+                <TouchableOpacity onPress={() => {activateEditMode(index)}} style={{...styles.actionButton, backgroundColor: Colors.blue100}}>
                     <FontAwesomeIcon icon={faPen} color={Colors.blue900}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={remove} style={{...styles.actionButton, backgroundColor: Colors.pink300}}>
@@ -34,6 +60,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.pink100,
         borderRadius: 10,
         padding: 6,
+        paddingLeft: 16,
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
@@ -47,5 +74,15 @@ const styles = StyleSheet.create({
     actionButton: {
         padding: 8,
         borderRadius: 8
+    },
+    editInput: {
+        backgroundColor: Colors.backGround,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: Colors.grey300,
+        flex: 1,
+        height: 40,
+        marginRight: 16,
+        padding: 6,
     }
 })

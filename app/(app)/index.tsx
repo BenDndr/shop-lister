@@ -64,15 +64,14 @@ export default function HomeScreen() {
         {
           items.items?.length > 0 && items.items.map((item: any, index: number) => {
             return (
-              // <View key={index} style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: Colors.pink700, padding: 5, borderRadius: 10}}>
-              //   <Text>
-              //     {item.name}
-              //   </Text>
-              //   <TouchableOpacity style={{ width: 40, height: 40, borderRadius: 10, justifyContent: 'center', alignItems: 'center', padding: 5, backgroundColor: Colors.pink700}} onPress={() => removeItem(item.name)}>
-              //     <Text style={{color: 'white'}}>X</Text>  
-              //   </TouchableOpacity>      
-              // </View>
-              <Item key={index} name={item.name} remove={() => removeItem(item.name)}/>
+              <View key={index} style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: Colors.pink700, padding: 5, borderRadius: 10}}>
+                <Text>
+                  {item.name}
+                </Text>
+                <TouchableOpacity style={{ width: 40, height: 40, borderRadius: 10, justifyContent: 'center', alignItems: 'center', padding: 5, backgroundColor: Colors.pink700}} onPress={() => removeItem(item.name)}>
+                  <Text style={{color: 'white'}}>X</Text>  
+                </TouchableOpacity>      
+              </View>
             )
           })
         }
