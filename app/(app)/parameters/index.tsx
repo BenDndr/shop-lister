@@ -10,7 +10,7 @@ export default function ParametersIndex() {
 
     return (
         <View style={{flex: 1}}>
-            <PageContainer color1={Colors.blue300} color2={Colors.blue100} gradient>
+            <PageContainer color1={Colors.orange300} color2={Colors.orange100} gradient>
                 <Text>Parametersd</Text>
                 <FontAwesomeIcon icon={faMugSaucer} />
                 <TextInput
