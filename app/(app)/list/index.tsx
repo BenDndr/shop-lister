@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -41,6 +41,9 @@ export default function ListIndex() {
         editIndex == index ? setEditIndex(-1) : setEditIndex(index)
       }
 
+      const blurAction = () => {
+        setEditIndex(-1)
+      }
 
     return (
         <PageContainer gradient color1={Colors.blue100} color2={Colors.blue300}>
@@ -52,7 +55,7 @@ export default function ListIndex() {
             <View style={styles.content}>
                 {/* <FontAwesomeIcon icon={faList} /> */}
                 <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     {
                         items.items.map((item, index) => {
                             return (
@@ -66,11 +69,12 @@ export default function ListIndex() {
                                     onChangeText={(e) => editItemName(item.name, e)}
                                     activateEditMode={() => setEditMode(index)}
                                     editMode={index == editIndex}
+                                    blurAction={blurAction}
                                 />
                             )
                         })
                     }
-                    <CustomButton color={{color1: Colors.blue300, color2: Colors.pink100}} text={"Clear the list"} onPress={clearList} style={{marginTop: 10}} lightText/>
+                    <CustomButton color={{color1: Colors.blue300, color2: Colors.pink100}} text={"Clear the list"} onPress={clearList} style={{marginTop: 10, marginBottom: 80}} lightText/>
                 </ScrollView>
             </View>
         </PageContainer>
@@ -91,6 +95,6 @@ const styles = StyleSheet.create({
         marginLeft: 12,
         marginRight: 12,
         borderTopLeftRadius: 16,
-        borderTopRightRadius: 16 
+        borderTopRightRadius: 16,
     }
 })

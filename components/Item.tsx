@@ -1,9 +1,8 @@
-import {View, Text, StyleSheet, TouchableOpacity, StyleProp, ViewStyle, TextInput} from 'react-native'
+import {View, Keyboard, StyleSheet, TouchableOpacity, StyleProp, ViewStyle, TextInput} from 'react-native'
 import {Colors} from '@/constants/Colors'
 import { ThemedText } from './ThemedText'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCheck, faPen } from '@fortawesome/free-solid-svg-icons'
-import {useState, useRef, useEffect} from 'react'
 
 export function Item({
     name, 
@@ -15,6 +14,7 @@ export function Item({
     validate,
     activateEditMode,
     onChangeText,
+    blurAction
 } : {
     name: string
     index: number
@@ -25,26 +25,21 @@ export function Item({
     validate?: () => void
     activateEditMode: (i: number) => void
     onChangeText?: (e: string) => void
+    blurAction?: () => void
 }) {
 
-    const inputRef = useRef<TextInput>(null)
-
-    useEffect(() => {
-        if (editMode && inputRef.current) {
-            inputRef.current.focus();
-        }
-    }, [editMode]);
 
     return (
         <TouchableOpacity style={[styles.itemContainer, style]}>
             {editMode ? 
                 <TextInput
-                    ref={inputRef}
                     style={styles.editInput} 
                     placeholder={name}
                     value={value} 
                     onSubmitEditing={validate ? validate : undefined}
                     onChangeText={onChangeText}
+                    autoFocus={true}
+                    onBlur={blurAction}
                 /> 
                 : 
                 <ThemedText>{name}</ThemedText>
