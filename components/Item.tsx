@@ -40,7 +40,7 @@ export function Item({
                     onChangeText={onChangeText}
                     autoFocus={true}
                     onBlur={blurAction}
-                /> 
+                />
                 : 
                 <ThemedText>{name}</ThemedText>
             }

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ScrollView, Dimensions } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -17,6 +17,8 @@ export default function ListIndex() {
     const dispatch = useAppDispatch()
     const [itemToAdd, setItemToAdd] = useState("");
     const [editIndex, setEditIndex] = useState(-1)
+    const screenWidth = Dimensions.get("window").width
+    const containerWidth = screenWidth - 24
 
     const incrementItems = () => {
         dispatch(addItem(itemToAdd))
@@ -46,13 +48,13 @@ export default function ListIndex() {
       }
 
     return (
-        <PageContainer gradient color1={Colors.blue100} color2={Colors.blue300}>
+        <PageContainer gradient color1={Colors.blue300} color2={Colors.blue100}>
             <View
                 style={styles.paralaxHeader}
             >
                 <ThemedText style={{}} type={"title"} light>MY LIST</ThemedText>
             </View>
-            <View style={styles.content}>
+            <View style={[styles.content, {width: containerWidth}]}>
                 {/* <FontAwesomeIcon icon={faList} /> */}
                 <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -74,7 +76,7 @@ export default function ListIndex() {
                             )
                         })
                     }
-                    <CustomButton color={{color1: Colors.blue300, color2: Colors.pink100}} text={"Clear the list"} onPress={clearList} style={{marginTop: 10, marginBottom: 80}} lightText/>
+                    <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={clearList} style={{marginTop: 10, marginBottom: 80}} lightText/>
                 </ScrollView>
             </View>
         </PageContainer>
