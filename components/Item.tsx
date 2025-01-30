@@ -1,8 +1,10 @@
 import {View, Keyboard, StyleSheet, TouchableOpacity, StyleProp, ViewStyle, TextInput} from 'react-native'
+import Animated, { useSharedValue, withSpring } from 'react-native-reanimated'
 import {Colors} from '@/constants/Colors'
 import { ThemedText } from './ThemedText'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCheck, faPen } from '@fortawesome/free-solid-svg-icons'
+import { useEffect } from 'react'
 
 export function Item({
     name, 
@@ -28,31 +30,40 @@ export function Item({
     blurAction?: () => void
 }) {
 
+    const width = useSharedValue(200)
+    const translateX = useSharedValue<number>(40);
+
+    useEffect(() => {
+        // width.value = withSpring(360);
+        translateX.value = withSpring(0);
+    }, [])
 
     return (
-        <TouchableOpacity style={[styles.itemContainer, style]}>
-            {editMode ? 
-                <TextInput
-                    style={styles.editInput} 
-                    placeholder={name}
-                    value={value} 
-                    onSubmitEditing={validate ? validate : undefined}
-                    onChangeText={onChangeText}
-                    autoFocus={true}
-                    onBlur={blurAction}
-                />
-                : 
-                <ThemedText>{name}</ThemedText>
-            }
-            <View style={styles.actionView}>
-                <TouchableOpacity onPress={() => {activateEditMode(index)}} style={{...styles.actionButton, backgroundColor: Colors.blue100}}>
-                    <FontAwesomeIcon icon={faPen} color={Colors.blue900}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={remove} style={{...styles.actionButton, backgroundColor: Colors.pink300}}>
-                    <FontAwesomeIcon icon={faCheck} color={Colors.pink900}/>
-                </TouchableOpacity>
-            </View>
-        </TouchableOpacity>
+        <Animated.View style={{translateX}}>
+            <TouchableOpacity style={[styles.itemContainer, style]}>
+                {editMode ? 
+                    <TextInput
+                        style={styles.editInput} 
+                        placeholder={name}
+                        value={value} 
+                        onSubmitEditing={validate ? validate : undefined}
+                        onChangeText={onChangeText}
+                        autoFocus={true}
+                        onBlur={blurAction}
+                    />
+                    : 
+                    <ThemedText>{name}</ThemedText>
+                }
+                <View style={styles.actionView}>
+                    <TouchableOpacity onPress={() => {activateEditMode(index)}} style={{...styles.actionButton, backgroundColor: Colors.blue100}}>
+                        <FontAwesomeIcon icon={faPen} color={Colors.blue900}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={remove} style={{...styles.actionButton, backgroundColor: Colors.pink300}}>
+                        <FontAwesomeIcon icon={faCheck} color={Colors.pink900}/>
+                    </TouchableOpacity>
+                </View>
+            </TouchableOpacity>
+        </Animated.View>
     )
 }
 
