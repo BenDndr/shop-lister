@@ -26,46 +26,55 @@ export default function ListIndex() {
         dispatch(addItem(itemToAdd))
         console.log(items)
         setItemToAdd("")
-      }
+    }
     
-      const removeItem = (itemName: string) => {
+    const removeItem = (itemName: string) => {
         dispatch(removeSpecificItem(itemName))
         setItemToAdd("")
-      }
+    }
     
-      const clearList = () => {
+    const clearList = () => {
         dispatch(resetItems())
-      }
+        setModalVisible(false)
+    }
 
-      const editItemName = (ref: string, newName: string) => {
+    const editItemName = (ref: string, newName: string) => {
         dispatch(editItem({ itemToEdit: ref, editedItem: newName }))
-      }
+    }
 
-      const setEditMode = (index: number) => {
+    const setEditMode = (index: number) => {
         editIndex == index ? setEditIndex(-1) : setEditIndex(index)
-      }
+    }
 
-      const blurAction = () => {
+    const blurAction = () => {
         setEditIndex(-1)
-      }
+    }
+
+    const renderItems = ({ item, index }: { item: { name: string }; index: number }) => {
+        return (
+            <Item 
+                key={index} 
+                name={item.name} 
+                index={index}
+                remove={() => removeItem(item.name)}
+                value= {item.name}
+                onChangeText={(e) => editItemName(item.name, e)}
+                activateEditMode={() => setEditMode(index)}
+                editMode={index == editIndex}
+                blurAction={blurAction}
+            />
+        )
+    } 
 
     return (
         <PageContainer gradient color1={Colors.blue300} color2={Colors.blue100}>
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}
-            >
-                <ModalLayout closeModal={() => setModalVisible(false)}>
-                    <View>
-                        <ThemedText style={{marginBottom: 20}} type={"subtitle"} center>Hello</ThemedText>
-                        <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.pink300, color2: Colors.pink100}} text={"Take me home !"} onPress={() => setModalVisible(false)}/>
-                    </View>
-                </ModalLayout>
-            </Modal>
+            {modalVisible && <ModalLayout closeModal={() => setModalVisible(false)}>
+                <View>
+                    <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Are you sure you want to clear the list ?</ThemedText>
+                    <CustomButton style={{width: 300, marginBottom: 10}} lightText hapticFeel color={{color1: Colors.pink300, color2: Colors.pink100}} text={"Yes"} onPress={() => clearList()}/>
+                    <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"No"} onPress={() => setModalVisible(false)}/>
+                </View>
+            </ModalLayout>}
             <View
                 style={styles.paralaxHeader}
             >
@@ -74,27 +83,13 @@ export default function ListIndex() {
             <View style={[styles.content, {width: containerWidth}]}>
                 {/* <FontAwesomeIcon icon={faList} /> */}
                 <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    {
-                        items.items.map((item, index) => {
-                            return (
-                                <Item 
-                                    key={index} 
-                                    name={item.name} 
-                                    index={index}
-                                    remove={() => removeItem(item.name)}
-                                    validate={() => console.log("Hello")}
-                                    value= {item.name}
-                                    onChangeText={(e) => editItemName(item.name, e)}
-                                    activateEditMode={() => setEditMode(index)}
-                                    editMode={index == editIndex}
-                                    blurAction={blurAction}
-                                />
-                            )
-                        })
-                    }
-                    <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10, marginBottom: 80}} lightText/>
-                </ScrollView>
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={items.items} 
+                    renderItem={renderItems}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+                    <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10, marginBottom: 80}} lightText hapticFeel/>
             </View>
         </PageContainer>
     )
