@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ScrollView, Dimensions, Modal } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -10,6 +10,7 @@ import { CustomButton } from '@/components/CustomButton';
 import { CustomInput } from '@/components/CustomInput';
 import { Item } from '@/components/Item';
 import { ThemedText } from '@/components/ThemedText';
+import { ModalLayout } from '@/components/ModalLayout'
 
 export default function ListIndex() {
 
@@ -19,6 +20,7 @@ export default function ListIndex() {
     const [editIndex, setEditIndex] = useState(-1)
     const screenWidth = Dimensions.get("window").width
     const containerWidth = screenWidth - 24
+    const [modalVisible, setModalVisible] = useState(false);
 
     const incrementItems = () => {
         dispatch(addItem(itemToAdd))
@@ -49,6 +51,21 @@ export default function ListIndex() {
 
     return (
         <PageContainer gradient color1={Colors.blue300} color2={Colors.blue100}>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <ModalLayout closeModal={() => setModalVisible(false)}>
+                    <View>
+                        <ThemedText style={{marginBottom: 20}} type={"subtitle"} center>Hello</ThemedText>
+                        <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.pink300, color2: Colors.pink100}} text={"Take me home !"} onPress={() => setModalVisible(false)}/>
+                    </View>
+                </ModalLayout>
+            </Modal>
             <View
                 style={styles.paralaxHeader}
             >
@@ -76,7 +93,7 @@ export default function ListIndex() {
                             )
                         })
                     }
-                    <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={clearList} style={{marginTop: 10, marginBottom: 80}} lightText/>
+                    <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10, marginBottom: 80}} lightText/>
                 </ScrollView>
             </View>
         </PageContainer>
