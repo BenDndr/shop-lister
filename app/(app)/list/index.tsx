@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, FlatList, ScrollView, Dimensions, Modal } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal } from 'react-native';
 import { Colors } from '@/constants/Colors';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faList } from '@fortawesome/free-solid-svg-icons'
+import { faList, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { PageContainer } from '@/components/PageContainer';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addItem, resetItems, removeSpecificItem, editItem } from '@/store/slices/itemsSlice'
@@ -11,6 +11,7 @@ import { CustomInput } from '@/components/CustomInput';
 import { Item } from '@/components/Item';
 import { ThemedText } from '@/components/ThemedText';
 import { ModalLayout } from '@/components/ModalLayout'
+import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated'
 
 export default function ListIndex() {
 
@@ -21,11 +22,17 @@ export default function ListIndex() {
     const screenWidth = Dimensions.get("window").width
     const containerWidth = screenWidth - 24
     const [modalVisible, setModalVisible] = useState(false);
+    const [errorMessageVisible, setErrorMessageVisible] = useState(false);
+    
 
     const incrementItems = () => {
-        dispatch(addItem(itemToAdd))
-        console.log(items)
-        setItemToAdd("")
+        const itemsInList = items.items.map((item) => item.name)
+        if (itemsInList.includes(itemToAdd)) {
+            setErrorMessageVisible(true)
+        } else {
+            dispatch(addItem(itemToAdd))
+            setItemToAdd("")
+        }
     }
     
     const removeItem = (itemName: string) => {
@@ -50,6 +57,25 @@ export default function ListIndex() {
         setEditIndex(-1)
     }
 
+    const opacity = useSharedValue<number>(0);
+
+    const animatedStyle = useAnimatedStyle(() => ({
+        opacity: opacity.value
+    }));
+
+    useEffect(() => {
+        if (errorMessageVisible) {
+            opacity.value = withTiming(1, { duration: 500 });
+            setTimeout(() => {
+                setErrorMessageVisible(false)         
+            }, 4000)
+        } else {
+            opacity.value = withTiming(0, { duration: 1000 });
+        }
+        console.log("Use Effect called")
+    }, [errorMessageVisible])
+
+
     const renderItems = ({ item, index }: { item: { name: string }; index: number }) => {
         return (
             <Item 
@@ -68,21 +94,35 @@ export default function ListIndex() {
 
     return (
         <PageContainer gradient color1={Colors.blue300} color2={Colors.blue100}>
-            {modalVisible && <ModalLayout closeModal={() => setModalVisible(false)}>
-                <View>
-                    <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Are you sure you want to clear the list ?</ThemedText>
-                    <CustomButton style={{width: 300, marginBottom: 10}} lightText hapticFeel color={{color1: Colors.pink300, color2: Colors.pink100}} text={"Yes"} onPress={() => clearList()}/>
-                    <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"No"} onPress={() => setModalVisible(false)}/>
-                </View>
-            </ModalLayout>}
+            {/* <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            > */}
+                {modalVisible && <ModalLayout closeModal={() => setModalVisible(false)}>
+                    <View>
+                        <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Are you sure you want to clear the list ?</ThemedText>
+                        <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.teal300, color2: Colors.teal100}} text={"Yes"} onPress={() => clearList()}/>
+                        <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue300, color2: Colors.blue100}} text={"No"} onPress={() => setModalVisible(false)}/>
+                    </View>
+                </ModalLayout>}
+            {/* </Modal> */}
             <View
                 style={styles.paralaxHeader}
             >
                 <ThemedText style={{}} type={"title"} light>MY LIST</ThemedText>
             </View>
             <View style={[styles.content, {width: containerWidth}]}>
-                {/* <FontAwesomeIcon icon={faList} /> */}
                 <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
+                <Animated.View style={[styles.errorMessage, animatedStyle]}>
+                    <ThemedText>This item is already in the list.</ThemedText>
+                    <TouchableOpacity style={{padding: 10}} onPress={() => setErrorMessageVisible(false)}>
+                        <FontAwesomeIcon icon={faXmark} />
+                    </TouchableOpacity>
+                </Animated.View>
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     data={items.items} 
@@ -110,5 +150,19 @@ const styles = StyleSheet.create({
         marginRight: 12,
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
+    },
+    errorMessage: {
+        position: 'absolute',
+        top: -50,
+        left: 10,
+        width: "100%",
+        backgroundColor: Colors.orange300,
+        padding: 10,
+        borderRadius: 12,
+        zIndex: 2,
+        elevation: 2,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }
 })
