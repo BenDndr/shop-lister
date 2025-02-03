@@ -40,7 +40,7 @@ export function Item({
 
     return (
         <Animated.View style={{translateX}}>
-            <TouchableOpacity style={[styles.itemContainer, style]}>
+            <View style={[styles.itemContainer, style]}>
                 {editMode ? 
                     <TextInput
                         style={styles.editInput} 
@@ -62,7 +62,7 @@ export function Item({
                         <FontAwesomeIcon icon={faCheck} color={Colors.pink900}/>
                     </TouchableOpacity>
                 </View>
-            </TouchableOpacity>
+            </View>
         </Animated.View>
     )
 }

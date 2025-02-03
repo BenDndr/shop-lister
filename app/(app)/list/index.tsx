@@ -68,11 +68,10 @@ export default function ListIndex() {
             opacity.value = withTiming(1, { duration: 500 });
             setTimeout(() => {
                 setErrorMessageVisible(false)         
-            }, 4000)
+            }, 2000)
         } else {
-            opacity.value = withTiming(0, { duration: 1000 });
+            opacity.value = withTiming(0, { duration: 2000 });
         }
-        console.log("Use Effect called")
     }, [errorMessageVisible])
 
 
