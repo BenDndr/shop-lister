@@ -21,6 +21,12 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
+        name="extra"
+        options={{
+          title: 'extra',
+        }}
+      />
+      <Tabs.Screen
         name="parameters"
         options={{
           title: 'Parameters',

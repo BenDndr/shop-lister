@@ -2,13 +2,28 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Colors } from '@/constants/Colors';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faList, faGear, faBook } from '@fortawesome/free-solid-svg-icons'
+import { faList, faGear, faBook, faMugSaucer } from '@fortawesome/free-solid-svg-icons'
 
 interface CustomTabBarProps extends BottomTabBarProps {
 
 }
 
 const TabBar: React.FC<CustomTabBarProps>  = ({ state, descriptors, navigation }) => {
+
+  const getIcon = (routeName: string) => {
+    switch (routeName) {
+      case 'list':
+        return faList;
+      case 'parameters':
+        return faGear;
+      case 'index':
+        return faBook;
+      case 'extra':
+        return faMugSaucer;
+      default:
+        return faMugSaucer;
+    }
+  }
   
   return (
     <View style={styles.tabBar}>
@@ -51,7 +66,7 @@ const TabBar: React.FC<CustomTabBarProps>  = ({ state, descriptors, navigation }
             key={index}
           >
             <View style={{...styles.iconConatainer, borderBottomColor: isFocused ? Colors.pink500 : 'transparent'}}>
-              <FontAwesomeIcon icon={route.name == "list" ? faList : route.name == "parameters" ? faGear : faBook} color={isFocused ? Colors.pink500 : Colors.orange500} size={25}/>
+              <FontAwesomeIcon icon={getIcon(route.name)} color={isFocused ? Colors.pink500 : Colors.orange500} size={25}/>
             </View>
 
           </TouchableOpacity>
