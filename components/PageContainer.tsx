@@ -17,7 +17,7 @@ export function PageContainer({
 }) {
 
 return (
-        <View>
+        <View style={{height: '100%'}}>
             {gradient ? <LinearGradient
                 colors={[color1 || Colors.backGround, color2 || Colors.backGround]}
                 style={[styles.background, style]}

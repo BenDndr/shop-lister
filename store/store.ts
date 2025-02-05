@@ -1,6 +1,6 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import itemsSlice from './slices/itemsSlice'
-import listsSlice from './slices/lists'
+import listsSlice from './slices/listsSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistReducer } from 'redux-persist'
 

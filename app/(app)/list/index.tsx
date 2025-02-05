@@ -6,6 +6,7 @@ import { faList, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { PageContainer } from '@/components/PageContainer';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addItem, resetItems, removeSpecificItem, editItem } from '@/store/slices/itemsSlice'
+import { addList, editList, removeList } from '@/store/slices/listsSlice'
 import { CustomButton } from '@/components/CustomButton';
 import { CustomInput } from '@/components/CustomInput';
 import { Item } from '@/components/Item';
@@ -16,6 +17,7 @@ import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-na
 export default function ListIndex() {
 
     const items = useAppSelector((state) => state.items)
+    const lists = useAppSelector((state) => state.lists)
     const dispatch = useAppDispatch()
     const [itemToAdd, setItemToAdd] = useState("");
     const [editIndex, setEditIndex] = useState(-1)
@@ -23,6 +25,8 @@ export default function ListIndex() {
     const containerWidth = screenWidth - 24
     const [modalVisible, setModalVisible] = useState(false);
     const [errorMessageVisible, setErrorMessageVisible] = useState(false);
+    const [activeList, setActiveList] = useState("")
+    const [newList, setNewList] = useState("")
     
 
     const incrementItems = () => {
@@ -62,6 +66,10 @@ export default function ListIndex() {
     const animatedStyle = useAnimatedStyle(() => ({
         opacity: opacity.value
     }));
+
+    const createNewList = () => {
+        dispatch(addList(newList))
+    }
 
     useEffect(() => {
         if (errorMessageVisible) {
