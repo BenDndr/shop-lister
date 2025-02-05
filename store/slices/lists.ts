@@ -12,7 +12,7 @@ const initialState: State = {
     lists: []
 }
 
-const ListSlice = createSlice({
+const ListsSlice = createSlice({
     name: 'list',
     initialState,
     reducers: {
@@ -20,7 +20,11 @@ const ListSlice = createSlice({
             state.lists.push({name: action.payload})
         },
         editList: (state, action: PayloadAction<{ listToEdit: string; editedList: string }>) => {
-
+            state.lists = state.lists.map((item: ListState) => {
+                return (
+                  item.name == action.payload.listToEdit ? {name: action.payload.editedList} : item
+                )
+              })
         },
         removeList: (state, action: PayloadAction<string>) => {
             state.lists = state.lists.filter((list: ListState) => {
@@ -30,5 +34,5 @@ const ListSlice = createSlice({
     }
 })
 
-export const { addList, editList, removeList } = ListSlice.actions
-export default ListSlice.reducer
+export const { addList, editList, removeList } = ListsSlice.actions
+export default ListsSlice.reducer
