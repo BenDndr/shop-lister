@@ -122,8 +122,8 @@ export default function ListIndex() {
                     />
                     <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10}} lightText hapticFeel/>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <CustomButton color={{color1: Colors.teal300, color2: Colors.teal100}} text={"Add sample list"} onPress={() => setAddListModal(true)} style={{marginTop: 10, width: '48%'}}  hapticFeel/>
-                        <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"reset list"} onPress={() => dispatch(reset())} style={{marginTop: 10, marginBottom: 80, width: '48%'}} lightText hapticFeel/>
+                        <CustomButton color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Add sample"} onPress={() => setAddListModal(true)} style={{marginTop: 10, width: '48%', marginBottom: 70}}  hapticFeel/>
+                        <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"reset list"} onPress={() => dispatch(reset())} style={{marginTop: 10, marginBottom: 70, width: '48%'}} lightText hapticFeel/>
 
                     </View>
                 </View>
