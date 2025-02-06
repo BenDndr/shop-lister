@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal } from 'react-native';
+import { View, Pressable, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -13,6 +13,7 @@ import { Item } from '@/components/Item';
 import { ThemedText } from '@/components/ThemedText';
 import { ModalLayout } from '@/components/ModalLayout'
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated'
+// import Pressable from 'react-native-gesture-handler'
 
 export default function ListIndex() {
 
@@ -93,7 +94,6 @@ export default function ListIndex() {
         }
     }, [errorMessageVisible])
 
-
     const renderCarouselView = (item: object, index: number) => {
         return (
             <View key={index} style={{flex: 1}}>
@@ -101,11 +101,12 @@ export default function ListIndex() {
                     style={styles.header}
                 >
                     <ThemedText style={{alignItems: 'center'}} type={"title"} light>{activeList.name || "MY LIST"}</ThemedText>
-                    <TouchableOpacity style={styles.addListButton} activeOpacity={0.7} onPress={() => console.log("call modal")}>
+                    {/* <Pressable style={styles.addListButton} onPress={() => setAddListModal(true)}>
                         <FontAwesomeIcon icon={faCirclePlus} color={"white"} size={32}/>
-                    </TouchableOpacity>
+                    </Pressable> */}
                 </View>
                 <View style={[styles.content, {width: containerWidth}]}>
+                    <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Helo"} onPress={() => console.log("helo")} style={{marginTop: 10}} lightText hapticFeel></CustomButton>
                     <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
                     <Animated.View style={[styles.errorMessage, animatedStyle]}>
                         <ThemedText>This item is already in the list.</ThemedText>
@@ -120,9 +121,11 @@ export default function ListIndex() {
                         keyExtractor={(item, index) => index.toString()}
                     />
                     <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10}} lightText hapticFeel/>
-                    <CustomButton color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Add sample list"} onPress={() => dispatch(addList("Sample List"))} style={{marginTop: 10}}  hapticFeel/>
-                    <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"reset list"} onPress={() => dispatch(reset())} style={{marginTop: 10, marginBottom: 80}} lightText hapticFeel/>
-                    
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <CustomButton color={{color1: Colors.teal300, color2: Colors.teal100}} text={"Add sample list"} onPress={() => setAddListModal(true)} style={{marginTop: 10, width: '48%'}}  hapticFeel/>
+                        <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"reset list"} onPress={() => dispatch(reset())} style={{marginTop: 10, marginBottom: 80, width: '48%'}} lightText hapticFeel/>
+
+                    </View>
                 </View>
             </View>
         )
@@ -155,7 +158,7 @@ export default function ListIndex() {
                     setModalVisible(!modalVisible);
                 }}
             > */}
-                {modalVisible && <ModalLayout closeModal={() => setModalVisible(false)}>
+                {modalVisible && <ModalLayout heightProps={200} closeModal={() => setModalVisible(false)}>
                     <View>
                         <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Are you sure you want to clear the list ?</ThemedText>
                         <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Yes"} onPress={() => clearList()}/>
@@ -163,11 +166,11 @@ export default function ListIndex() {
                     </View>
                 </ModalLayout>}
             {/* </Modal> */}
-            {addListModal && <ModalLayout closeModal={() => setAddListModal(false)}>
+            {addListModal && <ModalLayout heightProps={300} closeModal={() => setAddListModal(false)}>
                 <View>
                     <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Enter list name</ThemedText>
                     <CustomInput placeholder='List name' value={newList} onChangeText={(e) => setNewList(e)}/>
-                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.teal300, color2: Colors.teal100}} text={"Yes"} onPress={() => createNewList()}/>
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Yes"} onPress={() => createNewList()}/>
                     <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue300, color2: Colors.blue100}} text={"No"} onPress={() => setAddListModal(false)}/>
                 </View>
             </ModalLayout>}
@@ -200,10 +203,9 @@ const styles = StyleSheet.create({
     header: {
         height: "20%",
         justifyContent: 'space-between',
-        width: "100%",
+        // // width: "100%",
         paddingLeft: 12,
         paddingRight: 12,
-        display: 'flex',
         flexDirection: 'row',
         alignItems: 'flex-end',
     },

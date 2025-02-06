@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     button: {
-        // width: '100%', // To fix
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',

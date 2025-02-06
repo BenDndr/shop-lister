@@ -3,10 +3,12 @@ import { Colors } from '@/constants/Colors';
 
 export function ModalLayout({
     closeModal,
-    children
+    children,
+    heightProps
 }: {
     closeModal: () => void
     children?: React.ReactNode
+    heightProps: number
 }) {
 
     const height = Dimensions.get('window').height
@@ -17,7 +19,7 @@ export function ModalLayout({
             <TouchableWithoutFeedback onPress={closeModal}>
                 <View  style={styles.outerLayout}/>
             </TouchableWithoutFeedback>
-            <View style={styles.innerModal}>
+            <View style={[styles.innerModal, {height: heightProps}]}>
                 {children}
             </View>
         </View>
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
         left: '5%',
         width: '90%',
         marginBottom: 20,
-        height: 200,
+        // height: 200,
         justifyContent: 'center',
         alignItems: 'center',
     }
