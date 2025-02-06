@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal } from 'react-native';
 import { Colors } from '@/constants/Colors';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faList, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faList, faXmark, faPen, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import { PageContainer } from '@/components/PageContainer';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addItem, resetItems, removeSpecificItem, editItem } from '@/store/slices/itemsSlice'
-import { addList, editList, removeList } from '@/store/slices/listsSlice'
+import { addList, editList, removeList, reset } from '@/store/slices/listsSlice'
 import { CustomButton } from '@/components/CustomButton';
 import { CustomInput } from '@/components/CustomInput';
 import { Item } from '@/components/Item';
@@ -25,9 +25,14 @@ export default function ListIndex() {
     const containerWidth = screenWidth - 24
     const [modalVisible, setModalVisible] = useState(false);
     const [errorMessageVisible, setErrorMessageVisible] = useState(false);
-    const [activeList, setActiveList] = useState("")
+    const [addListModal, setAddListModal] = useState(false);
+    const [activeList, setActiveList] = useState(lists.lists[0] || {name: ""})
     const [newList, setNewList] = useState("")
-    
+    const width = Dimensions.get("window").width
+
+    const store = useAppSelector((state) => state)
+    console.log("STORE", store)
+    console.log("Lists", lists)
 
     const incrementItems = () => {
         const itemsInList = items.items.map((item) => item.name)
@@ -68,7 +73,13 @@ export default function ListIndex() {
     }));
 
     const createNewList = () => {
-        dispatch(addList(newList))
+        if (newList == "") {
+            setErrorMessageVisible(true)
+        } else {
+            dispatch(addList(newList))
+            setActiveList({ name: newList })
+            setAddListModal(false)
+        }
     }
 
     useEffect(() => {
@@ -81,6 +92,41 @@ export default function ListIndex() {
             opacity.value = withTiming(0, { duration: 2000 });
         }
     }, [errorMessageVisible])
+
+
+    const renderCarouselView = (item: object, index: number) => {
+        return (
+            <View key={index} style={{flex: 1}}>
+                <View
+                    style={styles.header}
+                >
+                    <ThemedText style={{alignItems: 'center'}} type={"title"} light>{activeList.name || "MY LIST"}</ThemedText>
+                    <TouchableOpacity style={styles.addListButton} activeOpacity={0.7} onPress={() => console.log("call modal")}>
+                        <FontAwesomeIcon icon={faCirclePlus} color={"white"} size={32}/>
+                    </TouchableOpacity>
+                </View>
+                <View style={[styles.content, {width: containerWidth}]}>
+                    <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
+                    <Animated.View style={[styles.errorMessage, animatedStyle]}>
+                        <ThemedText>This item is already in the list.</ThemedText>
+                        <TouchableOpacity style={{padding: 10}} onPress={() => setErrorMessageVisible(false)}>
+                            <FontAwesomeIcon icon={faXmark} />
+                        </TouchableOpacity>
+                    </Animated.View>
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
+                        data={items.items} 
+                        renderItem={renderItems}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                    <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10}} lightText hapticFeel/>
+                    <CustomButton color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Add sample list"} onPress={() => dispatch(addList("Sample List"))} style={{marginTop: 10}}  hapticFeel/>
+                    <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"reset list"} onPress={() => dispatch(reset())} style={{marginTop: 10, marginBottom: 80}} lightText hapticFeel/>
+                    
+                </View>
+            </View>
+        )
+    }
 
 
     const renderItems = ({ item, index }: { item: { name: string }; index: number }) => {
@@ -97,7 +143,7 @@ export default function ListIndex() {
                 blurAction={blurAction}
             />
         )
-    } 
+    }
 
     return (
         <PageContainer gradient color1={Colors.blue300} color2={Colors.blue100}>
@@ -112,42 +158,54 @@ export default function ListIndex() {
                 {modalVisible && <ModalLayout closeModal={() => setModalVisible(false)}>
                     <View>
                         <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Are you sure you want to clear the list ?</ThemedText>
-                        <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.teal300, color2: Colors.teal100}} text={"Yes"} onPress={() => clearList()}/>
+                        <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Yes"} onPress={() => clearList()}/>
                         <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue300, color2: Colors.blue100}} text={"No"} onPress={() => setModalVisible(false)}/>
                     </View>
                 </ModalLayout>}
             {/* </Modal> */}
-            <View
-                style={styles.paralaxHeader}
-            >
-                <ThemedText style={{}} type={"title"} light>MY LIST</ThemedText>
-            </View>
-            <View style={[styles.content, {width: containerWidth}]}>
-                <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
-                <Animated.View style={[styles.errorMessage, animatedStyle]}>
-                    <ThemedText>This item is already in the list.</ThemedText>
-                    <TouchableOpacity style={{padding: 10}} onPress={() => setErrorMessageVisible(false)}>
-                        <FontAwesomeIcon icon={faXmark} />
-                    </TouchableOpacity>
-                </Animated.View>
-                <FlatList
-                    showsVerticalScrollIndicator={false}
-                    data={items.items} 
-                    renderItem={renderItems}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-                    <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10, marginBottom: 80}} lightText hapticFeel/>
-            </View>
+            {addListModal && <ModalLayout closeModal={() => setAddListModal(false)}>
+                <View>
+                    <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Enter list name</ThemedText>
+                    <CustomInput placeholder='List name' value={newList} onChangeText={(e) => setNewList(e)}/>
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.teal300, color2: Colors.teal100}} text={"Yes"} onPress={() => createNewList()}/>
+                    <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue300, color2: Colors.blue100}} text={"No"} onPress={() => setAddListModal(false)}/>
+                </View>
+            </ModalLayout>}
+            {
+                lists.lists.length == 0 ?
+                <View>
+                    <ThemedText light type={"title"} center>ADD LIST</ThemedText>
+                    <CustomInput placeholder='List name' value={newList} onChangeText={(e) => setNewList(e)} />
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Create new list"} onPress={() => createNewList()} />
+                </View>
+                :
+                <View>
+                    <FlatList
+                        showsHorizontalScrollIndicator={false}
+                        data={lists.lists}
+                        horizontal
+                        pagingEnabled
+                        renderItem={({item, index}) => (
+                            renderCarouselView(item, index)
+                        )}
+                        keyboardShouldPersistTaps="handled"
+                    />
+                </View>
+            }
         </PageContainer>
     )
 }
 
 const styles = StyleSheet.create({
-    paralaxHeader: {
+    header: {
         height: "20%",
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         width: "100%",
-        paddingLeft: 12
+        paddingLeft: 12,
+        paddingRight: 12,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
     },
     content: {
         padding: 10,
@@ -171,5 +229,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    addListButton: {
+        padding: 10,
     }
 })
