@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface ItemsState {
   name: string;
+  list: string;
 }
 
 interface State {
@@ -18,8 +19,8 @@ export const itemsSlice = createSlice({
   name: 'items',
   initialState,
   reducers: {
-    addItem: (state, action: PayloadAction<string>) => {
-      state.items.push({ name: action.payload });
+    addItem: (state, action: PayloadAction<{name: string, list: string}>) => {
+      state.items.push({ name: action.payload.name, list: action.payload.list });
     },
     removeSpecificItem: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item: ItemsState) => {

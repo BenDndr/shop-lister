@@ -1,4 +1,4 @@
-import { View, Pressable, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal } from 'react-native';
+import { View, Pressable, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal, TextInput } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -27,7 +27,6 @@ export default function ListIndex() {
     const [modalVisible, setModalVisible] = useState(false);
     const [errorMessageVisible, setErrorMessageVisible] = useState(false);
     const [addListModal, setAddListModal] = useState(false);
-    const [activeList, setActiveList] = useState(lists.lists[0] || {name: ""})
     const [newList, setNewList] = useState("")
     const width = Dimensions.get("window").width
 
@@ -35,12 +34,12 @@ export default function ListIndex() {
     console.log("STORE", store)
     console.log("Lists", lists)
 
-    const incrementItems = () => {
+    const incrementItems = (listName: string) => {
         const itemsInList = items.items.map((item) => item.name)
         if (itemsInList.includes(itemToAdd)) {
             setErrorMessageVisible(true)
         } else {
-            dispatch(addItem(itemToAdd))
+            dispatch(addItem({name: itemToAdd, list: listName}))
             setItemToAdd("")
         }
     }
@@ -78,7 +77,6 @@ export default function ListIndex() {
             setErrorMessageVisible(true)
         } else {
             dispatch(addList(newList))
-            setActiveList({ name: newList })
             setAddListModal(false)
         }
     }
@@ -94,20 +92,34 @@ export default function ListIndex() {
         }
     }, [errorMessageVisible])
 
-    const renderCarouselView = (item: object, index: number) => {
+    const renderCarouselView = (list: { name: string }, index: number) => {
         return (
             <View key={index} style={{flex: 1}}>
                 <View
                     style={styles.header}
                 >
-                    <ThemedText style={{alignItems: 'center'}} type={"title"} light>{activeList.name || "MY LIST"}</ThemedText>
+                    <ThemedText style={{alignItems: 'center'}} type={"title"} light>{list.name || "MY LIST"}</ThemedText>
                     {/* <Pressable style={styles.addListButton} onPress={() => setAddListModal(true)}>
                         <FontAwesomeIcon icon={faCirclePlus} color={"white"} size={32}/>
                     </Pressable> */}
                 </View>
                 <View style={[styles.content, {width: containerWidth}]}>
-                    <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Helo"} onPress={() => console.log("helo")} style={{marginTop: 10}} lightText hapticFeel></CustomButton>
-                    <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems}/>
+                    {/* <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems(item.name)}/> */}
+                    <TextInput 
+                        style={{
+                            backgroundColor: "white",
+                            padding: 10,
+                            borderRadius: 16,
+                            borderWidth: 1,
+                            borderColor: Colors.grey100,
+                            marginBottom: 8,
+                            marginTop: 8,
+                        }} 
+                        placeholder={'Item to add'} 
+                        value={itemToAdd}
+                        onSubmitEditing={() => incrementItems(list.name)}
+                        onChangeText={(e: string) => setItemToAdd(e)}
+                    />
                     <Animated.View style={[styles.errorMessage, animatedStyle]}>
                         <ThemedText>This item is already in the list.</ThemedText>
                         <TouchableOpacity style={{padding: 10}} onPress={() => setErrorMessageVisible(false)}>
@@ -116,7 +128,7 @@ export default function ListIndex() {
                     </Animated.View>
                     <FlatList
                         showsVerticalScrollIndicator={false}
-                        data={items.items} 
+                        data={items.items.filter((item) => item.list == list.name)} 
                         renderItem={renderItems}
                         keyExtractor={(item, index) => index.toString()}
                     />
@@ -132,7 +144,7 @@ export default function ListIndex() {
     }
 
 
-    const renderItems = ({ item, index }: { item: { name: string }; index: number }) => {
+    const renderItems = ({ item, index }: { item: { name: string, list: string }, index: number }) => {
         return (
             <Item 
                 key={index} 
@@ -145,6 +157,7 @@ export default function ListIndex() {
                 editMode={index == editIndex}
                 blurAction={blurAction}
             />
+
         )
     }
 
@@ -203,7 +216,6 @@ const styles = StyleSheet.create({
     header: {
         height: "20%",
         justifyContent: 'space-between',
-        // // width: "100%",
         paddingLeft: 12,
         paddingRight: 12,
         flexDirection: 'row',

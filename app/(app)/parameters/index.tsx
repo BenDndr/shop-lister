@@ -23,7 +23,7 @@ export default function ParametersIndex() {
                     setModalVisible(!modalVisible);
                 }}
             >
-                <ModalLayout closeModal={() => setModalVisible(false)}>
+                <ModalLayout closeModal={() => setModalVisible(false)} heightProps={200}>
                     <View>
                         <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Are you sure you want to clear the list ?</ThemedText>
                         <CustomButton style={{width: 300, marginBottom: 10}} lightText hapticFeel color={{color1: Colors.pink300, color2: Colors.pink100}} text={"Yes"} onPress={() => console.log("Billy")}/>

@@ -28,7 +28,6 @@ export function CustomInput({
 const styles = StyleSheet.create({
     input: {
         backgroundColor: "white",
-        // width: 300,
         padding: 10,
         borderRadius: 16,
         borderWidth: 1,
