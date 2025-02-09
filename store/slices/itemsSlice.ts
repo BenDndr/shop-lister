@@ -30,7 +30,7 @@ export const itemsSlice = createSlice({
     editItem: (state, action: PayloadAction<{ itemToEdit: string; editedItem: string }>) => {
       state.items = state.items.map((item: ItemsState) => {
         return (
-          item.name == action.payload.itemToEdit ? {name: action.payload.editedItem} : item
+          item.name == action.payload.itemToEdit ? {...item, name: action.payload.editedItem} : item
         )
       })
     },

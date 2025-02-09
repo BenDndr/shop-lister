@@ -28,10 +28,9 @@ export default function ListIndex() {
     const [errorMessageVisible, setErrorMessageVisible] = useState(false);
     const [addListModal, setAddListModal] = useState(false);
     const [newList, setNewList] = useState("")
-    const width = Dimensions.get("window").width
 
     const store = useAppSelector((state) => state)
-    console.log("STORE", store)
+    console.log("Items", store.items)
     console.log("Lists", lists)
 
     const incrementItems = (listName: string) => {
@@ -152,7 +151,7 @@ export default function ListIndex() {
                 index={index}
                 remove={() => removeItem(item.name)}
                 value= {item.name}
-                onChangeText={(e) => editItemName(item.name, e)}
+                validate={(e) => editItemName(item.name, e)}
                 activateEditMode={() => setEditMode(index)}
                 editMode={index == editIndex}
                 blurAction={blurAction}

@@ -4,7 +4,7 @@ import {Colors} from '@/constants/Colors'
 import { ThemedText } from './ThemedText'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCheck, faPen } from '@fortawesome/free-solid-svg-icons'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export function Item({
     name, 
@@ -15,7 +15,6 @@ export function Item({
     remove,
     validate,
     activateEditMode,
-    onChangeText,
     blurAction
 } : {
     name: string
@@ -24,11 +23,13 @@ export function Item({
     value: string
     editMode: boolean
     remove: () => void
-    validate?: () => void
+    validate: (e: string) => void
     activateEditMode: (i: number) => void
-    onChangeText?: (e: string) => void
     blurAction?: () => void
 }) {
+
+    const [editedName, setEditedName] = useState(name)
+    console.log("edit name", editedName)
 
     const width = useSharedValue(200)
     const translateX = useSharedValue<number>(40);
@@ -45,9 +46,9 @@ export function Item({
                     <TextInput
                         style={styles.editInput} 
                         placeholder={name}
-                        value={value} 
-                        onSubmitEditing={validate ? validate : undefined}
-                        onChangeText={onChangeText}
+                        value={editedName} 
+                        onSubmitEditing={() => validate(editedName)}
+                        onChangeText={(e) => setEditedName(e)}
                         autoFocus={true}
                         onBlur={blurAction}
                     />
