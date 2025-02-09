@@ -17,7 +17,7 @@ export function CustomInput({
     return (
         <TextInput 
             style={[styles.input, style]} 
-            placeholder={placeholder} 
+            placeholder={placeholder}
             value={value} 
             onSubmitEditing={validate ? validate : undefined}
             onChangeText={onChangeText}

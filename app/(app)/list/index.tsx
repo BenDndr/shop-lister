@@ -33,7 +33,7 @@ export default function ListIndex() {
     console.log("Items", store.items)
     console.log("Lists", lists)
 
-    const incrementItems = (listName: string) => {
+    const createItem = (listName: string) => {
         const itemsInList = items.items.map((item) => item.name)
         if (itemsInList.includes(itemToAdd)) {
             setErrorMessageVisible(true)
@@ -103,22 +103,7 @@ export default function ListIndex() {
                     </Pressable> */}
                 </View>
                 <View style={[styles.content, {width: containerWidth}]}>
-                    {/* <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={incrementItems(item.name)}/> */}
-                    <TextInput 
-                        style={{
-                            backgroundColor: "white",
-                            padding: 10,
-                            borderRadius: 16,
-                            borderWidth: 1,
-                            borderColor: Colors.grey100,
-                            marginBottom: 8,
-                            marginTop: 8,
-                        }} 
-                        placeholder={'Item to add'} 
-                        value={itemToAdd}
-                        onSubmitEditing={() => incrementItems(list.name)}
-                        onChangeText={(e: string) => setItemToAdd(e)}
-                    />
+                    <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={() => createItem(list.name)}/>
                     <Animated.View style={[styles.errorMessage, animatedStyle]}>
                         <ThemedText>This item is already in the list.</ThemedText>
                         <TouchableOpacity style={{padding: 10}} onPress={() => setErrorMessageVisible(false)}>
