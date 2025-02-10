@@ -29,7 +29,7 @@ export const itemsSlice = createSlice({
     },
     removeByList: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item: ItemsState) => {
-        item.list == action.payload
+        return item.list != action.payload
       })
     },
     editItem: (state, action: PayloadAction<{ itemToEdit: string; editedItem: string }>) => {
@@ -45,5 +45,5 @@ export const itemsSlice = createSlice({
   },
 })
 
-export const { addItem, resetItems, removeSpecificItem, editItem } = itemsSlice.actions
+export const { addItem, resetItems, removeSpecificItem, removeByList, editItem } = itemsSlice.actions
 export default itemsSlice.reducer

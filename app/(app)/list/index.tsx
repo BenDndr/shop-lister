@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faList, faXmark, faPen, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import { PageContainer } from '@/components/PageContainer';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
-import { addItem, resetItems, removeSpecificItem, editItem } from '@/store/slices/itemsSlice'
+import { addItem, resetItems, removeSpecificItem, removeByList, editItem } from '@/store/slices/itemsSlice'
 import { addList, editList, removeList, resetList } from '@/store/slices/listsSlice'
 import { CustomButton } from '@/components/CustomButton';
 import { CustomInput } from '@/components/CustomInput';
@@ -29,8 +29,8 @@ export default function ListIndex() {
     const [addListModal, setAddListModal] = useState(false);
     const [newList, setNewList] = useState("")
 
-    const store = useAppSelector((state) => state)
-    console.log("Items", store.items)
+
+    console.log("Items", items)
     console.log("Lists", lists)
 
     const createItem = (listName: string) => {
@@ -48,8 +48,8 @@ export default function ListIndex() {
         setItemToAdd("")
     }
     
-    const clearList = () => {
-        dispatch(resetItems())
+    const clearList = (listName: string) => {
+        dispatch(removeByList(listName))
         setModalVisible(false)
     }
 
@@ -100,6 +100,13 @@ export default function ListIndex() {
     const renderCarouselView = (list: { name: string }, index: number) => {
         return (
             <View key={index} style={{flex: 1}}>
+                {modalVisible && <ModalLayout heightProps={200} closeModal={() => setModalVisible(false)}>
+                    <View>
+                        <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Are you sure you want to clear the list ?</ThemedText>
+                        <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Yes"} onPress={() => clearList(list.name)}/>
+                        <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue300, color2: Colors.blue100}} text={"No"} onPress={() => setModalVisible(false)}/>
+                    </View>
+                </ModalLayout>}
                 <View
                     style={styles.header}
                 >
@@ -161,13 +168,7 @@ export default function ListIndex() {
                     setModalVisible(!modalVisible);
                 }}
             > */}
-                {modalVisible && <ModalLayout heightProps={200} closeModal={() => setModalVisible(false)}>
-                    <View>
-                        <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Are you sure you want to clear the list ?</ThemedText>
-                        <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Yes"} onPress={() => clearList()}/>
-                        <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue300, color2: Colors.blue100}} text={"No"} onPress={() => setModalVisible(false)}/>
-                    </View>
-                </ModalLayout>}
+                
             {/* </Modal> */}
             {addListModal && <ModalLayout heightProps={300} closeModal={() => setAddListModal(false)}>
                 <View>
