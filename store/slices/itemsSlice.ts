@@ -23,12 +23,26 @@ export const itemsSlice = createSlice({
       state.items.push({ name: action.payload.name, list: action.payload.list });
     },
     removeSpecificItem: (state, action: PayloadAction<string>) => {
+      let item = state.items.find((item: ItemsState) => {
+        return item.name == action.payload;
+      })
       state.items = state.items.filter((item: ItemsState) => {
         return item.name !== action.payload;
       });
+      state.discardedItems.push(item!)
+    },
+    restoreLastDiscardedItem: (state) => {
+      if (state.discardedItems.length == 0) {
+        console.log("No items to restore")
+      } else {
+        state.items.push(state.discardedItems.pop()!);
+      }
     },
     removeByList: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item: ItemsState) => {
+        return item.list != action.payload
+      })
+      state.discardedItems = state.discardedItems.filter((item: ItemsState) => {
         return item.list != action.payload
       })
     },
@@ -45,5 +59,5 @@ export const itemsSlice = createSlice({
   },
 })
 
-export const { addItem, resetItems, removeSpecificItem, removeByList, editItem } = itemsSlice.actions
+export const { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem } = itemsSlice.actions
 export default itemsSlice.reducer

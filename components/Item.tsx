@@ -29,7 +29,6 @@ export function Item({
 }) {
 
     const [editedName, setEditedName] = useState(name)
-    console.log("edit name", editedName)
 
     const width = useSharedValue(200)
     const translateX = useSharedValue<number>(40);
