@@ -6,7 +6,7 @@ import { faList, faXmark, faPen, faCirclePlus } from '@fortawesome/free-solid-sv
 import { PageContainer } from '@/components/PageContainer';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addItem, resetItems, removeSpecificItem, editItem } from '@/store/slices/itemsSlice'
-import { addList, editList, removeList, reset } from '@/store/slices/listsSlice'
+import { addList, editList, removeList, resetList } from '@/store/slices/listsSlice'
 import { CustomButton } from '@/components/CustomButton';
 import { CustomInput } from '@/components/CustomInput';
 import { Item } from '@/components/Item';
@@ -65,6 +65,11 @@ export default function ListIndex() {
         setEditIndex(-1)
     }
 
+    const cleanListsAndItems = () => {
+        dispatch(resetList())
+        dispatch(resetItems())
+    }
+
     const opacity = useSharedValue<number>(0);
 
     const animatedStyle = useAnimatedStyle(() => ({
@@ -77,6 +82,7 @@ export default function ListIndex() {
         } else {
             dispatch(addList(newList))
             setAddListModal(false)
+            setNewList("")
         }
     }
 
@@ -118,8 +124,8 @@ export default function ListIndex() {
                     />
                     <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10}} lightText hapticFeel/>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <CustomButton color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Add sample"} onPress={() => setAddListModal(true)} style={{marginTop: 10, width: '48%', marginBottom: 70}}  hapticFeel/>
-                        <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"reset list"} onPress={() => dispatch(reset())} style={{marginTop: 10, marginBottom: 70, width: '48%'}} lightText hapticFeel/>
+                        <CustomButton color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Create List"} onPress={() => setAddListModal(true)} style={{marginTop: 10, width: '48%', marginBottom: 70}}  hapticFeel/>
+                        <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"reset all"} onPress={cleanListsAndItems} style={{marginTop: 10, marginBottom: 70, width: '48%'}} lightText hapticFeel/>
 
                     </View>
                 </View>

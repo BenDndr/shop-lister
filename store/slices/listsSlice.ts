@@ -16,7 +16,7 @@ const ListsSlice = createSlice({
     name: 'list',
     initialState,
     reducers: {
-        reset: (state) => {
+        resetList: (state) => {
             state.lists = []
         },
         addList: (state, action: PayloadAction<string>) => {
@@ -37,5 +37,5 @@ const ListsSlice = createSlice({
     }
 })
 
-export const { addList, editList, removeList, reset } = ListsSlice.actions
+export const { addList, editList, removeList, resetList } = ListsSlice.actions
 export default ListsSlice.reducer

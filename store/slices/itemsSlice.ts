@@ -27,6 +27,11 @@ export const itemsSlice = createSlice({
         return item.name !== action.payload;
       });
     },
+    removeByList: (state, action: PayloadAction<string>) => {
+      state.items = state.items.filter((item: ItemsState) => {
+        item.list == action.payload
+      })
+    },
     editItem: (state, action: PayloadAction<{ itemToEdit: string; editedItem: string }>) => {
       state.items = state.items.map((item: ItemsState) => {
         return (
