@@ -110,9 +110,9 @@ export default function ListIndex() {
                     style={styles.header}
                 >
                     <ThemedText style={{alignItems: 'center'}} type={"title"} light>{list.name || "MY LIST"}</ThemedText>
-                    {/* <Pressable style={styles.addListButton} onPress={() => setAddListModal(true)}>
-                        <FontAwesomeIcon icon={faCirclePlus} color={"white"} size={32}/>
-                    </Pressable> */}
+                    <TouchableOpacity style={styles.addListButton} onPress={() => setAddListModal(true)}>
+                        <FontAwesomeIcon icon={faPen} color={Colors.blue300} size={32}/>
+                    </TouchableOpacity>
                 </View>
                 <View style={[styles.content, {width: containerWidth}]}>
                     <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={() => createItem(list.name)}/>
@@ -238,5 +238,9 @@ const styles = StyleSheet.create({
     },
     addListButton: {
         padding: 10,
+        backgroundColor: Colors.backGround,
+        marginBottom: 10,
+        borderRadius: 16,
+        boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
     }
 })
