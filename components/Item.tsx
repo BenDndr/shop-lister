@@ -1,5 +1,5 @@
 import {View, Keyboard, StyleSheet, TouchableOpacity, StyleProp, ViewStyle, TextInput} from 'react-native'
-import Animated, { useSharedValue, withSpring } from 'react-native-reanimated'
+import Animated, { useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 import {Colors} from '@/constants/Colors'
 import { ThemedText } from './ThemedText'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -31,15 +31,26 @@ export function Item({
     const [editedName, setEditedName] = useState(name)
 
     const width = useSharedValue(200)
-    const translateX = useSharedValue<number>(40);
+    const translateX = useSharedValue<number>(0);
+    const opacity = useSharedValue<number>(.2);
+    const translateY = useSharedValue<number>(10);
 
     useEffect(() => {
         // width.value = withSpring(360);
-        translateX.value = withSpring(0);
+        translateY.value = withSpring(0);
+        opacity.value = withSpring(1);
     }, [])
 
+    const discardItem = () => {
+        translateY.value = withSpring(10);
+        opacity.value = withTiming(0, {duration: 500});
+        setTimeout(() => {
+            remove()
+        }, 500)
+    }
+
     return (
-        <Animated.View style={{translateX}}>
+        <Animated.View style={{translateX, opacity, translateY}}>
             <View style={[styles.itemContainer, style]}>
                 {editMode ? 
                     <TextInput
@@ -55,10 +66,10 @@ export function Item({
                     <ThemedText>{name}</ThemedText>
                 }
                 <View style={styles.actionView}>
-                    <TouchableOpacity onPress={() => {activateEditMode(index)}} style={{...styles.actionButton, backgroundColor: Colors.blue100}}>
+                    <TouchableOpacity onPress={() => {activateEditMode(index)}} style={{...styles.actionButton, backgroundColor: Colors.orange300}}>
                         <FontAwesomeIcon icon={faPen} color={Colors.blue900}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={remove} style={{...styles.actionButton, backgroundColor: Colors.pink300}}>
+                    <TouchableOpacity onPress={discardItem} style={{...styles.actionButton, backgroundColor: Colors.pink300}}>
                         <FontAwesomeIcon icon={faCheck} color={Colors.pink900}/>
                     </TouchableOpacity>
                 </View>
@@ -69,7 +80,8 @@ export function Item({
 
 const styles = StyleSheet.create({
     itemContainer: {
-        backgroundColor: Colors.pink100,
+        backgroundColor: Colors.blue100,
+        // backgroundColor: "white",
         borderRadius: 10,
         padding: 6,
         paddingLeft: 16,
@@ -78,6 +90,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         marginBottom: 4,
+        // elevation: 2
     },
     actionView: {
         flexDirection: 'row',
