@@ -27,7 +27,7 @@ const ListsSlice = createSlice({
                 return (
                   item.name == action.payload.listToEdit ? {name: action.payload.editedList} : item
                 )
-              })
+            })
         },
         removeList: (state, action: PayloadAction<string>) => {
             state.lists = state.lists.filter((list: ListState) => {

@@ -19,8 +19,9 @@ export default function ListIndex() {
     const items = useAppSelector((state) => state.items)
     const lists = useAppSelector((state) => state.lists)
     const dispatch = useAppDispatch()
-    const [itemToAdd, setItemToAdd] = useState("");
+    const [itemToAdd, setItemToAdd] = useState("")
     const [editIndex, setEditIndex] = useState(-1)
+    const [editListName, setEditListName] = useState(false)
     const screenWidth = Dimensions.get("window").width
     const containerWidth = screenWidth - 24
     const [modalVisible, setModalVisible] = useState(false);
@@ -109,10 +110,19 @@ export default function ListIndex() {
                 <View
                     style={styles.header}
                 >
+                    {/* {editListName ? 
+                    <CustomInput 
+                        placeholder={list.name}
+                        validate={() => console.log("Validate Edit")}
+                        onChangeText={(e) => console.log(list.name, e)}
+                        value={list.name}
+                        style={{height: 52, width: '80%', fontSize: 24, }}
+                    />
+                    : */}
                     <ThemedText style={{alignItems: 'center'}} type={"title"} light>{list.name || "MY LIST"}</ThemedText>
-                    <TouchableOpacity style={styles.addListButton} onPress={() => setAddListModal(true)}>
+                    {/* <TouchableOpacity style={styles.addListButton} onPress={() => setEditListName(!editListName)}>
                         <FontAwesomeIcon icon={faPen} color={Colors.blue300} size={32}/>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
                 <View style={[styles.content, {width: containerWidth}]}>
                     <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={() => createItem(list.name)}/>
