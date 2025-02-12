@@ -43,10 +43,10 @@ export function Item({
 
     const discardItem = () => {
         translateY.value = withSpring(10);
-        opacity.value = withTiming(0, {duration: 500});
+        opacity.value = withTiming(0, {duration: 300});
         setTimeout(() => {
             remove()
-        }, 500)
+        }, 300)
     }
 
     return (
@@ -80,8 +80,8 @@ export function Item({
 
 const styles = StyleSheet.create({
     itemContainer: {
-        backgroundColor: Colors.blue100,
-        // backgroundColor: "white",
+        // backgroundColor: Colors.blue100,
+        backgroundColor: "white",
         borderRadius: 10,
         padding: 6,
         paddingLeft: 16,

@@ -1,8 +1,8 @@
-import { View, Pressable, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal, TextInput } from 'react-native';
+import { View, Pressable, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal, TextInput, Button } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faList, faXmark, faPen, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
+import { faList, faXmark, faPen, faCirclePlus, faGear } from '@fortawesome/free-solid-svg-icons'
 import { PageContainer } from '@/components/PageContainer';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem } from '@/store/slices/itemsSlice'
@@ -28,6 +28,21 @@ export default function ListIndex() {
     const [errorMessageVisible, setErrorMessageVisible] = useState(false);
     const [addListModal, setAddListModal] = useState(false);
     const [newList, setNewList] = useState("")
+    const [ShowButtonsPannel, setShowButtonsPannel] = useState(false);
+    const translateX = useSharedValue<number>(420);
+
+    const slide = () => {
+        if (ShowButtonsPannel) {
+            translateX.value = withTiming(420, {duration: 500})
+            console.log("slideOut", ShowButtonsPannel)
+            setShowButtonsPannel(false)
+        } else {
+            translateX.value = withTiming(18, {duration: 500})
+            console.log("slideIn", ShowButtonsPannel)
+            setShowButtonsPannel(true)
+        }
+        console.log("pressed")
+    }
 
 
     console.log("Items", items)
@@ -125,7 +140,12 @@ export default function ListIndex() {
                     </TouchableOpacity> */}
                 </View>
                 <View style={[styles.content, {width: containerWidth}]}>
-                    <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={() => createItem(list.name)}/>
+                    <View style={styles.contentHeader}>
+                        <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={() => createItem(list.name)} style={{height: 40, width: '79%'}}/>
+                        <TouchableOpacity style={styles.buttonPanelOpener} onPress={slide}>
+                            <FontAwesomeIcon icon={faGear} color={Colors.orange500} size={24}/>
+                        </TouchableOpacity>
+                    </View>
                     <Animated.View style={[styles.errorMessage, animatedStyle]}>
                         <ThemedText>This item is already in the list.</ThemedText>
                         <TouchableOpacity style={{padding: 10}} onPress={() => setErrorMessageVisible(false)}>
@@ -138,14 +158,6 @@ export default function ListIndex() {
                         renderItem={renderItems}
                         keyExtractor={(item, index) => index.toString()}
                     />
-                    {/* <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10}} lightText hapticFeel/> */}
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 70, flexWrap: "wrap"}}>
-                        <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10, width: '48%'}} lightText hapticFeel/>
-                        <CustomButton color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Undo"} onPress={() => dispatch(restoreLastDiscardedItem())} style={{marginTop: 10, width: '48%'}} hapticFeel/>
-                        <CustomButton color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Create List"} onPress={() => setAddListModal(true)} style={{marginTop: 10, width: '48%'}}  hapticFeel/>
-                        <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"reset all"} onPress={cleanListsAndItems} style={{marginTop: 10, width: '48%'}} lightText hapticFeel/>
-
-                    </View>
                 </View>
             </View>
         )
@@ -208,6 +220,15 @@ export default function ListIndex() {
                         )}
                         keyboardShouldPersistTaps="handled"
                     />
+                    
+                    <Animated.View style={{flexDirection: 'row', translateX}}>
+                        <View style={styles.buttonPanel}>
+                            <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10, width: '48%'}} lightText hapticFeel/>
+                            <CustomButton color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Undo"} onPress={() => dispatch(restoreLastDiscardedItem())} style={{marginTop: 10, width: '48%'}} hapticFeel/>
+                            <CustomButton color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Create List"} onPress={() => setAddListModal(true)} style={{marginTop: 10, width: '48%'}}  hapticFeel/>
+                            <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"reset all"} onPress={cleanListsAndItems} style={{marginTop: 10, width: '48%'}} lightText hapticFeel/>
+                        </View>
+                    </Animated.View>
                 </View>
             }
         </PageContainer>
@@ -225,12 +246,18 @@ const styles = StyleSheet.create({
     },
     content: {
         padding: 10,
+        paddingBottom: 75,
         flex: 1,
         backgroundColor: Colors.backGround,
         marginLeft: 12,
         marginRight: 12,
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
+    },
+    contentHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: "center"
     },
     errorMessage: {
         position: 'absolute',
@@ -252,5 +279,31 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 16,
         boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+    },
+    buttonPanel: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        marginBottom: 70, 
+        flexWrap: "wrap",
+        backgroundColor: Colors.blue100,
+        position: 'absolute',
+        bottom: 10,
+        padding: 16,
+        alignItems: 'center',
+        width: 375,
+        borderRadius: 16,
+        elevation: 2,
+        height: 150,
+    },
+    buttonPanelOpener: {
+        left: 0,
+        backgroundColor: Colors.blue500,
+        padding: 10,
+        borderRadius: 16,
+        zIndex: 2,
+        width: "19%",
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })
