@@ -142,8 +142,8 @@ export default function ListIndex() {
                 <View style={[styles.content, {width: containerWidth}]}>
                     <View style={styles.contentHeader}>
                         <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={() => createItem(list.name)} style={{height: 40, width: '79%'}}/>
-                        <TouchableOpacity style={styles.buttonPanelOpener} onPress={slide}>
-                            <FontAwesomeIcon icon={faGear} color={Colors.orange500} size={24}/>
+                        <TouchableOpacity style={[styles.buttonPanelOpener, {backgroundColor: ShowButtonsPannel ? Colors.blue100 : Colors.blue300}]} onPress={slide}>
+                            <FontAwesomeIcon icon={faGear} color={ShowButtonsPannel ? Colors.blue300 : "white"} size={24}/>
                         </TouchableOpacity>
                     </View>
                     <Animated.View style={[styles.errorMessage, animatedStyle]}>
@@ -297,7 +297,6 @@ const styles = StyleSheet.create({
     },
     buttonPanelOpener: {
         left: 0,
-        backgroundColor: Colors.blue500,
         padding: 10,
         borderRadius: 16,
         zIndex: 2,

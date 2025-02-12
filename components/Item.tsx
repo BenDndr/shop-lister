@@ -42,11 +42,11 @@ export function Item({
     }, [])
 
     const discardItem = () => {
-        translateY.value = withSpring(10);
-        opacity.value = withTiming(0, {duration: 300});
-        setTimeout(() => {
+        // translateY.value = withSpring(10);
+        // opacity.value = withTiming(0, {duration: 300});
+        // setTimeout(() => {
             remove()
-        }, 300)
+        // }, 300)
     }
 
     return (
