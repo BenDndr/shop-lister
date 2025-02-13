@@ -12,12 +12,12 @@ const TabBar: React.FC<CustomTabBarProps>  = ({ state, descriptors, navigation }
 
   const getIcon = (routeName: string) => {
     switch (routeName) {
-      case 'list':
-        return faList;
+      case 'about':
+        return faBook;
       case 'parameters':
         return faGear;
       case 'index':
-        return faBook;
+        return faList;
       case 'extra':
         return faMugSaucer;
       default:

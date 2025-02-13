@@ -7,7 +7,6 @@ export default function AppLayout() {
 
   return (
     <Tabs
-      initialRouteName="list"
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: false,
@@ -15,15 +14,15 @@ export default function AppLayout() {
       tabBar={(props) => <TabBar {...props}/>}
       >
       <Tabs.Screen
-        name="list"
+        name="index"
         options={{
-          title: 'List',
+          title: 'Index',
         }}
       />
       <Tabs.Screen
         name="extra"
         options={{
-          title: 'extra',
+          title: 'Extra',
         }}
       />
       <Tabs.Screen
@@ -33,9 +32,9 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
-        name="index"
+        name="about"
         options={{
-          title: 'Home',
+          title: 'About',
         }}
       />
     </Tabs>
