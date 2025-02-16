@@ -20,6 +20,9 @@ export const itemsSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, action: PayloadAction<{name: string, list: string}>) => {
+      if (state.discardedItems.find(item => item.name == action.payload.name)) {
+        state.discardedItems = state.discardedItems.filter(item => item.name != action.payload.name)
+      }
       state.items.push({ name: action.payload.name, list: action.payload.list });
     },
     removeSpecificItem: (state, action: PayloadAction<string>) => {

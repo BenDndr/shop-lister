@@ -47,8 +47,10 @@ export default function ListIndex() {
         setShowButtonsPannel(false)
     }
 
-    console.log("Items", items)
+    console.log("Items", items.items)
+    console.log("DiscardedItems", items.discardedItems)
     console.log("Lists", lists)
+
 
     const createItem = (listName: string) => {
         const itemsInList = items.items.map((item) => item.name)
