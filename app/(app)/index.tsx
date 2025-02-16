@@ -2,7 +2,7 @@ import { View, Pressable, StyleSheet, FlatList, TouchableOpacity, Dimensions, Mo
 import { Colors } from '@/constants/Colors';
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faList, faXmark, faPen, faCirclePlus, faGear, faCaretRight } from '@fortawesome/free-solid-svg-icons'
+import { faList, faXmark, faPen, faCirclePlus, faGear, faCaretRight, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { PageContainer } from '@/components/PageContainer';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem } from '@/store/slices/itemsSlice'
@@ -232,10 +232,16 @@ export default function ListIndex() {
                                 <FontAwesomeIcon icon={faCaretRight} color="white"/>
                             </TouchableOpacity>
                             <View style={styles.buttonPanelRight}>
-                                <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{marginTop: 10, width: '40%'}} lightText hapticFeel/>
-                                <CustomButton color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Undo"} onPress={() => dispatch(restoreLastDiscardedItem())} style={{marginTop: 10, width: '40%'}} hapticFeel/>
-                                <CustomButton color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Create List"} onPress={() => setAddListModal(true)} style={{marginTop: 10, width: '40%'}}  hapticFeel/>
-                                <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"reset all"} onPress={cleanListsAndItems} style={{marginTop: 10, width: '40%'}} lightText hapticFeel/>
+                                <View style={styles.buttonPanelRow}>
+                                    <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => setModalVisible(true)} style={{width: '40%'}} lightText hapticFeel/>
+                                    <CustomButton color={{color1: Colors.orange300, color2: Colors.orange100}} onPress={() => dispatch(restoreLastDiscardedItem())} style={{width: '40%'}} hapticFeel>
+                                        <FontAwesomeIcon icon={faRotateLeft} color="white"/>
+                                    </ CustomButton>
+                                </View>
+                                <View style={styles.buttonPanelRow}>
+                                    <CustomButton color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Create List"} onPress={() => setAddListModal(true)} style={{width: '40%'}}  hapticFeel/>
+                                    <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"reset all"} onPress={cleanListsAndItems} style={{width: '40%'}} lightText hapticFeel/>
+                                </View>
                             </View>
                         </View>
                     </Animated.View>
@@ -312,11 +318,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonPanelRight: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        flexWrap: "wrap",
         backgroundColor: Colors.blue100,
         width: "90%",
+        gap: 16,
+    },
+    buttonPanelRow: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: 16,
+        width: "100%"
     },
     buttonPanelOpener: {
         left: 0,

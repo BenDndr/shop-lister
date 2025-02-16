@@ -8,14 +8,16 @@ export function CustomButton({
     onPress, 
     lightText, 
     hapticFeel, 
-    style
+    style,
+    children
 } : {
-    text: string
+    text?: string
     color: {color1: string, color2: string}
     onPress: () => void
     lightText?: boolean
     hapticFeel?: boolean
     style?: StyleProp<ViewStyle>
+    children?: React.ReactNode
 }) {
 
     const onPressIn = () => {
@@ -35,7 +37,7 @@ export function CustomButton({
                 start={{x: 0.5, y: 0.5}}
                 end={{x: -0.5, y: 1}}
             >
-                <ThemedText light={lightText}>{text}</ThemedText>
+                <ThemedText light={lightText}>{children}{text}</ThemedText>
             </LinearGradient>
         </TouchableOpacity>
     );
