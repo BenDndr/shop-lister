@@ -5,12 +5,16 @@ import { ThemedText } from "@/components/ThemedText"
 import { CustomButton } from "@/components/CustomButton"
 import { Link, useRouter } from "expo-router"
 import { useRoute } from '@react-navigation/native';
+import { useAppSelector, useAppDispatch } from '@/store/hooks'
 
 export default function FiveThousand() {
 
     const route = useRoute();
     console.log("5KRoute", route)
     const router = useRouter()
+    const fivek = useAppSelector(state => state.fivek)
+
+    console.log("fivek", fivek)
 
     return (
         <PageContainer color1={Colors.orange300} color2={Colors.orange100} gradient>
