@@ -13,9 +13,9 @@ export default function FiveThousand() {
     const router = useRouter()
 
     return (
-        <PageContainer color1={Colors.teal300} color2={Colors.teal100} gradient>
+        <PageContainer color1={Colors.orange300} color2={Colors.orange100} gradient>
             <ThemedText>5K</ThemedText>
-            <CustomButton lightText hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Go to 5000 counter"} onPress={() => router.push("/extra")}/>
+            <CustomButton hapticFeel color={{color1: Colors.teal300, color2: Colors.teal100}} text={"Go back"} onPress={() => router.push("/extra")}/>
         </PageContainer>
     )
 }
