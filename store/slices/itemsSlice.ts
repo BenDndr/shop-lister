@@ -32,6 +32,9 @@ export const itemsSlice = createSlice({
       state.items = state.items.filter((item: ItemsState) => {
         return item.name !== action.payload;
       });
+      if (state.discardedItems.length > 9) {
+        state.discardedItems.shift()!
+      }
       state.discardedItems.push(item!)
     },
     restoreLastDiscardedItem: (state) => {
