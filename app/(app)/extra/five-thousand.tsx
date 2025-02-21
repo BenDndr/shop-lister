@@ -7,7 +7,7 @@ import { CustomInput } from "@/components/CustomInput"
 import { CustomButton } from "@/components/CustomButton"
 import { useRouter } from "expo-router"
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
-import { addPlayer } from '@/store/slices/fivekSlice'
+import { addPlayer, resetGame } from '@/store/slices/fivekSlice'
 
 export default function FiveThousand() {
 
@@ -34,7 +34,10 @@ export default function FiveThousand() {
                     {fivek.players.map((player, index) => (
                         <ThemedText key={index}>{player.name}</ThemedText>
                     ))}
-                    <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} style={{marginTop: "auto"}}/>
+                    <View style={{marginTop: "auto", gap: 16}}>
+                        <CustomButton hapticFeel lightText color={{color1: Colors.pink500, color2: Colors.pink700}} text={"New Game"} onPress={() => dispatch(resetGame())}/>
+                        <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} />
+                    </View>
 
                 </View>
             </View>
