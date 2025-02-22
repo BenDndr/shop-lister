@@ -7,7 +7,7 @@ import { CustomInput } from "@/components/CustomInput"
 import { CustomButton } from "@/components/CustomButton"
 import { useRouter } from "expo-router"
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
-import { addPlayer, resetGame } from '@/store/slices/fivekSlice'
+import { addPlayer, resetGame, addTurn } from '@/store/slices/fivekSlice'
 
 export default function FiveThousand() {
 
@@ -18,6 +18,7 @@ export default function FiveThousand() {
 
     console.log("fivek", fivek)
     console.log("players", fivek.players)
+    console.log("turns", fivek.turns)
 
     const createPlayer = () => {
         dispatch(addPlayer(newPlayer))
@@ -26,8 +27,17 @@ export default function FiveThousand() {
 
     const playerView = ({ item } : {item: { name: string }}) => {
         return (
-            <View>
+            <View style={styles.playerCard}>
                 <ThemedText>{item.name}</ThemedText>
+                {/* <CustomInput /> */}
+                <View style={styles.scoresView}>
+                    {fivek.turns.filter(turn => turn.player == item.name).map((turn, index) => {
+                        return (
+                            <ThemedText key={index}>{turn.score}</ThemedText>
+                        )
+                    })}
+                </View>
+                <CustomButton hapticFeel lightText color={{color1: Colors.orange500, color2: Colors.orange700}} text={"Tose"} onPress={() => dispatch(addTurn({player: item.name, score: 0, tose: true, toseStreak: 0}))}/>
             </View>
         )
     }
@@ -46,7 +56,6 @@ export default function FiveThousand() {
                         keyExtractor={(item) => item.name}
                     />
                     <View style={{marginTop: "auto", gap: 16}}>
-                        <CustomButton hapticFeel lightText color={{color1: Colors.orange500, color2: Colors.orange700}} text={"Tose"} onPress={() => console.log("Test")}/>
                         <CustomButton hapticFeel lightText color={{color1: Colors.pink500, color2: Colors.pink700}} text={"New Game"} onPress={() => dispatch(resetGame())}/>
                         <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} />
                     </View>
@@ -68,5 +77,13 @@ const styles = StyleSheet.create({
     },
     body: {
         height: "70%",
+    },
+    playerCard: {
+        width: "100%",
+    },
+    scoresView: {
+        width: "100%",
+        flexDirection: "row",
+        gap: 8
     }
 })
