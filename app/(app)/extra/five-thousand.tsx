@@ -1,5 +1,5 @@
 import { useState } from "react"
-import {View, StyleSheet} from "react-native"
+import {View, StyleSheet, FlatList} from "react-native"
 import { Colors } from "@/constants/Colors"
 import { PageContainer } from "@/components/PageContainer"
 import { ThemedText } from "@/components/ThemedText"
@@ -17,10 +17,19 @@ export default function FiveThousand() {
     const dispatch = useAppDispatch()
 
     console.log("fivek", fivek)
+    console.log("players", fivek.players)
 
     const createPlayer = () => {
         dispatch(addPlayer(newPlayer))
         setNewPlayer("")
+    }
+
+    const playerView = ({ item } : {item: { name: string }}) => {
+        return (
+            <View>
+                <ThemedText>{item.name}</ThemedText>
+            </View>
+        )
     }
 
     return (
@@ -31,10 +40,13 @@ export default function FiveThousand() {
                 </View>
                 <View style={styles.body}>
                     <CustomInput placeholder="Enter your name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer}/>
-                    {fivek.players.map((player, index) => (
-                        <ThemedText key={index}>{player.name}</ThemedText>
-                    ))}
+                    <FlatList 
+                        data={fivek.players}
+                        renderItem={playerView}
+                        keyExtractor={(item) => item.name}
+                    />
                     <View style={{marginTop: "auto", gap: 16}}>
+                        <CustomButton hapticFeel lightText color={{color1: Colors.orange500, color2: Colors.orange700}} text={"Tose"} onPress={() => console.log("Test")}/>
                         <CustomButton hapticFeel lightText color={{color1: Colors.pink500, color2: Colors.pink700}} text={"New Game"} onPress={() => dispatch(resetGame())}/>
                         <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} />
                     </View>

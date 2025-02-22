@@ -166,7 +166,7 @@ export default function ListIndex() {
                         showsVerticalScrollIndicator={false}
                         data={items.items.filter((item) => item.list == list.name)} 
                         renderItem={renderItems}
-                        keyExtractor={(item, index) => index.toString()}
+                        keyExtractor={(item) => item.name}
                     />
                 </View>
             </View>

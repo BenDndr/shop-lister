@@ -25,7 +25,7 @@ export const fivekSlice = createSlice({
     name: 'fivek',
     initialState,
     reducers: {
-        resetGame: (state) => {
+        resetGame: () => {
             return initialState
         },
         addPlayer: (state, action: PayloadAction<string>) => {
