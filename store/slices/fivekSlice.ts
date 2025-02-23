@@ -2,13 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface playerState {
     name: string,
+    toseStreak: number
 }
 
 interface turn {
     player: string,
     score: number,
-    tose: boolean,
-    toseStreak: number,
 }
 
 interface State {
@@ -29,7 +28,7 @@ export const fivekSlice = createSlice({
             return initialState
         },
         addPlayer: (state, action: PayloadAction<string>) => {
-            state.players.push({name: action.payload})
+            state.players.push({name: action.payload, toseStreak: 0})
         },
         addTurn: (state, action: PayloadAction<turn>) => {
             state.turns.push(action.payload)

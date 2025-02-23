@@ -6,13 +6,15 @@ export function CustomInput({
     validate, 
     value, 
     onChangeText,
-    style
+    style,
+    keyboardType
 }: {
     placeholder: string
     onChangeText?: (e: string) => void
     validate?: () => void
     value: string
     style?: StyleProp<TextStyle>
+    keyboardType?: "default" | "numeric"
 }) {
     return (
         <TextInput 

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import {View, StyleSheet, FlatList} from "react-native"
+import {View, StyleSheet, FlatList, TouchableOpacity} from "react-native"
 import { Colors } from "@/constants/Colors"
 import { PageContainer } from "@/components/PageContainer"
 import { ThemedText } from "@/components/ThemedText"
@@ -15,6 +15,7 @@ export default function FiveThousand() {
     const fivek = useAppSelector(state => state.fivek)
     const [newPlayer, setNewPlayer] = useState("")
     const dispatch = useAppDispatch()
+    const [newScore, setNewScore] = useState("")
 
     console.log("fivek", fivek)
     console.log("players", fivek.players)
@@ -25,11 +26,15 @@ export default function FiveThousand() {
         setNewPlayer("")
     }
 
+    const addTose = (playerName: string) => {
+        dispatch(addTurn({player: playerName, score: 0}))
+    }
+
     const playerView = ({ item } : {item: { name: string }}) => {
+
         return (
             <View style={styles.playerCard}>
                 <ThemedText>{item.name}</ThemedText>
-                {/* <CustomInput /> */}
                 <View style={styles.scoresView}>
                     {fivek.turns.filter(turn => turn.player == item.name).map((turn, index) => {
                         return (
@@ -37,7 +42,22 @@ export default function FiveThousand() {
                         )
                     })}
                 </View>
-                <CustomButton hapticFeel lightText color={{color1: Colors.orange500, color2: Colors.orange700}} text={"Tose"} onPress={() => dispatch(addTurn({player: item.name, score: 0, tose: true, toseStreak: 0}))}/>
+                <View style={styles.playerAction}>
+                    <CustomInput 
+                        placeholder={`Add score to ${item.name}`} 
+                        value={newScore} 
+                        onChangeText={(e) => setNewScore(e)} 
+                        keyboardType='numeric'
+                        style={{width: "80%", height: 50, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
+                        validate={() => {
+                            dispatch(addTurn({player: item.name, score: parseInt(newScore)}))
+                            setNewScore("")
+                        }}
+                    />
+                    <TouchableOpacity onPress={() => addTose(item.name)} style={styles.toseButton}>
+                        <ThemedText>Tose</ThemedText>
+                    </TouchableOpacity>    
+                </View>
             </View>
         )
     }
@@ -84,6 +104,20 @@ const styles = StyleSheet.create({
     scoresView: {
         width: "100%",
         flexDirection: "row",
-        gap: 8
+        gap: 8,
+        height: 20
+    },
+    playerAction: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    toseButton: {
+        backgroundColor: Colors.orange500,
+        width: "20%",
+        borderTopRightRadius: 16,
+        borderBottomRightRadius: 16,
+        height: 50,
+        justifyContent: "center",
+        alignItems: "center",
     }
 })
