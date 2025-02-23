@@ -8,6 +8,7 @@ import { CustomButton } from "@/components/CustomButton"
 import { useRouter } from "expo-router"
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addPlayer, resetGame, addTurn } from '@/store/slices/fivekSlice'
+import { Audio } from "expo-av";
 
 export default function FiveThousand() {
 
@@ -21,6 +22,25 @@ export default function FiveThousand() {
     console.log("fivek", fivek)
     console.log("players", fivek.players)
     console.log("turns", fivek.turns)
+
+    // Sound Test
+
+    const [sound, setSound] = useState<Audio.Sound | null>(null);
+
+    const playSound = async () => {
+        console.log("Play sound")
+        try {
+        const { sound } = await Audio.Sound.createAsync(
+            require("@/assets/sounds/fart.wav") // Make sure the file exists in the assets folder
+        );
+        setSound(sound);
+        await sound.playAsync();
+        } catch (error) {
+            console.error("Error playing sound:", error);
+        }
+    };
+
+    // Sound Test
 
     useEffect(() => {
         if (fivek.players.length > 0) {
@@ -36,6 +56,7 @@ export default function FiveThousand() {
 
     const addTose = (playerName: string) => {
         dispatch(addTurn({player: playerName, score: 0}))
+        playSound()
     }
 
     const playerView = ({ item } : {item: { name: string }}) => {
@@ -69,7 +90,22 @@ export default function FiveThousand() {
                     <ThemedText type="title">5K</ThemedText>
                 </View>
                 <View style={styles.body}>
-                    <CustomInput placeholder="Enter player's name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer}/>
+                    <View style={styles.addScoreView}>
+                        <CustomInput 
+                            placeholder={`Add score to ${activePlayer}`} 
+                            value={newScore} 
+                            onChangeText={(e) => setNewScore(e)} 
+                            keyboardType='numeric'
+                            style={{width: "80%", height: 50, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
+                            validate={() => {
+                                dispatch(addTurn({player: activePlayer, score: parseInt(newScore)}))
+                                setNewScore("")
+                            }}
+                        />
+                        <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
+                            <ThemedText>Tose</ThemedText>
+                        </TouchableOpacity>    
+                    </View>
                     <FlatList 
                         data={fivek.players}
                         renderItem={playerView}
@@ -77,22 +113,7 @@ export default function FiveThousand() {
                         style={{paddingBottom: 16}}
                     />
                     <View style={{marginTop: "auto", gap: 16, paddingTop: 16}}>
-                        <View style={styles.addScoreView}>
-                            <CustomInput 
-                                placeholder={`Add score to ${activePlayer}`} 
-                                value={newScore} 
-                                onChangeText={(e) => setNewScore(e)} 
-                                keyboardType='numeric'
-                                style={{width: "80%", height: 50, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
-                                validate={() => {
-                                    dispatch(addTurn({player: activePlayer, score: parseInt(newScore)}))
-                                    setNewScore("")
-                                }}
-                            />
-                            <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
-                                <ThemedText>Tose</ThemedText>
-                            </TouchableOpacity>    
-                        </View>
+                        <CustomInput placeholder="Enter new player's name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer}/>
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                             <CustomButton hapticFeel lightText color={{color1: Colors.pink500, color2: Colors.pink700}} text={"New Game"} onPress={() => dispatch(resetGame())} style={{width: "48%"}}/>
                             <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} style={{width: "48%"}}/>
