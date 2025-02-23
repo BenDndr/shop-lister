@@ -23,6 +23,7 @@ export function CustomInput({
             value={value} 
             onSubmitEditing={validate ? validate : undefined}
             onChangeText={onChangeText}
+            keyboardType={keyboardType}
         />
     )
 }

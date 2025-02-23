@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {View, StyleSheet, FlatList, TouchableOpacity} from "react-native"
 import { Colors } from "@/constants/Colors"
 import { PageContainer } from "@/components/PageContainer"
@@ -13,6 +13,7 @@ export default function FiveThousand() {
 
     const router = useRouter()
     const fivek = useAppSelector(state => state.fivek)
+    const [activePlayer, setActivePlayer] = useState("")
     const [newPlayer, setNewPlayer] = useState("")
     const dispatch = useAppDispatch()
     const [newScore, setNewScore] = useState("")
@@ -21,8 +22,15 @@ export default function FiveThousand() {
     console.log("players", fivek.players)
     console.log("turns", fivek.turns)
 
+    useEffect(() => {
+        if (fivek.players.length > 0) {
+            setActivePlayer(fivek.players[0].name)
+        }
+    }, [fivek.players])
+
     const createPlayer = () => {
         dispatch(addPlayer(newPlayer))
+        setActivePlayer(newPlayer)
         setNewPlayer("")
     }
 
@@ -32,33 +40,25 @@ export default function FiveThousand() {
 
     const playerView = ({ item } : {item: { name: string }}) => {
 
+        const Score = fivek.turns.filter(turn => turn.player == item.name).reduce((acc, turn) => acc + turn.score, 0)
+
         return (
-            <View style={styles.playerCard}>
-                <ThemedText>{item.name}</ThemedText>
-                <View style={styles.scoresView}>
-                    {fivek.turns.filter(turn => turn.player == item.name).map((turn, index) => {
-                        return (
-                            <ThemedText key={index}>{turn.score}</ThemedText>
-                        )
-                    })}
+            <TouchableOpacity style={[styles.playerCard, {backgroundColor: item.name == activePlayer ? Colors.orange300 : Colors.backGround}]} onPress={() => setActivePlayer(item.name)}>
+                <View style={styles.leftPlayerCardContent}>
+                    <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
+                    <View style={styles.scoresView}>
+                        {fivek.turns.filter(turn => turn.player == item.name).map((turn, index) => {
+                            return (
+                                <ThemedText key={index}>{turn.score}</ThemedText>
+                            )
+                        })}
+                    </View>
                 </View>
-                <View style={styles.playerAction}>
-                    <CustomInput 
-                        placeholder={`Add score to ${item.name}`} 
-                        value={newScore} 
-                        onChangeText={(e) => setNewScore(e)} 
-                        keyboardType='numeric'
-                        style={{width: "80%", height: 50, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
-                        validate={() => {
-                            dispatch(addTurn({player: item.name, score: parseInt(newScore)}))
-                            setNewScore("")
-                        }}
-                    />
-                    <TouchableOpacity onPress={() => addTose(item.name)} style={styles.toseButton}>
-                        <ThemedText>Tose</ThemedText>
-                    </TouchableOpacity>    
+                <View style={styles.rightPlayerCardContent}>
+                    <ThemedText type="defaultSemiBold">Total</ThemedText>
+                    <ThemedText type="subtitle">{Score}</ThemedText>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 
@@ -69,17 +69,35 @@ export default function FiveThousand() {
                     <ThemedText type="title">5K</ThemedText>
                 </View>
                 <View style={styles.body}>
-                    <CustomInput placeholder="Enter your name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer}/>
+                    <CustomInput placeholder="Enter player's name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer}/>
                     <FlatList 
                         data={fivek.players}
                         renderItem={playerView}
                         keyExtractor={(item) => item.name}
+                        style={{paddingBottom: 16}}
                     />
-                    <View style={{marginTop: "auto", gap: 16}}>
-                        <CustomButton hapticFeel lightText color={{color1: Colors.pink500, color2: Colors.pink700}} text={"New Game"} onPress={() => dispatch(resetGame())}/>
-                        <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} />
+                    <View style={{marginTop: "auto", gap: 16, paddingTop: 16}}>
+                        <View style={styles.addScoreView}>
+                            <CustomInput 
+                                placeholder={`Add score to ${activePlayer}`} 
+                                value={newScore} 
+                                onChangeText={(e) => setNewScore(e)} 
+                                keyboardType='numeric'
+                                style={{width: "80%", height: 50, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
+                                validate={() => {
+                                    dispatch(addTurn({player: activePlayer, score: parseInt(newScore)}))
+                                    setNewScore("")
+                                }}
+                            />
+                            <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
+                                <ThemedText>Tose</ThemedText>
+                            </TouchableOpacity>    
+                        </View>
+                        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                            <CustomButton hapticFeel lightText color={{color1: Colors.pink500, color2: Colors.pink700}} text={"New Game"} onPress={() => dispatch(resetGame())} style={{width: "48%"}}/>
+                            <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} style={{width: "48%"}}/>
+                        </View>
                     </View>
-
                 </View>
             </View>
         </PageContainer>
@@ -100,14 +118,27 @@ const styles = StyleSheet.create({
     },
     playerCard: {
         width: "100%",
+        borderRadius: 16,
+        padding: 12,
+        marginBottom: 8,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+    leftPlayerCardContent: {
+        width: "70%",
     },
     scoresView: {
-        width: "100%",
         flexDirection: "row",
         gap: 8,
-        height: 20
+        minHeight: 20, 
+        flexWrap: 'wrap',
     },
-    playerAction: {
+    rightPlayerCardContent: {
+        width: "30%",
+        paddingLeft: 12
+    },
+    addScoreView: {
         flexDirection: "row",
         alignItems: "center",
     },
