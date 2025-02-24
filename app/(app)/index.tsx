@@ -1,18 +1,19 @@
-import { View, Pressable, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal, TextInput, Button } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal } from 'react-native';
 import { Colors } from '@/constants/Colors';
-import { useState, useEffect, useRef } from 'react';
+import { useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faList, faXmark, faPen, faCirclePlus, faGear, faCaretRight, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faCaretRight, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { PageContainer } from '@/components/PageContainer';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem } from '@/store/slices/itemsSlice'
 import { addList, editList, removeList, resetList } from '@/store/slices/listsSlice'
-import { CustomButton } from '@/components/CustomButton';
-import { CustomInput } from '@/components/CustomInput';
-import { Item } from '@/components/Item';
-import { ThemedText } from '@/components/ThemedText';
+import { CustomButton } from '@/components/CustomButton'
+import { CustomInput } from '@/components/CustomInput'
+import { Item } from '@/components/Item'
+import { ThemedText } from '@/components/ThemedText'
 import { ModalLayout } from '@/components/ModalLayout'
-import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated'
+import { ErrorMessage } from '@/components/ErrorMessage'
+import Animated, { useSharedValue, withTiming } from 'react-native-reanimated'
 
 export default function ListIndex() {
 
@@ -90,11 +91,7 @@ export default function ListIndex() {
         setModalVisible(false)
     }
 
-    const opacity = useSharedValue<number>(0);
-
-    const animatedStyle = useAnimatedStyle(() => ({
-        opacity: opacity.value
-    }));
+    
 
     const createNewList = () => {
         if (newList == "") {
@@ -105,17 +102,6 @@ export default function ListIndex() {
             setNewList("")
         }
     }
-
-    useEffect(() => {
-        if (errorMessageVisible) {
-            opacity.value = withTiming(1, { duration: 500 });
-            setTimeout(() => {
-                setErrorMessageVisible(false)         
-            }, 2000)
-        } else {
-            opacity.value = withTiming(0, { duration: 2000 });
-        }
-    }, [errorMessageVisible])
 
     const handleModal = (resetAll: boolean = false) => {
         resetAll ? setResetAllModal(true) : setResetAllModal(false)
@@ -156,12 +142,12 @@ export default function ListIndex() {
                             <FontAwesomeIcon icon={faGear} color={ShowButtonsPannel ? Colors.blue300 : "white"} size={24}/>
                         </TouchableOpacity>
                     </View>
-                    <Animated.View style={[styles.errorMessage, animatedStyle]}>
-                        <ThemedText>This item is already in the list.</ThemedText>
-                        <TouchableOpacity style={{padding: 10}} onPress={() => setErrorMessageVisible(false)}>
-                            <FontAwesomeIcon icon={faXmark} />
-                        </TouchableOpacity>
-                    </Animated.View>
+                    <ErrorMessage 
+                        content="This item is already in the list."
+                        visible={errorMessageVisible}
+                        height={-50}
+                        hideAction={() => setErrorMessageVisible(false)}
+                    />
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         data={items.items.filter((item) => item.list == list.name)} 
@@ -281,20 +267,20 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: "center"
     },
-    errorMessage: {
-        position: 'absolute',
-        top: -50,
-        left: 10,
-        width: "100%",
-        backgroundColor: Colors.orange300,
-        padding: 10,
-        borderRadius: 12,
-        zIndex: 2,
-        elevation: 2,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
+    // errorMessage: {
+    //     position: 'absolute',
+    //     top: -50,
+    //     left: 10,
+    //     width: "100%",
+    //     backgroundColor: Colors.orange300,
+    //     padding: 10,
+    //     borderRadius: 12,
+    //     zIndex: 2,
+    //     elevation: 2,
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-between',
+    //     alignItems: 'center'
+    // },
     addListButton: {
         padding: 10,
         backgroundColor: Colors.backGround,
