@@ -49,6 +49,10 @@ export default function FiveThousand() {
     }, [fivek.players])
 
     const createPlayer = () => {
+        if (newPlayer == "" || fivek.players.find(player => player.name == newPlayer)) {
+            console.log("player already exists")
+            return
+        }
         dispatch(addPlayer(newPlayer))
         setActivePlayer(newPlayer)
         setNewPlayer("")
@@ -57,6 +61,11 @@ export default function FiveThousand() {
     const addTose = (playerName: string) => {
         dispatch(addTurn({player: playerName, score: 0}))
         playSound()
+    }
+
+    const enterScore = () => {
+        fivek.players.length > 0 && dispatch(addTurn({player: activePlayer, score: parseInt(newScore)}))
+        setNewScore("")
     }
 
     const playerView = ({ item } : {item: { name: string }}) => {
@@ -97,10 +106,7 @@ export default function FiveThousand() {
                             onChangeText={(e) => setNewScore(e)} 
                             keyboardType='numeric'
                             style={{width: "80%", height: 50, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
-                            validate={() => {
-                                dispatch(addTurn({player: activePlayer, score: parseInt(newScore)}))
-                                setNewScore("")
-                            }}
+                            validate={() => enterScore()}
                         />
                         <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
                             <ThemedText>Tose</ThemedText>
