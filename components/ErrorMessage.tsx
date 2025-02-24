@@ -38,6 +38,8 @@ export function ErrorMessage({
         }
     }, [visible])
 
+    // TO DO : handle z-index of 0 opacity error message
+
     return (
         <Animated.View style={[styles.errorMessage, animatedStyle, {top: height || 0, left: left || 0}]}>
             <ThemedText>{content}</ThemedText>

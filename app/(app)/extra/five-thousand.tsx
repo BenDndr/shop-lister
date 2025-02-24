@@ -104,7 +104,7 @@ export default function FiveThousand() {
                     <ErrorMessage
                         visible={errorMessageVisible}
                         hideAction={() => setErrorMessageVisible(false)}
-                        content="Player already exists"
+                        content={`${newPlayer} is already playing !`}
                         height={-50}
                     />
                     <View style={styles.addScoreView}>

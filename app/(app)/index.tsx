@@ -2,10 +2,10 @@ import { View, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal } from 
 import { Colors } from '@/constants/Colors';
 import { useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faGear, faCaretRight, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faCaretRight, faRotateLeft, faPen } from '@fortawesome/free-solid-svg-icons'
 import { PageContainer } from '@/components/PageContainer';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
-import { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem } from '@/store/slices/itemsSlice'
+import { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem, bulkListEdit } from '@/store/slices/itemsSlice'
 import { addList, editList, removeList, resetList } from '@/store/slices/listsSlice'
 import { CustomButton } from '@/components/CustomButton'
 import { CustomInput } from '@/components/CustomInput'
@@ -91,7 +91,9 @@ export default function ListIndex() {
         setModalVisible(false)
     }
 
-    
+    const changeListName = () => {
+        // TO DO
+    }
 
     const createNewList = () => {
         if (newList == "") {
@@ -121,7 +123,7 @@ export default function ListIndex() {
                 <View
                     style={styles.header}
                 >
-                    {/* {editListName ? 
+                    {editListName ? 
                     <CustomInput 
                         placeholder={list.name}
                         validate={() => console.log("Validate Edit")}
@@ -129,11 +131,12 @@ export default function ListIndex() {
                         value={list.name}
                         style={{height: 52, width: '80%', fontSize: 24, }}
                     />
-                    : */}
+                    :
                     <ThemedText style={{alignItems: 'center'}} type={"title"} light>{list.name || "MY LIST"}</ThemedText>
-                    {/* <TouchableOpacity style={styles.addListButton} onPress={() => setEditListName(!editListName)}>
+                    }
+                    <TouchableOpacity style={styles.addListButton} onPress={() => setEditListName(!editListName)}>
                         <FontAwesomeIcon icon={faPen} color={Colors.blue300} size={32}/>
-                    </TouchableOpacity> */}
+                    </TouchableOpacity>
                 </View>
                 <View style={[styles.content, {width: containerWidth}]}>
                     <View style={styles.contentHeader}>
@@ -268,20 +271,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: "center"
     },
-    // errorMessage: {
-    //     position: 'absolute',
-    //     top: -50,
-    //     left: 10,
-    //     width: "100%",
-    //     backgroundColor: Colors.orange300,
-    //     padding: 10,
-    //     borderRadius: 12,
-    //     zIndex: 2,
-    //     elevation: 2,
-    //     flexDirection: 'row',
-    //     justifyContent: 'space-between',
-    //     alignItems: 'center'
-    // },
     addListButton: {
         padding: 10,
         backgroundColor: Colors.backGround,

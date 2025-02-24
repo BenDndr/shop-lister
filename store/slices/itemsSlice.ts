@@ -61,9 +61,16 @@ export const itemsSlice = createSlice({
     },
     resetItems: () => {
         return initialState;
+    },
+    bulkListEdit: (state, action: PayloadAction<{ listToEdit: string; editedList: string }>) => {
+      state.items = state.items.map((item: ItemsState) => {
+        return (
+          item.list == action.payload.listToEdit ? {...item, list: action.payload.editedList} : item
+        )
+      })
     }
   },
 })
 
-export const { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem } = itemsSlice.actions
+export const { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem, bulkListEdit } = itemsSlice.actions
 export default itemsSlice.reducer
