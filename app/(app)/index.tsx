@@ -146,6 +146,7 @@ export default function ListIndex() {
                         content="This item is already in the list."
                         visible={errorMessageVisible}
                         height={-50}
+                        left={10}
                         hideAction={() => setErrorMessageVisible(false)}
                     />
                     <FlatList

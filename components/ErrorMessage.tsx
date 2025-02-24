@@ -10,11 +10,13 @@ import { useEffect } from "react";
 export function ErrorMessage({
     visible,
     height,
+    left,
     hideAction,
     content,
  } : {
-    visible: boolean,
-    height: number,
+    visible: boolean
+    height?: number
+    left?: number
     hideAction: () => void
     content: string
  }) {
@@ -37,7 +39,7 @@ export function ErrorMessage({
     }, [visible])
 
     return (
-        <Animated.View style={[styles.errorMessage, animatedStyle, {top: height}]}>
+        <Animated.View style={[styles.errorMessage, animatedStyle, {top: height || 0, left: left || 0}]}>
             <ThemedText>{content}</ThemedText>
             <TouchableOpacity style={{padding: 10}} onPress={hideAction}>
                 <FontAwesomeIcon icon={faXmark} />
@@ -49,7 +51,6 @@ export function ErrorMessage({
 const styles = StyleSheet.create({
     errorMessage: {
         position: 'absolute',
-        left: 10,
         width: "100%",
         backgroundColor: Colors.orange300,
         padding: 10,

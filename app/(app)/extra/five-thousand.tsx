@@ -5,6 +5,7 @@ import { PageContainer } from "@/components/PageContainer"
 import { ThemedText } from "@/components/ThemedText"
 import { CustomInput } from "@/components/CustomInput"
 import { CustomButton } from "@/components/CustomButton"
+import { ErrorMessage } from "@/components/ErrorMessage"
 import { useRouter } from "expo-router"
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addPlayer, resetGame, addTurn } from '@/store/slices/fivekSlice'
@@ -18,6 +19,7 @@ export default function FiveThousand() {
     const [newPlayer, setNewPlayer] = useState("")
     const dispatch = useAppDispatch()
     const [newScore, setNewScore] = useState("")
+    const [errorMessageVisible, setErrorMessageVisible] = useState(false)
 
     console.log("fivek", fivek)
     console.log("players", fivek.players)
@@ -50,7 +52,7 @@ export default function FiveThousand() {
 
     const createPlayer = () => {
         if (newPlayer == "" || fivek.players.find(player => player.name == newPlayer)) {
-            console.log("player already exists")
+            setErrorMessageVisible(true)
             return
         }
         dispatch(addPlayer(newPlayer))
@@ -99,6 +101,12 @@ export default function FiveThousand() {
                     <ThemedText type="title">5K</ThemedText>
                 </View>
                 <View style={styles.body}>
+                    <ErrorMessage
+                        visible={errorMessageVisible}
+                        hideAction={() => setErrorMessageVisible(false)}
+                        content="Player already exists"
+                        height={-50}
+                    />
                     <View style={styles.addScoreView}>
                         <CustomInput 
                             placeholder={`Add score to ${activePlayer}`} 
