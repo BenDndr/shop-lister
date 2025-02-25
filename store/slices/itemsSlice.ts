@@ -68,6 +68,11 @@ export const itemsSlice = createSlice({
           item.list == action.payload.listToEdit ? {...item, list: action.payload.editedList} : item
         )
       })
+      state.discardedItems = state.discardedItems.map((item: ItemsState) => {
+        return (
+          item.list == action.payload.listToEdit ? {...item, list: action.payload.editedList} : item
+        )
+      })
     }
   },
 })

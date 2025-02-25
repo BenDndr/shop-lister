@@ -26,6 +26,7 @@ export function ErrorMessage({
     const animatedStyle = useAnimatedStyle(() => ({
         opacity: opacity.value,
         pointerEvents: opacity.value === 0 ? "none" : "auto",
+        display: opacity.value === 0 ? "none" : "flex",
     }));
 
     useEffect(() => {
@@ -38,8 +39,6 @@ export function ErrorMessage({
             opacity.value = withTiming(0, { duration: 2000 });
         }
     }, [visible])
-
-    // TO DO : handle z-index of 0 opacity error message
 
     return (
         <Animated.View style={[styles.errorMessage, animatedStyle, {top: height || 0, left: left || 0}]}>

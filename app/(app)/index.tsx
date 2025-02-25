@@ -1,4 +1,4 @@
-import { View, StyleSheet, FlatList, TouchableOpacity, Dimensions, Modal } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -22,7 +22,8 @@ export default function ListIndex() {
     const dispatch = useAppDispatch()
     const [itemToAdd, setItemToAdd] = useState("")
     const [editIndex, setEditIndex] = useState(-1)
-    const [editListName, setEditListName] = useState(false)
+    const [editListNameActive, setEditListNameActive] = useState(false)
+    const [editedList, setEditedList] = useState("")
     const screenWidth = Dimensions.get("window").width
     const containerWidth = screenWidth - 24
     const [modalVisible, setModalVisible] = useState(false);
@@ -80,10 +81,6 @@ export default function ListIndex() {
         editIndex == index ? setEditIndex(-1) : setEditIndex(index)
     }
 
-    const blurAction = () => {
-        setEditIndex(-1)
-    }
-
     const cleanListsAndItems = () => {
         dispatch(resetList())
         dispatch(resetItems())
@@ -91,8 +88,11 @@ export default function ListIndex() {
         setModalVisible(false)
     }
 
-    const changeListName = () => {
-        // TO DO
+    const changeListName = (oldListName: string) => {
+        dispatch(editList({listToEdit: oldListName, editedList: editedList}))
+        dispatch(bulkListEdit({listToEdit: oldListName, editedList: editedList}))
+        setEditedList("")
+        setEditListNameActive(false)
     }
 
     const createNewList = () => {
@@ -123,18 +123,18 @@ export default function ListIndex() {
                 <View
                     style={styles.header}
                 >
-                    {editListName ? 
+                    {editListNameActive ? 
                     <CustomInput 
                         placeholder={list.name}
-                        validate={() => console.log("Validate Edit")}
-                        onChangeText={(e) => console.log(list.name, e)}
-                        value={list.name}
+                        validate={() => changeListName(list.name)}
+                        onChangeText={(e) => setEditedList(e)}
+                        value={editedList}
                         style={{height: 52, width: '80%', fontSize: 24, }}
                     />
                     :
-                    <ThemedText style={{alignItems: 'center'}} type={"title"} light>{list.name || "MY LIST"}</ThemedText>
+                    <ThemedText style={{alignItems: 'center', maxWidth: screenWidth - 40}} type={"title"} light>{list.name || "MY LIST"}</ThemedText>
                     }
-                    <TouchableOpacity style={styles.addListButton} onPress={() => setEditListName(!editListName)}>
+                    <TouchableOpacity style={styles.addListButton} onPress={() => {setEditListNameActive(!editListNameActive); setEditedList(list.name)}}>
                         <FontAwesomeIcon icon={faPen} color={Colors.blue300} size={32}/>
                     </TouchableOpacity>
                 </View>
@@ -175,7 +175,7 @@ export default function ListIndex() {
                 validate={(e) => editItemName(item.name, e)}
                 activateEditMode={() => setEditMode(index)}
                 editMode={index == editIndex}
-                blurAction={blurAction}
+                blurAction={() => setEditIndex(-1)}
             />
 
         )
@@ -183,16 +183,6 @@ export default function ListIndex() {
 
     return (
         <PageContainer gradient color1={Colors.blue300} color2={Colors.blue100}>
-            {/* <Modal
-                animationType="fade"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}
-            > */}
-                
-            {/* </Modal> */}
             {addListModal && <ModalLayout heightProps={300} closeModal={() => setAddListModal(false)}>
                 <View>
                     <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Enter list name</ThemedText>
