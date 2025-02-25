@@ -24,7 +24,8 @@ export function ErrorMessage({
     const opacity = useSharedValue<number>(0);
     
     const animatedStyle = useAnimatedStyle(() => ({
-        opacity: opacity.value
+        opacity: opacity.value,
+        pointerEvents: opacity.value === 0 ? "none" : "auto",
     }));
 
     useEffect(() => {
