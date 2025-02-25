@@ -6,6 +6,7 @@ import { ThemedText } from "@/components/ThemedText"
 import { CustomInput } from "@/components/CustomInput"
 import { CustomButton } from "@/components/CustomButton"
 import { ErrorMessage } from "@/components/ErrorMessage"
+import { ModalLayout } from "@/components/ModalLayout"
 import { useRouter } from "expo-router"
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addPlayer, resetGame, addTurn } from '@/store/slices/fivekSlice'
@@ -20,6 +21,7 @@ export default function FiveThousand() {
     const dispatch = useAppDispatch()
     const [newScore, setNewScore] = useState("")
     const [errorMessageVisible, setErrorMessageVisible] = useState(false)
+    const [newGameModalVisible, setNewGameModalVisible] = useState(false)
 
     console.log("fivek", fivek)
     console.log("players", fivek.players)
@@ -70,12 +72,18 @@ export default function FiveThousand() {
         setNewScore("")
     }
 
+    const startNewGame = () => {
+        dispatch(resetGame())
+        setNewGameModalVisible(false)
+        setActivePlayer("")
+    }
+
     const playerView = ({ item } : {item: { name: string }}) => {
 
         const Score = fivek.turns.filter(turn => turn.player == item.name).reduce((acc, turn) => acc + turn.score, 0)
 
         return (
-            <TouchableOpacity style={[styles.playerCard, {backgroundColor: item.name == activePlayer ? Colors.orange300 : Colors.backGround}]} onPress={() => setActivePlayer(item.name)}>
+            <TouchableOpacity style={[styles.playerCard, {backgroundColor: item.name == activePlayer ? Colors.yellow300 : Colors.backGround}]} onPress={() => setActivePlayer(item.name)}>
                 <View style={styles.leftPlayerCardContent}>
                     <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
                     <View style={styles.scoresView}>
@@ -96,6 +104,15 @@ export default function FiveThousand() {
 
     return (
         <PageContainer color1={Colors.teal500} color2={Colors.teal300} gradient>
+            {
+                newGameModalVisible &&
+                <ModalLayout heightProps={200} closeModal={() => setNewGameModalVisible(false)}>
+                    <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Voulez-vous lancer une nouvelle partie ?</ThemedText>
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Yes"} onPress={startNewGame}/>
+                    <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue300, color2: Colors.blue100}} text={"No"} onPress={() => setNewGameModalVisible(false)}/>
+
+                </ModalLayout>
+            }
             <View style={styles.content}>
                 <View style={styles.header}>
                     <ThemedText type="title">5K</ThemedText>
@@ -109,7 +126,7 @@ export default function FiveThousand() {
                     />
                     <View style={styles.addScoreView}>
                         <CustomInput 
-                            placeholder={`Add score to ${activePlayer}`} 
+                            placeholder={activePlayer != "" ? `Add score to ${activePlayer}` : "Add player to start playing !"} 
                             value={newScore} 
                             onChangeText={(e) => setNewScore(e)} 
                             keyboardType='numeric'
@@ -126,10 +143,10 @@ export default function FiveThousand() {
                         keyExtractor={(item) => item.name}
                         style={{paddingBottom: 16}}
                     />
-                    <View style={{marginTop: "auto", gap: 16, paddingTop: 16}}>
+                    <View style={{marginTop: "auto", paddingTop: 16}}>
                         <CustomInput placeholder="Enter new player's name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer}/>
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                            <CustomButton hapticFeel lightText color={{color1: Colors.pink500, color2: Colors.pink700}} text={"New Game"} onPress={() => dispatch(resetGame())} style={{width: "48%"}}/>
+                            <CustomButton hapticFeel lightText color={{color1: Colors.pink500, color2: Colors.pink700}} text={"New Game"} onPress={() => setNewGameModalVisible(true)} style={{width: "48%"}}/>
                             <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} style={{width: "48%"}}/>
                         </View>
                     </View>
