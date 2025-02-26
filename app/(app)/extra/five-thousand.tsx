@@ -9,9 +9,10 @@ import { ErrorMessage } from "@/components/ErrorMessage"
 import { ModalLayout } from "@/components/ModalLayout"
 import { useRouter } from "expo-router"
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
-import { addPlayer, resetGame, addTurn } from '@/store/slices/fivekSlice'
+import { addPlayer, resetGame, addTurn, cancelLastTurn } from '@/store/slices/fivekSlice'
 import { Audio } from "expo-av";
-
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 export default function FiveThousand() {
 
     const router = useRouter()
@@ -142,8 +143,11 @@ export default function FiveThousand() {
                     <View style={{marginTop: "auto", paddingTop: 16}}>
                         <CustomInput placeholder="Enter new player's name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer}/>
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                            <CustomButton hapticFeel lightText color={{color1: Colors.pink500, color2: Colors.pink700}} text={"New Game"} onPress={() => setNewGameModalVisible(true)} style={{width: "48%"}}/>
-                            <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} style={{width: "48%"}}/>
+                            <CustomButton hapticFeel lightText color={{color1: Colors.pink500, color2: Colors.pink700}} text={"New Game"} onPress={() => setNewGameModalVisible(true)} style={{width: "32%"}}/>
+                            <CustomButton hapticFeel lightText color={{color1: Colors.orange500, color2: Colors.orange700}} onPress={() => dispatch(cancelLastTurn())} style={{width: "32%"}}>
+                                <FontAwesomeIcon icon={faRotateLeft} color="white"/>
+                            </CustomButton>
+                            <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} style={{width: "32%"}}/> 
                         </View>
                     </View>
                 </View>

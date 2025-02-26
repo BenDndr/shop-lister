@@ -36,9 +36,12 @@ export const fivekSlice = createSlice({
             if (checkToseCount.reduce((acc, turn) => acc + turn.score, 0) == 0) {
                 state.turns.push({player: action.payload.player, score: -500})
             }
+        },
+        cancelLastTurn: (state) => {
+            state.turns.pop()!
         }
     }
 })
 
-export const { addPlayer, addTurn, resetGame } = fivekSlice.actions
+export const { addPlayer, addTurn, resetGame, cancelLastTurn } = fivekSlice.actions
 export default fivekSlice.reducer
