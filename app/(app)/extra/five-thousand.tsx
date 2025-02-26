@@ -32,7 +32,6 @@ export default function FiveThousand() {
     const [sound, setSound] = useState<Audio.Sound | null>(null);
 
     const playSound = async () => {
-        console.log("Play sound")
         try {
         const { sound } = await Audio.Sound.createAsync(
             require("@/assets/sounds/fart.wav") // Make sure the file exists in the assets folder

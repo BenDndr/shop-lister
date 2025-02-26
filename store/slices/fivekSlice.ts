@@ -32,6 +32,10 @@ export const fivekSlice = createSlice({
         },
         addTurn: (state, action: PayloadAction<turn>) => {
             state.turns.push(action.payload)
+            let checkToseCount = state.turns.filter(turn => turn.player == action.payload.player).slice(-3)
+            if (checkToseCount.reduce((acc, turn) => acc + turn.score, 0) == 0) {
+                state.turns.push({player: action.payload.player, score: -500})
+            }
         }
     }
 })
