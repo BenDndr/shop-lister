@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
-import {View, StyleSheet, FlatList, TouchableOpacity} from "react-native"
+import { useState, useEffect, useRef } from "react"
+import {View, StyleSheet, FlatList, TouchableOpacity, TextInput} from "react-native"
 import { Colors } from "@/constants/Colors"
 import { PageContainer } from "@/components/PageContainer"
 import { ThemedText } from "@/components/ThemedText"
@@ -27,14 +27,12 @@ export default function FiveThousand() {
     console.log("players", fivek.players)
     console.log("turns", fivek.turns)
 
-    // Sound Test
-
     const [sound, setSound] = useState<Audio.Sound | null>(null);
 
     const playSound = async () => {
         try {
         const { sound } = await Audio.Sound.createAsync(
-            require("@/assets/sounds/fart.wav") // Make sure the file exists in the assets folder
+            require("@/assets/sounds/fart.wav")
         );
         setSound(sound);
         await sound.playAsync();
@@ -42,8 +40,6 @@ export default function FiveThousand() {
             console.error("Error playing sound:", error);
         }
     };
-
-    // Sound Test
 
     useEffect(() => {
         if (fivek.players.length > 0) {
@@ -132,6 +128,7 @@ export default function FiveThousand() {
                             style={{width: "80%", height: 50, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
                             validate={() => enterScore()}
                         />
+                        
                         <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
                             <ThemedText>Tose</ThemedText>
                         </TouchableOpacity>    
