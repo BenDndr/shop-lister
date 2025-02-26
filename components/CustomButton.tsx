@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         shadowOffset: { width: -3, height: -3 },
         shadowOpacity: 0.3,
-        shadowRadius: 5,
-        elevation: 5,
+        shadowRadius: 2,
+        elevation: 2,
     },
     button: {
         height: 50,

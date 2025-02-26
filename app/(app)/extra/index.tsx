@@ -16,11 +16,11 @@ export default function ExtraIndex() {
     const router = useRouter()
 
     return (
-        <View style={{flex: 1}}>
-            <PageContainer color1={Colors.teal500} color2={Colors.teal300} gradient>
-                <View style={{width: "100%"}}>
-                    <ThemedText type="title" style={{marginLeft: 16}}>Extra</ThemedText>
-                </View>
+        <PageContainer color1={Colors.blue300} color2={Colors.teal500} gradient>
+            <View style={styles.header}>
+                <ThemedText type="title" light>Extra</ThemedText>
+            </View>
+            <View style={styles.body}>
                 <View style={styles.extraCard}>
                     <ThemedText type="subtitle">5K Counter</ThemedText>
                     <ThemedText>
@@ -28,12 +28,21 @@ export default function ExtraIndex() {
                     </ThemedText>
                     <CustomButton lightText hapticFeel color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Start a Game"} onPress={() => router.push("/extra/five-thousand")}/>
                 </View>
-            </PageContainer>
-        </View>
+            </View>
+        </PageContainer>
     )
 }
 
 const styles = StyleSheet.create({
+    header: {
+        height: "20%",
+        justifyContent: "flex-end",
+        alignItems: "flex-start",
+        width: "90%",
+    },
+    body: {
+        height: "80%",
+    },
     extraCard: {
         backgroundColor: Colors.backGround,
         borderRadius: 16,

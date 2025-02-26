@@ -99,7 +99,7 @@ export default function FiveThousand() {
     }
 
     return (
-        <PageContainer color1={Colors.teal500} color2={Colors.teal300} gradient>
+        <PageContainer color1={Colors.blue300} color2={Colors.teal500} gradient>
             {
                 newGameModalVisible &&
                 <ModalLayout heightProps={200} closeModal={() => setNewGameModalVisible(false)}>
@@ -111,7 +111,7 @@ export default function FiveThousand() {
             }
             <View style={styles.content}>
                 <View style={styles.header}>
-                    <ThemedText type="title">5K</ThemedText>
+                    <ThemedText type="title" light>5K</ThemedText>
                 </View>
                 <View style={styles.body}>
                     <ErrorMessage
@@ -131,7 +131,7 @@ export default function FiveThousand() {
                         />
                         
                         <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
-                            <ThemedText>Tose</ThemedText>
+                            <ThemedText light>Tose</ThemedText>
                         </TouchableOpacity>    
                     </View>
                     <FlatList 
@@ -143,8 +143,8 @@ export default function FiveThousand() {
                     <View style={{marginTop: "auto", paddingTop: 16}}>
                         <CustomInput placeholder="Enter new player's name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer}/>
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                            <CustomButton hapticFeel lightText color={{color1: Colors.pink500, color2: Colors.pink700}} text={"New Game"} onPress={() => setNewGameModalVisible(true)} style={{width: "32%"}}/>
-                            <CustomButton hapticFeel lightText color={{color1: Colors.orange500, color2: Colors.orange700}} onPress={() => dispatch(cancelLastTurn())} style={{width: "32%"}}>
+                            <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"New Game"} onPress={() => setNewGameModalVisible(true)} style={{width: "32%"}}/>
+                            <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} onPress={() => dispatch(cancelLastTurn())} style={{width: "32%"}}>
                                 <FontAwesomeIcon icon={faRotateLeft} color="white"/>
                             </CustomButton>
                             <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} style={{width: "32%"}}/> 
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     },
     header: {
         height: "20%",
-        justifyContent: "flex-end"
+        justifyContent: "flex-end",
     },
     body: {
         height: "70%",
@@ -179,6 +179,9 @@ const styles = StyleSheet.create({
     },
     leftPlayerCardContent: {
         width: "70%",
+        height: "100%",
+        borderRightWidth: 1,
+        borderRightColor: Colors.blue900
     },
     scoresView: {
         flexDirection: "row",
@@ -195,7 +198,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     toseButton: {
-        backgroundColor: Colors.orange500,
+        backgroundColor: Colors.blue500,
         width: "20%",
         borderTopRightRadius: 16,
         borderBottomRightRadius: 16,
