@@ -104,8 +104,8 @@ export default function FiveThousand() {
                 newGameModalVisible &&
                 <ModalLayout heightProps={200} closeModal={() => setNewGameModalVisible(false)}>
                     <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Voulez-vous lancer une nouvelle partie ?</ThemedText>
-                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Yes"} onPress={startNewGame}/>
-                    <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue300, color2: Colors.blue100}} text={"No"} onPress={() => setNewGameModalVisible(false)}/>
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"Yes"} onPress={startNewGame}/>
+                    <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue500, color2: Colors.blue500}} text={"No"} onPress={() => setNewGameModalVisible(false)}/>
 
                 </ModalLayout>
             }

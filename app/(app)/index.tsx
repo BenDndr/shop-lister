@@ -116,8 +116,8 @@ export default function ListIndex() {
                 {modalVisible && <ModalLayout heightProps={200} closeModal={() => setModalVisible(false)}>
                     <View>
                         <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>{resetAllModal ? "Are you sure you want to clear all data ?" : "Are you sure you want to clear the list ?"}</ThemedText>
-                        <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Yes"} onPress={resetAllModal ? () => cleanListsAndItems() : () => clearList(list.name)}/>
-                        <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue300, color2: Colors.blue100}} text={"No"} onPress={() => setModalVisible(false)}/>
+                        <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"Yes"} onPress={resetAllModal ? () => cleanListsAndItems() : () => clearList(list.name)}/>
+                        <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue500, color2: Colors.blue500}} text={"No"} onPress={() => setModalVisible(false)}/>
                     </View>
                 </ModalLayout>}
                 <View
@@ -129,20 +129,20 @@ export default function ListIndex() {
                         validate={() => changeListName(list.name)}
                         onChangeText={(e) => setEditedList(e)}
                         value={editedList}
-                        style={{height: 52, width: '80%', fontSize: 24, }}
+                        style={{height: 44, width: '80%', fontSize: 18, }}
                     />
                     :
                     <ThemedText style={{alignItems: 'center', maxWidth: screenWidth - 40}} type={"title"} light>{list.name || "MY LIST"}</ThemedText>
                     }
                     <TouchableOpacity style={styles.addListButton} onPress={() => {setEditListNameActive(!editListNameActive); setEditedList(list.name)}}>
-                        <FontAwesomeIcon icon={faPen} color={Colors.blue300} size={32}/>
+                        <FontAwesomeIcon icon={faPen} color={Colors.blue500} size={24}/>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.content, {width: containerWidth}]}>
                     <View style={styles.contentHeader}>
                         <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={() => createItem(list.name)} style={{height: 40, width: '79%'}}/>
-                        <TouchableOpacity style={[styles.buttonPanelOpener, {backgroundColor: ShowButtonsPannel ? Colors.blue100 : Colors.blue300}]} onPress={slide}>
-                            <FontAwesomeIcon icon={faGear} color={ShowButtonsPannel ? Colors.blue300 : "white"} size={24}/>
+                        <TouchableOpacity style={[styles.buttonPanelOpener, {backgroundColor: ShowButtonsPannel ? Colors.blue100 : Colors.blue500}]} onPress={slide}>
+                            <FontAwesomeIcon icon={faGear} color={ShowButtonsPannel ? Colors.blue700 : "white"} size={24}/>
                         </TouchableOpacity>
                     </View>
                     <ErrorMessage 
@@ -182,13 +182,13 @@ export default function ListIndex() {
     }
 
     return (
-        <PageContainer gradient color1={Colors.blue300} color2={Colors.blue100}>
+        <PageContainer gradient color1={Colors.blue500} color2={Colors.blue700}>
             {addListModal && <ModalLayout heightProps={300} closeModal={() => setAddListModal(false)}>
                 <View>
                     <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Enter list name</ThemedText>
                     <CustomInput placeholder='List name' value={newList} onChangeText={(e) => setNewList(e)}/>
-                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Yes"} onPress={() => createNewList()}/>
-                    <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue300, color2: Colors.blue100}} text={"No"} onPress={() => setAddListModal(false)}/>
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"Yes"} onPress={() => createNewList()}/>
+                    <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue500, color2: Colors.blue500}} text={"No"} onPress={() => setAddListModal(false)}/>
                 </View>
             </ModalLayout>}
             {
@@ -196,7 +196,7 @@ export default function ListIndex() {
                 <View>
                     <ThemedText light type={"title"} center>ADD LIST</ThemedText>
                     <CustomInput placeholder='List name' value={newList} onChangeText={(e) => setNewList(e)} />
-                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange300, color2: Colors.orange100}} text={"Create new list"} onPress={() => createNewList()} />
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"Create new list"} onPress={() => createNewList()} />
                 </View>
                 :
                 <View>
@@ -219,14 +219,14 @@ export default function ListIndex() {
                             </TouchableOpacity>
                             <View style={styles.buttonPanelRight}>
                                 <View style={styles.buttonPanelRow}>
-                                    <CustomButton color={{color1: Colors.blue300, color2: Colors.blue100}} text={"Clear the list"} onPress={() => handleModal()} style={{width: '40%'}} lightText hapticFeel/>
-                                    <CustomButton color={{color1: Colors.orange300, color2: Colors.orange100}} onPress={() => dispatch(restoreLastDiscardedItem())} style={{width: '40%'}} hapticFeel>
-                                        <FontAwesomeIcon icon={faRotateLeft} color="white"/>
+                                    <CustomButton color={{color1: Colors.blue500, color2: Colors.blue500}} text={"Clear the list"} onPress={() => handleModal()} style={{width: '40%'}} lightText hapticFeel/>
+                                    <CustomButton color={{color1: Colors.orange500, color2: Colors.orange300}} onPress={() => dispatch(restoreLastDiscardedItem())} style={{width: '40%'}} hapticFeel>
+                                        <FontAwesomeIcon icon={faRotateLeft} color={Colors.blue700}/>
                                     </ CustomButton>
                                 </View>
                                 <View style={styles.buttonPanelRow}>
-                                    <CustomButton color={{color1: Colors.yellow300, color2: Colors.yellow100}} text={"Create List"} onPress={() => setAddListModal(true)} style={{width: '40%'}}  hapticFeel/>
-                                    <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} text={"Reset all"} onPress={() => handleModal(true)} style={{width: '40%'}} lightText hapticFeel/>
+                                    <CustomButton color={{color1: Colors.blue500, color2: Colors.blue500}} text={"Create list"} onPress={() => setAddListModal(true)} style={{width: '40%'}}  hapticFeel lightText/>
+                                    <CustomButton color={{color1: Colors.blue500, color2: Colors.blue500}} text={"Reset all"} onPress={() => handleModal(true)} style={{width: '40%'}} lightText hapticFeel/>
                                 </View>
                             </View>
                         </View>
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
         height: 150,
     },
     buttonPanelLeft: {
-        backgroundColor: Colors.blue300,
+        backgroundColor: Colors.blue500,
         height: '100%',
         width: '10%',
         borderTopLeftRadius: 16,
@@ -290,7 +290,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonPanelRight: {
-        backgroundColor: Colors.blue100,
         width: "90%",
         gap: 16,
     },
