@@ -9,10 +9,10 @@ import { ErrorMessage } from "@/components/ErrorMessage"
 import { ModalLayout } from "@/components/ModalLayout"
 import { useRouter } from "expo-router"
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
-import { addPlayer, resetGame, addTurn, cancelLastTurn } from '@/store/slices/fivekSlice'
+import { addPlayer, resetGame, addTurn, cancelLastTurn, resetScore } from '@/store/slices/fivekSlice'
 import { Audio } from "expo-av";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faRotateLeft, faDice } from '@fortawesome/free-solid-svg-icons'
+import { faRotateLeft, faDice, faPooStorm } from '@fortawesome/free-solid-svg-icons'
 export default function FiveThousand() {
 
     const router = useRouter()
@@ -23,10 +23,6 @@ export default function FiveThousand() {
     const [newScore, setNewScore] = useState("")
     const [errorMessageVisible, setErrorMessageVisible] = useState(false)
     const [newGameModalVisible, setNewGameModalVisible] = useState(false)
-
-    console.log("fivek", fivek)
-    console.log("players", fivek.players)
-    console.log("turns", fivek.turns)
 
     const [sound, setSound] = useState<Audio.Sound | null>(null);
 
@@ -48,10 +44,16 @@ export default function FiveThousand() {
     };
 
     useEffect(() => {
+        const players = fivek.players.map(player => player.name)
         if (fivek.players.length > 0) {
-            setActivePlayer(fivek.players[0].name)
+            if (activePlayer == "") {
+                setActivePlayer(fivek.players[0].name)
+            } else {
+                let activePlayerIndex = players.indexOf(activePlayer)
+                setActivePlayer(players[activePlayerIndex + 1] || players[0])
+            }
         }
-    }, [fivek.players])
+    }, [fivek.turns])
 
     const createPlayer = () => {
         if (newPlayer == "" || fivek.players.find(player => player.name == newPlayer)) {
@@ -73,8 +75,8 @@ export default function FiveThousand() {
         setNewScore("")
     }
 
-    const startNewGame = () => {
-        dispatch(resetGame())
+    const startNewGame = (hard: boolean = false) => {
+        hard ? dispatch(resetGame()) : dispatch(resetScore())
         setNewGameModalVisible(false)
         setActivePlayer("")
     }
@@ -108,16 +110,17 @@ export default function FiveThousand() {
         <PageContainer color1={Colors.blue300} color2={Colors.teal500} gradient>
             {
                 newGameModalVisible &&
-                <ModalLayout heightProps={200} closeModal={() => setNewGameModalVisible(false)}>
+                <ModalLayout heightProps={260} closeModal={() => setNewGameModalVisible(false)}>
                     <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Voulez-vous lancer une nouvelle partie ?</ThemedText>
-                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"Yes"} onPress={startNewGame}/>
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"Reset Scores"} onPress={startNewGame}/>
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"New Game"} onPress={() => startNewGame(true)}/>
                     <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue500, color2: Colors.blue500}} text={"No"} onPress={() => setNewGameModalVisible(false)}/>
 
                 </ModalLayout>
             }
             <View style={styles.content}>
                 <View style={styles.header}>
-                    <ThemedText type="title" light>5K</ThemedText>
+                    <ThemedText type="title" light>5000</ThemedText>
                 </View>
                 <View style={styles.body}>
                     <ErrorMessage
@@ -137,7 +140,7 @@ export default function FiveThousand() {
                         />
                         
                         <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
-                            <ThemedText light>Tose</ThemedText>
+                        <FontAwesomeIcon icon={faPooStorm} color={"white"} size={32}/>
                         </TouchableOpacity>    
                     </View>
                     <FlatList 
