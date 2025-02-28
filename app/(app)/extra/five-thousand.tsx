@@ -5,14 +5,14 @@ import { PageContainer } from "@/components/PageContainer"
 import { ThemedText } from "@/components/ThemedText"
 import { CustomInput } from "@/components/CustomInput"
 import { CustomButton } from "@/components/CustomButton"
-import { ErrorMessage } from "@/components/ErrorMessage"
+import { ErrorMessage } from "@/components/ErrorMessage"
 import { ModalLayout } from "@/components/ModalLayout"
 import { useRouter } from "expo-router"
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addPlayer, resetGame, addTurn, cancelLastTurn } from '@/store/slices/fivekSlice'
 import { Audio } from "expo-av";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faRotateLeft, faDice } from '@fortawesome/free-solid-svg-icons'
 export default function FiveThousand() {
 
     const router = useRouter()
@@ -32,9 +32,14 @@ export default function FiveThousand() {
 
     const playSound = async () => {
         try {
-        const { sound } = await Audio.Sound.createAsync(
-            require("@/assets/sounds/fart.wav")
-        );
+        const sounds = [
+            require("@/assets/sounds/fart.wav"),
+            require("@/assets/sounds/fart2.mp3"),
+            require("@/assets/sounds/fart3.wav")
+        ];
+
+        const randomSound = sounds[Math.floor(Math.random() * sounds.length)]
+        const { sound } = await Audio.Sound.createAsync(randomSound);
         setSound(sound);
         await sound.playAsync();
         } catch (error) {
@@ -80,10 +85,11 @@ export default function FiveThousand() {
 
         return (
             <TouchableOpacity style={[styles.playerCard, {backgroundColor: item.name == activePlayer ? Colors.yellow300 : Colors.backGround}]} onPress={() => setActivePlayer(item.name)}>
+                <FontAwesomeIcon icon={faDice} style={{position: "absolute", opacity: item.name == activePlayer ? .3 : 0, left: 20}} size={64}/>
                 <View style={styles.leftPlayerCardContent}>
                     <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
                     <View style={styles.scoresView}>
-                        {fivek.turns.filter(turn => turn.player == item.name).map((turn, index) => {
+                        {fivek.turns.filter(turn => turn.player == item.name).slice(-7).map((turn, index) => {
                             return (
                                 <ThemedText key={index}>{turn.score}</ThemedText>
                             )

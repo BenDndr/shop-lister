@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface playerState {
     name: string,
-    toseStreak: number
 }
 
 interface turn {
@@ -28,13 +27,18 @@ export const fivekSlice = createSlice({
             return initialState
         },
         addPlayer: (state, action: PayloadAction<string>) => {
-            state.players.push({name: action.payload, toseStreak: 0})
+            state.players.push({name: action.payload})
         },
         addTurn: (state, action: PayloadAction<turn>) => {
             state.turns.push(action.payload)
-            let checkToseCount = state.turns.filter(turn => turn.player == action.payload.player).slice(-3)
+            let checkToseCount = state.turns.filter(turn => turn.player == action.payload.player && turn.score >= 0).slice(-3)
+            let totalScore = state.turns.filter(turn => turn.player == action.payload.player).reduce((acc, turn) => acc + turn.score, 0)
             if (checkToseCount.reduce((acc, turn) => acc + turn.score, 0) == 0 && checkToseCount.length > 2) {
-                state.turns.push({player: action.payload.player, score: -500})
+                if (totalScore > 500) {
+                    state.turns.push({player: action.payload.player, score: -500})
+                } else {
+                    state.turns.push({player: action.payload.player, score: -totalScore})
+                }
             }
         },
         cancelLastTurn: (state) => {
