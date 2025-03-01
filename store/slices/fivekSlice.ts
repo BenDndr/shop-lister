@@ -84,7 +84,10 @@ export const fivekSlice = createSlice({
 
         },
         cancelLastTurn: (state) => {
+            let lastTurn = state.turns[state.turns.length - 1]
+            lastTurn.score == 0 && state.players.find(player => player.name == lastTurn.player)!.toseCount--
             state.turns.pop()!
+            console.log(state.players)
         }
     }
 })
