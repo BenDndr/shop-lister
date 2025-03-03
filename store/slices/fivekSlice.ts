@@ -65,22 +65,22 @@ export const fivekSlice = createSlice({
 
             let currentMovingPlayer = summedScore.find(player => player.player == action.payload.player)
 
-            const removeLastScoreFromPlayer = (player: string) => {
-                let turnToRemove = state.turns.findLastIndex(turn => turn.player == player && turn.score != 9)
-                state.turns.splice(turnToRemove, 1)
+            console.log("currentMovingPlayer", currentMovingPlayer)
 
+            const removeLastScoreFromPlayer = (player: string) => {
+                let turnToRemove = state.turns.findLast(turn => turn.player == player && turn.score > 0)
+                turnToRemove && state.turns.push({player: player, score: -turnToRemove.score})
             }
             
-            // summedScore.forEach((player: turn) => {
-            //     if (player.player != currentMovingPlayer?.player && player.score != 0 && player.score != currentMovingPlayer?.score) {
-            //         console.log("returned")
-            //         return
-            //     } else {
-            //         console.log("action")
-            //         removeLastScoreFromPlayer(player.player)
-            //         // currentMovingPlayer = player
-            //     }
-            // })
+            summedScore.filter(score => score.player != currentMovingPlayer?.player).forEach((player: turn) => {
+                if (player.score != currentMovingPlayer?.score) {
+                    console.log("returned")
+                    return
+                } else {
+                    console.log("action")
+                    removeLastScoreFromPlayer(player.player)
+                }
+            })
 
         },
         cancelLastTurn: (state) => {

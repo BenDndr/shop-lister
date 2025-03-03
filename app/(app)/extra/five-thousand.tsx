@@ -24,20 +24,20 @@ export default function FiveThousand() {
     const [errorMessageVisible, setErrorMessageVisible] = useState(false)
     const [newGameModalVisible, setNewGameModalVisible] = useState(false)
 
-    const [sound, setSound] = useState<Audio.Sound | null>(null);
+    // const [sound, setSound] = useState<Audio.Sound | null>(null);
 
     const playSound = async () => {
         try {
-        const sounds = [
-            require("@/assets/sounds/fart.wav"),
-            require("@/assets/sounds/fart2.mp3"),
-            require("@/assets/sounds/fart3.wav")
-        ];
+            const sounds = [
+                require("@/assets/sounds/fart.wav"),
+                require("@/assets/sounds/fart2.mp3"),
+                require("@/assets/sounds/fart3.wav")
+            ];
 
-        const randomSound = sounds[Math.floor(Math.random() * sounds.length)]
-        const { sound } = await Audio.Sound.createAsync(randomSound);
-        setSound(sound);
-        await sound.playAsync();
+            const randomSound = sounds[Math.floor(Math.random() * sounds.length)]
+            const { sound } = await Audio.Sound.createAsync(randomSound);
+            // setSound(sound);
+            await sound.playAsync();
         } catch (error) {
             console.error("Error playing sound:", error);
         }
@@ -66,8 +66,10 @@ export default function FiveThousand() {
     }
 
     const addTose = (playerName: string) => {
-        dispatch(addTurn({player: playerName, score: 0}))
-        playSound()
+        if (playerName != "") {
+            dispatch(addTurn({player: playerName, score: 0}))
+            playSound()
+        }
     }
 
     const enterScore = () => {
