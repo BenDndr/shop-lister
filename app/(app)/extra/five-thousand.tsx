@@ -12,7 +12,7 @@ import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addPlayer, resetGame, addTurn, cancelLastTurn, resetScore } from '@/store/slices/fivekSlice'
 import { Audio } from "expo-av";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faRotateLeft, faDice, faPooStorm } from '@fortawesome/free-solid-svg-icons'
+import { faRotateLeft, faDice, faPooStorm, faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 export default function FiveThousand() {
 
     const router = useRouter()
@@ -23,6 +23,7 @@ export default function FiveThousand() {
     const [newScore, setNewScore] = useState("")
     const [errorMessageVisible, setErrorMessageVisible] = useState(false)
     const [newGameModalVisible, setNewGameModalVisible] = useState(false)
+    const [rulesModalVisible, setRulesModalVisible] = useState(false)
 
     // const [sound, setSound] = useState<Audio.Sound | null>(null);
 
@@ -120,9 +121,19 @@ export default function FiveThousand() {
 
                 </ModalLayout>
             }
+            {
+                rulesModalVisible &&
+                <ModalLayout heightProps={400} closeModal={() => setRulesModalVisible(false)}>
+                    <ThemedText style={{marginBottom: 20}} type={"subtitle"} center>5000 rules</ThemedText>
+
+                </ModalLayout>
+            }
             <View style={styles.content}>
                 <View style={styles.header}>
                     <ThemedText type="title" light>5000</ThemedText>
+                    <TouchableOpacity style={{marginBottom: 12}} onPress={() => setRulesModalVisible(true)}>
+                        <FontAwesomeIcon icon={faCircleQuestion} size={32} color={Colors.backGround}/>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.body}>
                     <ErrorMessage
@@ -174,7 +185,9 @@ const styles = StyleSheet.create({
     },
     header: {
         height: "20%",
-        justifyContent: "flex-end",
+        justifyContent: "space-between",
+        flexDirection: "row",
+        alignItems: "flex-end"
     },
     body: {
         height: "70%",
