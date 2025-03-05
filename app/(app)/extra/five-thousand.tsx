@@ -124,7 +124,7 @@ export default function FiveThousand() {
             }
             {
                 rulesModalVisible &&
-                <ModalLayout heightProps={400} closeModal={() => setRulesModalVisible(false)}>
+                <ModalLayout heightProps={600} closeModal={() => setRulesModalVisible(false)} topProp={150}>
                     <FiveThousandRules/>
                 </ModalLayout>
             }
