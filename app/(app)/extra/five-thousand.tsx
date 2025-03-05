@@ -7,6 +7,7 @@ import { CustomInput } from "@/components/CustomInput"
 import { CustomButton } from "@/components/CustomButton"
 import { ErrorMessage } from "@/components/ErrorMessage"
 import { ModalLayout } from "@/components/ModalLayout"
+import { FiveThousandRules } from "@/components/FiveThousandRules"
 import { useRouter } from "expo-router"
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { addPlayer, resetGame, addTurn, cancelLastTurn, resetScore } from '@/store/slices/fivekSlice'
@@ -124,8 +125,7 @@ export default function FiveThousand() {
             {
                 rulesModalVisible &&
                 <ModalLayout heightProps={400} closeModal={() => setRulesModalVisible(false)}>
-                    <ThemedText style={{marginBottom: 20}} type={"subtitle"} center>5000 rules</ThemedText>
-
+                    <FiveThousandRules/>
                 </ModalLayout>
             }
             <View style={styles.content}>

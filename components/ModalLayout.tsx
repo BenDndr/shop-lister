@@ -1,4 +1,5 @@
-import { StyleSheet, View, Dimensions, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableWithoutFeedback, Animated } from 'react-native';
+import { useEffect, useRef } from 'react'
 import { Colors } from '@/constants/Colors';
 
 export function ModalLayout({
@@ -14,15 +15,34 @@ export function ModalLayout({
     const height = Dimensions.get('window').height
     const width = Dimensions.get('window').width
 
+    const fadeAnim = useRef(new Animated.Value(0)).current
+
+    useEffect(() => {
+        Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 200,
+            useNativeDriver: true,
+        }).start();
+    }, []);
+
+    const handleClose = () => {
+        Animated.timing(fadeAnim, {
+            toValue: 0,
+            duration: 200,
+            useNativeDriver: true,
+        }).start(() => closeModal());
+    };
+
+
     return (
-        <View style={{height: height, width: width, zIndex: 10, position: 'absolute'}}>
-            <TouchableWithoutFeedback onPress={closeModal}>
+        <Animated.View style={{height: "100%", width: width, zIndex: 10, position: 'absolute', opacity: fadeAnim}}>
+            <TouchableWithoutFeedback onPress={handleClose}>
                 <View  style={styles.outerLayout}/>
             </TouchableWithoutFeedback>
             <View style={[styles.innerModal, {height: heightProps}]}>
                 {children}
             </View>
-        </View>
+        </Animated.View>
     )
 }
 
@@ -32,7 +52,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: "100%",
         backgroundColor: 'rgba(0, 0, 0, .2)',
-        // backgroundColor: 'red',
     },
     innerModal: {
         backgroundColor: Colors.backGround,
@@ -43,7 +62,6 @@ const styles = StyleSheet.create({
         left: '5%',
         width: '90%',
         marginBottom: 20,
-        // height: 200,
         justifyContent: 'center',
         alignItems: 'center',
     }
