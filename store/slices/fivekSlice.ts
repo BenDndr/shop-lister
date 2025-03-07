@@ -52,42 +52,44 @@ export const fivekSlice = createSlice({
 
             // Check equal socres
 
-            let summedScore = Object.values(
-                state.turns.reduce((acc, { player, score }) => {
-                  if (!acc[player]) {
-                    acc[player] = { player, score: 0 };
-                  }
-                  acc[player].score += score;
-                  return acc;
-                }, {} as Record<string, turn>)
-            );
-            console.log("summedScore", summedScore)
+            let repeat = true;
+            while (repeat) {
+                repeat = false;
+                
+                const totalScores = new Map<string, number>();
+                for (const turn of state.turns) {
+                    totalScores.set(turn.player, (totalScores.get(turn.player) || 0) + turn.score);
+                }
 
-            let currentMovingPlayer = summedScore.find(player => player.player == action.payload.player)
-
-            console.log("currentMovingPlayer", currentMovingPlayer)
-
-            const removeLastScoreFromPlayer = (player: string) => {
-                let turnToRemove = state.turns.findLast(turn => turn.player == player && turn.score > 0)
-                turnToRemove && state.turns.push({player: player, score: -turnToRemove.score})
-            }
-
-
-            const handleEqualScore = () => {
-                summedScore.filter(score => score.player != currentMovingPlayer?.player).forEach((player: turn) => {
-                    if (player.score != currentMovingPlayer?.score) {
-                        console.log("returned")
-                        return
-                    } else {
-                        console.log("action")
-                        removeLastScoreFromPlayer(player.player)
-                        currentMovingPlayer = player
-                        // handleEqualScore()
+                const scoreToPlayers = new Map<number, string[]>();
+                for (const [player, score] of totalScores.entries()) {
+                    if (!scoreToPlayers.has(score)) {
+                        scoreToPlayers.set(score, []);
                     }
-                })
-            }
+                    scoreToPlayers.get(score)!.push(player);
+                }
 
-            handleEqualScore()
+                const playersToAdjust = new Map<string, number>();
+                for (const [score, players] of scoreToPlayers.entries()) {
+                    if (players.length > 1) {
+                        players.forEach(player => {
+                            if (player !== action.payload.player) {
+                                for (let i = state.turns.length - 1; i >= 0; i--) {
+                                    if (state.turns[i].player === player) {
+                                        playersToAdjust.set(player, -state.turns[i].score);
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+
+                for (const [player, score] of playersToAdjust.entries()) {
+                    state.turns.push({ player, score });
+                    repeat = true;
+                }
+            }
 
         },
         cancelLastTurn: (state) => {
