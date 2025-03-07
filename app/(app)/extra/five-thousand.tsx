@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import {View, StyleSheet, FlatList, TouchableOpacity, TextInput} from "react-native"
+import {View, StyleSheet, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform} from "react-native"
 import { Colors } from "@/constants/Colors"
 import { PageContainer } from "@/components/PageContainer"
 import { ThemedText } from "@/components/ThemedText"
@@ -25,8 +25,7 @@ export default function FiveThousand() {
     const [errorMessageVisible, setErrorMessageVisible] = useState(false)
     const [newGameModalVisible, setNewGameModalVisible] = useState(false)
     const [rulesModalVisible, setRulesModalVisible] = useState(false)
-
-    // const [sound, setSound] = useState<Audio.Sound | null>(null);
+    const [addPlayerMode, setAddPlayerMode] = useState(true)
 
     const playSound = async () => {
         try {
@@ -142,39 +141,50 @@ export default function FiveThousand() {
                         content={`${newPlayer} is already playing !`}
                         height={-50}
                     />
-                    <View style={styles.addScoreView}>
-                        <CustomInput 
-                            placeholder={activePlayer != "" ? `Add score to ${activePlayer}` : "Add player to start playing !"} 
-                            value={newScore} 
-                            onChangeText={(e) => setNewScore(e)} 
-                            keyboardType='numeric'
-                            style={{width: "80%", height: 50, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
-                            validate={() => enterScore()}
-                        />
-                        
-                        <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
-                        <FontAwesomeIcon icon={faPooStorm} color={"white"} size={32}/>
-                        </TouchableOpacity>    
-                    </View>
+                    
                     <FlatList 
                         data={fivek.players}
                         renderItem={playerView}
                         keyExtractor={(item) => item.name}
                         style={{paddingBottom: 16}}
                     />
-                    <View style={{marginTop: "auto", paddingTop: 16}}>
-                        <CustomInput placeholder="Enter new player's name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer}/>
+                    <KeyboardAvoidingView 
+                        style={styles.inputView}
+                        behavior="padding"
+                    >
+                        { addPlayerMode  ? 
+                        <CustomInput placeholder="Enter new player's name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer} style={{height: 50}}/>
+                        :
+                        <View style={styles.addScoreView}>
+                            <CustomInput 
+                                placeholder={activePlayer != "" ? `Add score to ${activePlayer}` : "Add player to start playing !"} 
+                                value={newScore} 
+                                onChangeText={(e) => setNewScore(e)} 
+                                keyboardType='numeric'
+                                style={{width: "80%", height: 50, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
+                                validate={() => enterScore()}
+                            />
+                            
+                            <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
+                            <FontAwesomeIcon icon={faPooStorm} color={"white"} size={32}/>
+                            </TouchableOpacity>
+                        </View>
+                    }
+                    </KeyboardAvoidingView>
+                    <View style={{marginTop: "auto"}}>
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                             <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"New Game"} onPress={() => setNewGameModalVisible(true)} style={{width: "32%"}}/>
+                            <CustomButton hapticFeel lightText color={{color1: addPlayerMode ? Colors.orange500 : Colors.blue500, color2: addPlayerMode ? Colors.orange700 : Colors.blue700}} text={addPlayerMode ? "Start playing" : "Add player"} onPress={() => setAddPlayerMode(!addPlayerMode)} style={{width: "32%"}}/>
                             <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} onPress={() => dispatch(cancelLastTurn())} style={{width: "32%"}}>
                                 <FontAwesomeIcon icon={faRotateLeft} color="white"/>
                             </CustomButton>
-                            <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} style={{width: "32%"}}/> 
+                            {/* <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} style={{width: "32%"}}/>  */}
                         </View>
                     </View>
                 </View>
             </View>
         </PageContainer>
+       
     )
 }
 
@@ -216,6 +226,9 @@ const styles = StyleSheet.create({
     rightPlayerCardContent: {
         width: "30%",
         paddingLeft: 12
+    },
+    inputView: {
+        paddingTop: 16,
     },
     addScoreView: {
         flexDirection: "row",
