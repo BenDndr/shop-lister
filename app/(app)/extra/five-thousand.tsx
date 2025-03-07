@@ -37,7 +37,6 @@ export default function FiveThousand() {
 
             const randomSound = sounds[Math.floor(Math.random() * sounds.length)]
             const { sound } = await Audio.Sound.createAsync(randomSound);
-            // setSound(sound);
             await sound.playAsync();
         } catch (error) {
             console.error("Error playing sound:", error);
@@ -80,6 +79,7 @@ export default function FiveThousand() {
 
     const startNewGame = (hard: boolean = false) => {
         hard ? dispatch(resetGame()) : dispatch(resetScore())
+        hard && setAddPlayerMode(true)
         setNewGameModalVisible(false)
         setActivePlayer("")
     }
@@ -134,6 +134,24 @@ export default function FiveThousand() {
                         <FontAwesomeIcon icon={faCircleQuestion} size={32} color={Colors.backGround}/>
                     </TouchableOpacity>
                 </View>
+                { addPlayerMode  ? 
+                    <CustomInput placeholder="Enter new player's name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer} style={{height: 50}}/>
+                    :
+                    <View style={styles.addScoreView}>
+                        <CustomInput 
+                            placeholder={activePlayer != "" ? `Add score to ${activePlayer}` : "Add player to start playing !"} 
+                            value={newScore} 
+                            onChangeText={(e) => setNewScore(e)} 
+                            keyboardType='numeric'
+                            style={{width: "80%", height: 50, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
+                            validate={() => enterScore()}
+                        />
+                        
+                        <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
+                        <FontAwesomeIcon icon={faPooStorm} color={"white"} size={32}/>
+                        </TouchableOpacity>
+                    </View>
+                }
                 <View style={styles.body}>
                     <ErrorMessage
                         visible={errorMessageVisible}
@@ -152,26 +170,9 @@ export default function FiveThousand() {
                         style={styles.inputView}
                         behavior="padding"
                     >
-                        { addPlayerMode  ? 
-                        <CustomInput placeholder="Enter new player's name" value={newPlayer} onChangeText={(e) => setNewPlayer(e)} validate={createPlayer} style={{height: 50}}/>
-                        :
-                        <View style={styles.addScoreView}>
-                            <CustomInput 
-                                placeholder={activePlayer != "" ? `Add score to ${activePlayer}` : "Add player to start playing !"} 
-                                value={newScore} 
-                                onChangeText={(e) => setNewScore(e)} 
-                                keyboardType='numeric'
-                                style={{width: "80%", height: 50, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
-                                validate={() => enterScore()}
-                            />
-                            
-                            <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
-                            <FontAwesomeIcon icon={faPooStorm} color={"white"} size={32}/>
-                            </TouchableOpacity>
-                        </View>
-                    }
+                    
                     </KeyboardAvoidingView>
-                    <View style={{marginTop: "auto"}}>
+                    <View style={{marginTop: "auto", paddingBottom: 55}}>
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                             <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"New Game"} onPress={() => setNewGameModalVisible(true)} style={{width: "32%"}}/>
                             <CustomButton hapticFeel lightText color={{color1: addPlayerMode ? Colors.orange500 : Colors.blue500, color2: addPlayerMode ? Colors.orange700 : Colors.blue700}} text={addPlayerMode ? "Start playing" : "Add player"} onPress={() => setAddPlayerMode(!addPlayerMode)} style={{width: "32%"}}/>
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
         paddingLeft: 12
     },
     inputView: {
-        paddingTop: 16,
+        paddingTop: 6,
     },
     addScoreView: {
         flexDirection: "row",

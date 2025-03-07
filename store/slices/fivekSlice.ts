@@ -71,7 +71,7 @@ export const fivekSlice = createSlice({
 
                 const playersToAdjust = new Map<string, number>();
                 for (const [score, players] of scoreToPlayers.entries()) {
-                    if (players.length > 1) {
+                    if (players.length > 1 && score > 0) {
                         players.forEach(player => {
                             if (player !== action.payload.player) {
                                 for (let i = state.turns.length - 1; i >= 0; i--) {

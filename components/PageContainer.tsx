@@ -1,4 +1,4 @@
-import { View, StyleSheet, StyleProp, ViewStyle, SafeAreaView } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '@/constants/Colors';
 
@@ -17,19 +17,19 @@ export function PageContainer({
 }) {
 
 return (
-        <SafeAreaView style={{flex: 1}}>
-            {gradient ? <LinearGradient
-                colors={[color1 || Colors.backGround, color2 || Colors.backGround]}
-                style={[styles.background, style]}
-            >
-                {children}
-            </LinearGradient>
-            :
-            <View style={[styles.background, style]}>
-                {children}
-            </View>
-            }
-        </SafeAreaView>
+    <View style={{flex: 1}}>
+        {gradient ? <LinearGradient
+            colors={[color1 || Colors.backGround, color2 || Colors.backGround]}
+            style={[styles.background, style]}
+        >
+            {children}
+        </LinearGradient>
+        :
+        <View style={[styles.background, style]}>
+            {children}
+        </View>
+        }
+    </View>
     ) 
 }
 
