@@ -26,9 +26,9 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
-        name="parameters"
+        name="notes"
         options={{
-          title: 'Parameters',
+          title: 'Notes',
         }}
       />
       <Tabs.Screen

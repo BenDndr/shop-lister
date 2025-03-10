@@ -2,7 +2,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Colors } from '@/constants/Colors';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faList, faGear, faBook, faMugSaucer } from '@fortawesome/free-solid-svg-icons'
+import { faList, faNoteSticky, faBook, faMugSaucer } from '@fortawesome/free-solid-svg-icons'
 
 interface CustomTabBarProps extends BottomTabBarProps {
 
@@ -14,8 +14,8 @@ const TabBar: React.FC<CustomTabBarProps>  = ({ state, descriptors, navigation }
     switch (routeName) {
       case 'about':
         return faBook;
-      case 'parameters':
-        return faGear;
+      case 'notes':
+        return faNoteSticky;
       case 'index':
         return faList;
       case 'extra':
