@@ -1,7 +1,8 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import itemsSlice from './slices/itemsSlice'
 import listsSlice from './slices/listsSlice'
-import fivekSlice from './slices/fivekSlice';
+import fivekSlice from './slices/fivekSlice'
+import notesSlice from './slices/notesSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistReducer } from 'redux-persist'
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   items: itemsSlice,
   lists: listsSlice,
   fivek: fivekSlice,
+  notes: notesSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
