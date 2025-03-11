@@ -18,7 +18,7 @@ export default function FiveThousand() {
 
     const router = useRouter()
     const fivek = useAppSelector(state => state.fivek)
-    const [activePlayer, setActivePlayer] = useState("")
+    const [activePlayerId, setActivePlayerId] = useState("")
     const [newPlayer, setNewPlayer] = useState("")
     const dispatch = useAppDispatch()
     const [newScore, setNewScore] = useState("")
@@ -44,16 +44,20 @@ export default function FiveThousand() {
     };
 
     useEffect(() => {
-        const players = fivek.players.map(player => player.name)
+        const players = fivek.players.map(player => player.id)
         if (fivek.players.length > 0) {
-            if (activePlayer == "") {
-                setActivePlayer(fivek.players[0].name)
+            if (activePlayerId == "") {
+                setActivePlayerId(fivek.players[0].id)
             } else {
-                let activePlayerIndex = players.indexOf(activePlayer)
-                setActivePlayer(players[activePlayerIndex + 1] || players[0])
+                let activePlayerIndex = players.indexOf(activePlayerId)
+                setActivePlayerId(players[activePlayerIndex + 1] || players[0])
             }
         }
     }, [fivek.turns])
+
+    useEffect(() => {
+        fivek.players.length > 0 &&setActivePlayerId(fivek.players[fivek.players.length - 1].id)
+    }, [fivek.players])
 
     const createPlayer = () => {
         if (newPlayer == "" || fivek.players.find(player => player.name == newPlayer)) {
@@ -61,19 +65,18 @@ export default function FiveThousand() {
             return
         }
         dispatch(addPlayer(newPlayer))
-        setActivePlayer(newPlayer)
         setNewPlayer("")
     }
 
-    const addTose = (playerName: string) => {
-        if (playerName != "") {
-            dispatch(addTurn({player: playerName, score: 0}))
+    const addTose = (playerId: string) => {
+        if (playerId != "") {
+            dispatch(addTurn({id: Date.now().toString(), playerId: playerId, score: 0}))
             playSound()
         }
     }
 
     const enterScore = () => {
-        fivek.players.length > 0 && dispatch(addTurn({player: activePlayer, score: parseInt(newScore)}))
+        fivek.players.length > 0 && dispatch(addTurn({id: Date.now().toString(), playerId: activePlayerId, score: parseInt(newScore)}))
         setNewScore("")
     }
 
@@ -81,20 +84,20 @@ export default function FiveThousand() {
         hard ? dispatch(resetGame()) : dispatch(resetScore())
         hard && setAddPlayerMode(true)
         setNewGameModalVisible(false)
-        setActivePlayer("")
+        setActivePlayerId("")
     }
 
-    const playerView = ({ item } : {item: { name: string }}) => {
+    const playerView = ({ item } : {item: { id: string, name: string }}) => {
 
-        const Score = fivek.turns.filter(turn => turn.player == item.name).reduce((acc, turn) => acc + turn.score, 0)
+        const Score = fivek.turns.filter(turn => turn.playerId == item.id).reduce((acc, turn) => acc + turn.score, 0)
 
         return (
-            <TouchableOpacity style={[styles.playerCard, {backgroundColor: item.name == activePlayer ? Colors.yellow300 : Colors.backGround}]} onPress={() => setActivePlayer(item.name)}>
-                <FontAwesomeIcon icon={faDice} style={{position: "absolute", opacity: item.name == activePlayer ? .3 : 0, left: 20}} size={64}/>
+            <TouchableOpacity style={[styles.playerCard, {backgroundColor: item.id == activePlayerId ? Colors.yellow300 : Colors.backGround}]} onPress={() => setActivePlayerId(item.id)}>
+                <FontAwesomeIcon icon={faDice} style={{position: "absolute", opacity: item.id == activePlayerId ? .3 : 0, left: 20}} size={64}/>
                 <View style={styles.leftPlayerCardContent}>
                     <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
                     <View style={styles.scoresView}>
-                        {fivek.turns.filter(turn => turn.player == item.name).slice(-7).map((turn, index) => {
+                        {fivek.turns.filter(turn => turn.playerId == item.id).slice(-7).map((turn, index) => {
                             return (
                                 <ThemedText key={index}>{turn.score}</ThemedText>
                             )
@@ -139,7 +142,7 @@ export default function FiveThousand() {
                     :
                     <View style={styles.addScoreView}>
                         <CustomInput 
-                            placeholder={activePlayer != "" ? `Add score to ${activePlayer}` : "Add player to start playing !"} 
+                            placeholder={activePlayerId != "" ? `Add score to ${fivek.players.find(player => player.id == activePlayerId)?.name}` : "Add player to start playing !"}
                             value={newScore} 
                             onChangeText={(e) => setNewScore(e)} 
                             keyboardType='numeric'
@@ -147,7 +150,7 @@ export default function FiveThousand() {
                             validate={() => enterScore()}
                         />
                         
-                        <TouchableOpacity onPress={() => addTose(activePlayer)} style={styles.toseButton}>
+                        <TouchableOpacity onPress={() => addTose(activePlayerId)} style={styles.toseButton}>
                         <FontAwesomeIcon icon={faPooStorm} color={"white"} size={32}/>
                         </TouchableOpacity>
                     </View>
@@ -163,7 +166,7 @@ export default function FiveThousand() {
                     <FlatList 
                         data={fivek.players}
                         renderItem={playerView}
-                        keyExtractor={(item) => item.name}
+                        keyExtractor={(item) => item.id}
                         style={{paddingBottom: 16}}
                     />
                     <KeyboardAvoidingView 
