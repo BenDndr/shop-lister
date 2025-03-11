@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface ListState {
+    id: string
     name: string
 }
 
@@ -20,19 +21,17 @@ const ListsSlice = createSlice({
             state.lists = []
         },
         addList: (state, action: PayloadAction<string>) => {
-            state.lists.push({name: action.payload})
+            state.lists.push({name: action.payload, id: Date.now().toString()})
         },
-        editList: (state, action: PayloadAction<{ listToEdit: string; editedList: string }>) => {
-            state.lists = state.lists.map((item: ListState) => {
+        editList: (state, action: PayloadAction<{ id: string; newName: string }>) => {
+            state.lists = state.lists.map((list: ListState) => {
                 return (
-                  item.name == action.payload.listToEdit ? {name: action.payload.editedList} : item
+                    list.id == action.payload.id ? {...list, name: action.payload.newName} : list
                 )
             })
         },
         removeList: (state, action: PayloadAction<string>) => {
-            state.lists = state.lists.filter((list: ListState) => {
-                return list.name !== action.payload;
-            });
+            state.lists = state.lists.filter((list: ListState) =>  list.id !== action.payload);
         },
     }
 })

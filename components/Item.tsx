@@ -80,7 +80,6 @@ export function Item({
 
 const styles = StyleSheet.create({
     itemContainer: {
-        // backgroundColor: Colors.blue100,
         backgroundColor: "white",
         borderRadius: 10,
         padding: 6,
@@ -90,7 +89,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         marginBottom: 4,
-        // elevation: 2
     },
     actionView: {
         flexDirection: 'row',

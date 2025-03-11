@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faGear, faCaretRight, faRotateLeft, faPen } from '@fortawesome/free-solid-svg-icons'
 import { PageContainer } from '@/components/PageContainer';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
-import { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem, bulkListEdit } from '@/store/slices/itemsSlice'
+import { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem } from '@/store/slices/itemsSlice'
 import { addList, editList, removeList, resetList } from '@/store/slices/listsSlice'
 import { CustomButton } from '@/components/CustomButton'
 import { CustomInput } from '@/components/CustomInput'
@@ -53,28 +53,23 @@ export default function ListIndex() {
     console.log("Lists", lists)
 
 
-    const createItem = (listName: string) => {
-        const itemsInList = items.items.map((item) => item.name)
-        if (itemsInList.includes(itemToAdd)) {
-            setErrorMessageVisible(true)
-        } else {
-            dispatch(addItem({name: itemToAdd, list: listName}))
-            setItemToAdd("")
-        }
-    }
-    
-    const removeItem = (itemName: string) => {
-        dispatch(removeSpecificItem(itemName))
+    const createItem = (listId: string) => {
+        dispatch(addItem({name: itemToAdd, listId: listId}))
         setItemToAdd("")
     }
     
-    const clearList = (listName: string) => {
-        dispatch(removeByList(listName))
+    const removeItem = (itemId: string) => {
+        dispatch(removeSpecificItem(itemId))
+        setItemToAdd("")
+    }
+    
+    const clearList = (listId: string) => {
+        dispatch(removeByList(listId))
         setModalVisible(false)
     }
 
     const editItemName = (ref: string, newName: string) => {
-        dispatch(editItem({ itemToEdit: ref, editedItem: newName }))
+        dispatch(editItem({ itemIdToEdit: ref, editedItem: newName }))
     }
 
     const setEditMode = (index: number) => {
@@ -88,9 +83,8 @@ export default function ListIndex() {
         setModalVisible(false)
     }
 
-    const changeListName = (oldListName: string) => {
-        dispatch(editList({listToEdit: oldListName, editedList: editedList}))
-        dispatch(bulkListEdit({listToEdit: oldListName, editedList: editedList}))
+    const changeListName = (id: string) => {
+        dispatch(editList({id: id, newName: editedList}))
         setEditedList("")
         setEditListNameActive(false)
     }
@@ -110,13 +104,13 @@ export default function ListIndex() {
         setModalVisible(true)
     }
 
-    const renderCarouselView = (list: { name: string }, index: number) => {
+    const renderCarouselView = (list: { id: string, name: string }) => {
         return (
-            <View key={index} style={{flex: 1}}>
+            <View key={list.id} style={{flex: 1}}>
                 {modalVisible && <ModalLayout heightProps={200} closeModal={() => setModalVisible(false)}>
                     <View>
                         <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>{resetAllModal ? "Are you sure you want to clear all data ?" : "Are you sure you want to clear the list ?"}</ThemedText>
-                        <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"Yes"} onPress={resetAllModal ? () => cleanListsAndItems() : () => clearList(list.name)}/>
+                        <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"Yes"} onPress={resetAllModal ? () => cleanListsAndItems() : () => clearList(list.id)}/>
                         <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue500, color2: Colors.blue500}} text={"No"} onPress={() => setModalVisible(false)}/>
                     </View>
                 </ModalLayout>}
@@ -126,7 +120,7 @@ export default function ListIndex() {
                     {editListNameActive ? 
                     <CustomInput 
                         placeholder={list.name}
-                        validate={() => changeListName(list.name)}
+                        validate={() => changeListName(list.id)}
                         onChangeText={(e) => setEditedList(e)}
                         value={editedList}
                         style={{height: 44, width: '80%', fontSize: 18, }}
@@ -140,13 +134,13 @@ export default function ListIndex() {
                 </View>
                 <View style={[styles.content, {width: containerWidth}]}>
                     <View style={styles.contentHeader}>
-                        <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={() => createItem(list.name)} style={{height: 40, width: '79%'}}/>
+                        <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={() => createItem(list.id)} style={{height: 40, width: '79%'}}/>
                         <TouchableOpacity style={[styles.buttonPanelOpener, {backgroundColor: ShowButtonsPannel ? Colors.blue100 : Colors.blue500}]} onPress={slide}>
                             <FontAwesomeIcon icon={faGear} color={ShowButtonsPannel ? Colors.blue700 : "white"} size={24}/>
                         </TouchableOpacity>
                     </View>
                     <ErrorMessage 
-                        content="This item is already in the list."
+                        content="Your List must have name"
                         visible={errorMessageVisible}
                         height={-50}
                         left={10}
@@ -154,9 +148,9 @@ export default function ListIndex() {
                     />
                     <FlatList
                         showsVerticalScrollIndicator={false}
-                        data={items.items.filter((item) => item.list == list.name)} 
+                        data={items.items.filter((item) => item.listId == list.id)} 
                         renderItem={renderItems}
-                        keyExtractor={(item) => item.name}
+                        keyExtractor={(item) => item.id}
                     />
                 </View>
             </View>
@@ -164,15 +158,15 @@ export default function ListIndex() {
     }
 
 
-    const renderItems = ({ item, index }: { item: { name: string, list: string }, index: number }) => {
+    const renderItems = ({ item, index }: { item: { id: string, name: string, listId: string }, index: number }) => {
         return (
             <Item 
-                key={index} 
+                key={item.id} 
                 name={item.name} 
                 index={index}
-                remove={() => removeItem(item.name)}
+                remove={() => removeItem(item.id)}
                 value= {item.name}
-                validate={(e) => editItemName(item.name, e)}
+                validate={(e) => editItemName(item.id, e)}
                 activateEditMode={() => setEditMode(index)}
                 editMode={index == editIndex}
                 blurAction={() => setEditIndex(-1)}
@@ -205,8 +199,8 @@ export default function ListIndex() {
                         data={lists.lists}
                         horizontal
                         pagingEnabled
-                        renderItem={({item, index}) => (
-                            renderCarouselView(item, index)
+                        renderItem={({item}) => (
+                            renderCarouselView(item)
                         )}
                         keyboardShouldPersistTaps="handled"
                     />
