@@ -21,11 +21,11 @@ const noteSlice = createSlice({
         resetNotes: (state) => {
             state.notes = [];
         },
-        addNote: (state, action: PayloadAction<{ title: string; content: string }>) => {
+        addNote: (state) => {
             const newNote: Note = {
                 id: Date.now().toString(),
-                title: action.payload.title,
-                content: action.payload.content,
+                title: "New Note",
+                content: "Add your content here",
             };
             state.notes.push(newNote);
         },
