@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity, Pressable, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Pressable, ScrollView, FlatList } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faPlus, faEraser } from '@fortawesome/free-solid-svg-icons'
@@ -15,6 +15,7 @@ export default function NoteIndex() {
     const notes = useAppSelector(state => state.notes).notes
     console.log("notes", notes)
     const dispatch = useAppDispatch()
+    const [activeNoteId, setActiveNoteId] = useState("")
 
     const createNewNote = () => {
         dispatch(addNote())
@@ -26,11 +27,11 @@ export default function NoteIndex() {
         content: string;
     }
 
-    const renderNote = (note: Note) =>{
+    const renderNote = ({item}: {item: Note}) =>{
         return (
-            <Pressable key={note.id} style={styles.noteCard}>
-                <ThemedText type="defaultSemiBold">{note.title}</ThemedText>
-                <ThemedText>{note.content}</ThemedText>
+            <Pressable key={item.id} style={styles.noteCard}>
+                <ThemedText type="defaultSemiBold">{item.title}</ThemedText>
+                <ThemedText>{item.content}</ThemedText>
             </Pressable>
         )
     }
@@ -43,22 +44,29 @@ export default function NoteIndex() {
                     <Pressable
                         android_ripple={{ color: Colors.pink500, borderless: false }}
                         style={styles.cleanAllButton}
+                        onPress={() => dispatch(resetNotes())}
                     >
                         <FontAwesomeIcon icon={faEraser} size={36}/>
                     </Pressable>
                 </View>
             </View>
             <View style={styles.content}>
-                {
-                    notes.map(note => renderNote(note))
-                }
-                <Pressable 
-                    style={styles.plusButton} 
-                    android_ripple={{ color: Colors.teal500, borderless: false }}
-                    onPress={createNewNote}
-                >
-                    <FontAwesomeIcon icon={faPlus} size={36}/>
-                </Pressable>
+                <FlatList
+                    data={notes}
+                    renderItem={renderNote}
+                    keyExtractor={item => item.id}
+                    numColumns={2}
+                    columnWrapperStyle={{ justifyContent: "space-between" }} 
+                />
+                <View style={{borderRadius: 10, overflow: 'hidden', width: "100%"}}>
+                    <Pressable 
+                        style={styles.plusButton} 
+                        android_ripple={{ color: Colors.teal500, borderless: false }}
+                        onPress={createNewNote}
+                    >
+                        <FontAwesomeIcon icon={faPlus} size={36}/>
+                    </Pressable>
+                </View>
             </View>
         </PageContainer>
     )
@@ -76,23 +84,14 @@ const styles = StyleSheet.create({
     },
     content: {
         width: "95%",
-        padding: 10,
-        paddingBottom: 75,
         flex: 1,
-        backgroundColor: Colors.backGround,
-        marginLeft: 12,
-        marginRight: 12,
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        // justifyContent: 'space-around',
-        gap: "10%"
+        paddingBottom: 80,
     },
     plusButton: {
+        marginTop: 10,
         backgroundColor: Colors.teal100,
-        width: "45%",
-        height: 150,
+        width: "100%",
+        height: 50,
         padding: 15,
         borderRadius: 10,
         alignItems: 'center',
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
     },
     noteCard: {
         backgroundColor: "white",
-        width: "45%",
+        width: "49%",
         height: 150,
         padding: 15,
         borderRadius: 10,
@@ -125,6 +124,7 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+        shadowRadius: 3,
+        marginBottom: 10,
     }
 })

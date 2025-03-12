@@ -20,15 +20,15 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
-        name="extra"
-        options={{
-          title: 'Extra',
-        }}
-      />
-      <Tabs.Screen
         name="notes"
         options={{
           title: 'Notes',
+        }}
+      />
+      <Tabs.Screen
+        name="extra"
+        options={{
+          title: 'Extra',
         }}
       />
       <Tabs.Screen
