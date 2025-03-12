@@ -1,7 +1,7 @@
 import { View, StyleSheet, TouchableOpacity, Pressable, ScrollView, FlatList } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faPlus, faEraser } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faEraser, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { CustomButton } from '@/components/CustomButton';
 import { PageContainer } from '@/components/PageContainer';
 import { ModalLayout } from '@/components/ModalLayout';
@@ -28,9 +28,20 @@ export default function NoteIndex() {
     }
 
     const renderNote = ({item}: {item: Note}) =>{
+
+        const isSelected = activeNoteId == item.id
+
         return (
-            <Pressable key={item.id} style={styles.noteCard}>
-                <ThemedText type="defaultSemiBold">{item.title}</ThemedText>
+            
+            <Pressable key={item.id} style={[styles.noteCard, isSelected ? styles.fullScreenItem : null ]} onPress={() => setActiveNoteId(item.id)}>
+                <View style={styles.noteHeader}>
+                    <ThemedText type="defaultSemiBold">{item.title}</ThemedText>
+                    {isSelected && 
+                    <TouchableOpacity onPress={() => setActiveNoteId("")} style={styles.closeNoteButton}>
+                        <FontAwesomeIcon icon={faXmark}/>
+                    </TouchableOpacity>    
+                    }
+                </View>
                 <ThemedText>{item.content}</ThemedText>
             </Pressable>
         )
@@ -97,10 +108,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         elevation: 3,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
     },
     cleanAllButton: {
         backgroundColor: Colors.backGround,
@@ -118,13 +125,24 @@ const styles = StyleSheet.create({
         height: 150,
         padding: 15,
         borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
         elevation: 3,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3,
         marginBottom: 10,
+    },
+    fullScreenItem: {
+        width: "100%",
+        height: "100%",
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 2,
+    },
+    noteHeader: {
+        width: "100%",
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    closeNoteButton: {
+        padding: 10,
     }
 })
