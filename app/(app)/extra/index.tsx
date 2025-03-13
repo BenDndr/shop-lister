@@ -5,14 +5,10 @@ import { faMugSaucer } from '@fortawesome/free-solid-svg-icons'
 import { CustomButton } from '@/components/CustomButton';
 import { PageContainer } from '@/components/PageContainer';
 import {ThemedText} from '@/components/ThemedText';
-import { useState } from 'react';
-import { Link, useRouter } from 'expo-router';
-import { useRoute } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 
 export default function ExtraIndex() {
 
-    const route = useRoute();
-    console.log("IndexRoute", route)
     const router = useRouter()
 
     return (
