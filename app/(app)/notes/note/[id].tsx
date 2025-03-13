@@ -6,7 +6,7 @@ import { PageContainer } from '@/components/PageContainer'
 import {ThemedText} from '@/components/ThemedText';
 import { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
-import { addNote, updateNote, deleteNote, resetNotes } from '@/store/slices/notesSlice'
+import { updateNote, deleteNote } from '@/store/slices/notesSlice'
 import { Link, useRouter, useLocalSearchParams } from 'expo-router';
 import { useRoute } from '@react-navigation/native';
 
@@ -18,7 +18,7 @@ interface Note {
 
 export default function ShowNote() {
 
-    const route = useRoute()
+    const router = useRouter();
     const {id} =  useLocalSearchParams()
     const note = useAppSelector(state => state.notes).notes.find(note => note.id === id)
     console.log("note", note)
@@ -27,12 +27,12 @@ export default function ShowNote() {
 
     return (
         <PageContainer color1={Colors.teal300} color2={Colors.pink100} gradient>
-            <Link 
+            <Pressable 
                 style={styles.closeNoteButton}
-                href={{pathname: "/notes"}}
+                onPress={() => router.back()}
             >
                 <FontAwesomeIcon icon={faXmark}/>
-            </Link>
+            </Pressable>
             <ThemedText type="title">{note?.title}</ThemedText>
             <ThemedText>{note?.content}</ThemedText>
         </PageContainer>
