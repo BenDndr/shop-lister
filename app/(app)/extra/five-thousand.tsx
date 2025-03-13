@@ -23,6 +23,7 @@ export default function FiveThousand() {
     const dispatch = useAppDispatch()
     const [newScore, setNewScore] = useState("")
     const [errorMessageVisible, setErrorMessageVisible] = useState(false)
+    const [cancelErrorMessageVisible, setCancelErrorMessageVisible] = useState(false)
     const [newGameModalVisible, setNewGameModalVisible] = useState(false)
     const [rulesModalVisible, setRulesModalVisible] = useState(false)
     const [addPlayerMode, setAddPlayerMode] = useState(true)
@@ -85,6 +86,14 @@ export default function FiveThousand() {
         hard && setAddPlayerMode(true)
         setNewGameModalVisible(false)
         setActivePlayerId("")
+    }
+
+    const removeLastTurn = () => {
+        if (fivek.turns.length > 0) {
+            dispatch(cancelLastTurn())
+        } else {
+            setCancelErrorMessageVisible(true)
+        }
     }
 
     const playerView = ({ item } : {item: { id: string, name: string }}) => {
@@ -162,6 +171,12 @@ export default function FiveThousand() {
                         content={`${newPlayer} is already playing !`}
                         height={-50}
                     />
+                    <ErrorMessage
+                        visible={cancelErrorMessageVisible}
+                        hideAction={() => setCancelErrorMessageVisible(false)}
+                        content={`No turn have been played yet !`}
+                        height={-50}
+                    />
                     
                     <FlatList 
                         data={fivek.players}
@@ -179,10 +194,9 @@ export default function FiveThousand() {
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                             <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"New Game"} onPress={() => setNewGameModalVisible(true)} style={{width: "32%"}}/>
                             <CustomButton hapticFeel lightText color={{color1: addPlayerMode ? Colors.orange500 : Colors.blue500, color2: addPlayerMode ? Colors.orange700 : Colors.blue700}} text={addPlayerMode ? "Start playing" : "Add player"} onPress={() => setAddPlayerMode(!addPlayerMode)} style={{width: "32%"}}/>
-                            <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} onPress={() => dispatch(cancelLastTurn())} style={{width: "32%"}}>
+                            <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} onPress={removeLastTurn} style={{width: "32%"}}>
                                 <FontAwesomeIcon icon={faRotateLeft} color="white"/>
                             </CustomButton>
-                            {/* <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Go back"} onPress={() => router.push("/extra")} style={{width: "32%"}}/>  */}
                         </View>
                     </View>
                 </View>
