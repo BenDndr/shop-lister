@@ -16,6 +16,7 @@ export default function NoteIndex() {
     console.log("notes", notes)
     const dispatch = useAppDispatch()
     const [activeNoteId, setActiveNoteId] = useState("")
+    const [deleteAllModalVisible, setDeleteAllModalVisible] = useState(false)
 
     const createNewNote = () => {
         dispatch(addNote())
@@ -32,8 +33,8 @@ export default function NoteIndex() {
         const isSelected = activeNoteId == item.id
 
         return (
-            
-            <Pressable key={item.id} style={[styles.noteCard, isSelected ? styles.fullScreenItem : null ]} onPress={() => setActiveNoteId(item.id)}>
+
+            <Pressable key={item.id} style={[styles.noteCard, isSelected ? styles.fullScreenNoteCard : null ]} onPress={() => setActiveNoteId(item.id)}>
                 <View style={styles.noteHeader}>
                     <ThemedText type="defaultSemiBold">{item.title}</ThemedText>
                     {isSelected && 
@@ -49,13 +50,33 @@ export default function NoteIndex() {
 
     return (
         <PageContainer color1={Colors.teal300} color2={Colors.pink100} gradient>
+            {
+                deleteAllModalVisible &&
+                <ModalLayout
+                    closeModal={() => setDeleteAllModalVisible(false)}
+                    heightProps={260}
+                >
+                    <ThemedText type="defaultSemiBold" style={{marginBottom: 20}}>Are you sure you want to delete all notes?</ThemedText>
+                    <CustomButton 
+                        style={{width: 300, marginBottom: 10}} text="Yes" lightText hapticFeel color={{color1: Colors.pink500, color2: Colors.pink300}}
+                        onPress={() => {
+                            dispatch(resetNotes())
+                            setDeleteAllModalVisible(false)
+                        }}
+                    />
+                    <CustomButton 
+                        style={{width: 300, marginBottom: 10}} text="No" hapticFeel color={{color1: Colors.teal300, color2: Colors.teal100}}
+                        onPress={() => setDeleteAllModalVisible(false)}
+                    />
+                </ModalLayout>
+            }
             <View style={styles.header}>
                 <ThemedText type="title">Notes</ThemedText>
                 <View style={{borderRadius: 30, overflow: 'hidden', marginBottom: 10,}}>
                     <Pressable
                         android_ripple={{ color: Colors.pink500, borderless: false }}
                         style={styles.cleanAllButton}
-                        onPress={() => dispatch(resetNotes())}
+                        onPress={() => setDeleteAllModalVisible(true)}
                     >
                         <FontAwesomeIcon icon={faEraser} size={36}/>
                     </Pressable>
@@ -128,7 +149,7 @@ const styles = StyleSheet.create({
         elevation: 3,
         marginBottom: 10,
     },
-    fullScreenItem: {
+    fullScreenNoteCard: {
         width: "100%",
         height: "100%",
         position: 'absolute',
