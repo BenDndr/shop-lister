@@ -66,10 +66,10 @@ export function Item({
                     <ThemedText>{name}</ThemedText>
                 }
                 <View style={styles.actionView}>
-                    <TouchableOpacity onPress={() => {activateEditMode(index)}} style={{...styles.actionButton, backgroundColor: Colors.blue500}}>
-                        <FontAwesomeIcon icon={faPen} color={Colors.backGround}/>
+                    <TouchableOpacity onPress={() => {activateEditMode(index)}} style={{...styles.actionButton, backgroundColor: Colors.teal100}}>
+                        <FontAwesomeIcon icon={faPen} color={Colors.teal900}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={discardItem} style={{...styles.actionButton, backgroundColor: Colors.orange500}}>
+                    <TouchableOpacity onPress={discardItem} style={{...styles.actionButton, backgroundColor: Colors.pink300}}>
                         <FontAwesomeIcon icon={faCheck} color={Colors.pink900}/>
                     </TouchableOpacity>
                 </View>

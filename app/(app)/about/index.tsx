@@ -10,7 +10,7 @@ import { useState } from 'react';
 export default function AboutIndex() {
 
     return (
-        <PageContainer color1={Colors.blue300} color2={Colors.orange500} gradient>
+        <PageContainer color1={Colors.teal300} color2={Colors.pink100} gradient>
             <View style={styles.presCard}>
                 <Image
                     style={styles.avatar}
