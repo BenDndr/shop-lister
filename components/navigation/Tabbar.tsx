@@ -66,7 +66,7 @@ const TabBar: React.FC<CustomTabBarProps>  = ({ state, descriptors, navigation }
             key={index}
           >
             <View style={{...styles.iconConatainer, borderBottomColor: isFocused ? Colors.pink500 : 'transparent'}}>
-              <FontAwesomeIcon icon={getIcon(route.name)} color={isFocused ? Colors.pink500 : Colors.teal500} size={25}/>
+              <FontAwesomeIcon icon={getIcon(route.name)} color={isFocused ? Colors.pink500 : Colors.teal700} size={25}/>
             </View>
 
           </TouchableOpacity>

@@ -129,14 +129,14 @@ export default function ListIndex() {
                     <ThemedText style={{alignItems: 'center', maxWidth: screenWidth - 40}} type={"title"} >{list.name || "MY LIST"}</ThemedText>
                     }
                     <TouchableOpacity style={styles.addListButton} onPress={() => {setEditListNameActive(!editListNameActive); setEditedList(list.name)}}>
-                        <FontAwesomeIcon icon={faPen} color={Colors.teal300} size={24}/>
+                        <FontAwesomeIcon icon={faPen} color={Colors.teal900} size={24}/>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.content, {width: containerWidth}]}>
                     <View style={styles.contentHeader}>
                         <CustomInput placeholder='Item to add' value={itemToAdd} onChangeText={(e) => setItemToAdd(e)} validate={() => createItem(list.id)} style={{height: 40, width: '79%'}}/>
-                        <TouchableOpacity style={[styles.buttonPanelOpener, {backgroundColor: ShowButtonsPannel ? Colors.teal100 : Colors.teal300}]} onPress={slide}>
-                            <FontAwesomeIcon icon={faGear} color={ShowButtonsPannel ? Colors.teal700 : "white"} size={24}/>
+                        <TouchableOpacity style={[styles.buttonPanelOpener, {backgroundColor: ShowButtonsPannel ? Colors.teal100 : "white"}]} onPress={slide}>
+                            <FontAwesomeIcon icon={faGear} color={ShowButtonsPannel ? Colors.teal900 : Colors.teal900} size={24}/>
                         </TouchableOpacity>
                     </View>
                     <ErrorMessage 
