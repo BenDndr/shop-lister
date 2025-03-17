@@ -24,7 +24,7 @@ const noteSlice = createSlice({
         addNote: (state) => {
             const newNote: Note = {
                 id: Date.now().toString(),
-                title: "New Note",
+                title: "Press to edit",
                 content: "Add your content here",
             };
             state.notes.push(newNote);

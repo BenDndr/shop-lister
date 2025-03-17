@@ -2,7 +2,7 @@ import { Text, type TextProps, StyleSheet } from 'react-native';
 
 export type ThemedTextProps = TextProps & {
   light?: boolean
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'smalltitle';
   center?: boolean
 };
 
@@ -24,6 +24,7 @@ export function ThemedText({
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
+        type === 'smalltitle' ? styles.smalltitle: undefined,
         center && { textAlign: 'center' },
         style,
       ]}
@@ -49,6 +50,10 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 32,
+    fontWeight: 'bold',
+  },
+  smalltitle: {
+    fontSize: 48,
     fontWeight: 'bold',
   },
   link: {
