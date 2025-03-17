@@ -12,9 +12,9 @@ export default function ExtraIndex() {
     const router = useRouter()
 
     return (
-        <PageContainer color1={Colors.blue300} color2={Colors.teal500} gradient>
+        <PageContainer color1={Colors.teal300} color2={Colors.pink100} gradient>
             <View style={styles.header}>
-                <ThemedText type="title" light>Extra</ThemedText>
+                <ThemedText type="title">Extra</ThemedText>
             </View>
             <View style={styles.body}>
                 <View style={styles.extraCard}>
@@ -22,7 +22,7 @@ export default function ExtraIndex() {
                     <ThemedText>
                         5K is a dice game where your goal is to reach 5000 points before your opponent. This app will provide a way to keep track of the score of all players.
                     </ThemedText>
-                    <CustomButton lightText hapticFeel color={{color1: Colors.blue500, color2: Colors.blue700}} text={"Start a Game"} onPress={() => router.push("/extra/five-thousand")}/>
+                    <CustomButton lightText hapticFeel color={{color1: Colors.teal900, color2: Colors.teal700}} text={"Start a Game"} onPress={() => router.push("/extra/five-thousand")}/>
                 </View>
             </View>
         </PageContainer>

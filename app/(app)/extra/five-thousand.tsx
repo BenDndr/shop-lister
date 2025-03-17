@@ -101,7 +101,7 @@ export default function FiveThousand() {
         const Score = fivek.turns.filter(turn => turn.playerId == item.id).reduce((acc, turn) => acc + turn.score, 0)
 
         return (
-            <TouchableOpacity style={[styles.playerCard, {backgroundColor: item.id == activePlayerId ? Colors.yellow300 : Colors.backGround}]} onPress={() => setActivePlayerId(item.id)}>
+            <TouchableOpacity style={[styles.playerCard, {backgroundColor: item.id == activePlayerId ? Colors.pink100 : Colors.backGround}]} onPress={() => setActivePlayerId(item.id)}>
                 <FontAwesomeIcon icon={faDice} style={{position: "absolute", opacity: item.id == activePlayerId ? .3 : 0, left: 20}} size={64}/>
                 <View style={styles.leftPlayerCardContent}>
                     <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
@@ -122,14 +122,14 @@ export default function FiveThousand() {
     }
 
     return (
-        <PageContainer color1={Colors.blue300} color2={Colors.teal500} gradient>
+        <PageContainer color1={Colors.teal300} color2={Colors.pink100} gradient>
             {
                 newGameModalVisible &&
                 <ModalLayout heightProps={260} closeModal={() => setNewGameModalVisible(false)}>
                     <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>Voulez-vous lancer une nouvelle partie ?</ThemedText>
-                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"Reset Scores"} onPress={startNewGame}/>
-                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"New Game"} onPress={() => startNewGame(true)}/>
-                    <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.blue500, color2: Colors.blue500}} text={"No"} onPress={() => setNewGameModalVisible(false)}/>
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.pink500, color2: Colors.pink300}} text={"Reset Scores"} onPress={startNewGame} lightText/>
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.pink500, color2: Colors.pink300}} text={"New Game"} onPress={() => startNewGame(true)} lightText/>
+                    <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.teal500, color2: Colors.teal300}} text={"No"} onPress={() => setNewGameModalVisible(false)}/>
 
                 </ModalLayout>
             }
@@ -141,7 +141,7 @@ export default function FiveThousand() {
             }
             <View style={styles.content}>
                 <View style={styles.header}>
-                    <ThemedText type="title" light>5000</ThemedText>
+                    <ThemedText type="title">5000</ThemedText>
                     <TouchableOpacity style={{marginBottom: 12}} onPress={() => setRulesModalVisible(true)}>
                         <FontAwesomeIcon icon={faCircleQuestion} size={32} color={Colors.backGround}/>
                     </TouchableOpacity>
@@ -160,7 +160,7 @@ export default function FiveThousand() {
                         />
                         
                         <TouchableOpacity onPress={() => addTose(activePlayerId)} style={styles.toseButton}>
-                        <FontAwesomeIcon icon={faPooStorm} color={"white"} size={32}/>
+                            <FontAwesomeIcon icon={faPooStorm} color={"white"} size={32}/>
                         </TouchableOpacity>
                     </View>
                 }
@@ -192,9 +192,9 @@ export default function FiveThousand() {
                     </KeyboardAvoidingView>
                     <View style={{marginTop: "auto", paddingBottom: 55}}>
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                            <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} text={"New Game"} onPress={() => setNewGameModalVisible(true)} style={{width: "32%"}}/>
-                            <CustomButton hapticFeel lightText color={{color1: addPlayerMode ? Colors.orange500 : Colors.blue500, color2: addPlayerMode ? Colors.orange700 : Colors.blue700}} text={addPlayerMode ? "Start playing" : "Add player"} onPress={() => setAddPlayerMode(!addPlayerMode)} style={{width: "32%"}}/>
-                            <CustomButton hapticFeel lightText color={{color1: Colors.blue500, color2: Colors.blue700}} onPress={removeLastTurn} style={{width: "32%"}}>
+                            <CustomButton hapticFeel lightText color={{color1: Colors.teal700, color2: Colors.teal500}} text={"New Game"} onPress={() => setNewGameModalVisible(true)} style={{width: "32%"}}/>
+                            <CustomButton hapticFeel lightText color={{color1: addPlayerMode ? Colors.pink500 : Colors.teal700, color2: addPlayerMode ? Colors.pink700 : Colors.teal500}} text={addPlayerMode ? "Start playing" : "Add player"} onPress={() => setAddPlayerMode(!addPlayerMode)} style={{width: "32%"}}/>
+                            <CustomButton hapticFeel lightText color={{color1: Colors.teal700, color2: Colors.teal500}} onPress={removeLastTurn} style={{width: "32%"}}>
                                 <FontAwesomeIcon icon={faRotateLeft} color="white"/>
                             </CustomButton>
                         </View>
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     toseButton: {
-        backgroundColor: Colors.blue500,
+        backgroundColor: Colors.teal700,
         width: "20%",
         borderTopRightRadius: 16,
         borderBottomRightRadius: 16,

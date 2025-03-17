@@ -213,14 +213,14 @@ export default function ListIndex() {
                             </TouchableOpacity>
                             <View style={styles.buttonPanelRight}>
                                 <View style={styles.buttonPanelRow}>
-                                    <CustomButton color={{color1: Colors.teal500, color2: Colors.teal300}} text={"Clear the list"} onPress={() => handleModal()} style={{width: '40%'}} hapticFeel/>
+                                    <CustomButton color={{color1: Colors.teal700, color2: Colors.teal500}} text={"Clear the list"} onPress={() => handleModal()} style={{width: '40%'}} hapticFeel lightText/>
                                     <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} onPress={() => dispatch(restoreLastDiscardedItem())} style={{width: '40%'}} hapticFeel>
                                         <FontAwesomeIcon icon={faRotateLeft} color={Colors.pink900}/>
                                     </ CustomButton>
                                 </View>
                                 <View style={styles.buttonPanelRow}>
-                                    <CustomButton color={{color1: Colors.teal500, color2: Colors.teal300}} text={"Create list"} onPress={() => setAddListModal(true)} style={{width: '40%'}}  hapticFeel/>
-                                    <CustomButton color={{color1: Colors.teal500, color2: Colors.teal300}} text={"Reset all"} onPress={() => handleModal(true)} style={{width: '40%'}} hapticFeel/>
+                                    <CustomButton color={{color1: Colors.teal700, color2: Colors.teal500}} text={"Create list"} onPress={() => setAddListModal(true)} style={{width: '40%'}}  hapticFeel lightText/>
+                                    <CustomButton color={{color1: Colors.teal700, color2: Colors.teal500}} text={"Reset all"} onPress={() => handleModal(true)} style={{width: '40%'}} hapticFeel lightText/>
                                 </View>
                             </View>
                         </View>
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
         height: 150,
     },
     buttonPanelLeft: {
-        backgroundColor: Colors.teal500,
+        backgroundColor: Colors.teal700,
         height: '100%',
         width: '10%',
         borderTopLeftRadius: 16,
