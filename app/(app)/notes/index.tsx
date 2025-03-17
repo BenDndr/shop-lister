@@ -38,10 +38,10 @@ export default function NoteIndex() {
                 style={styles.noteCard} 
                 href={{pathname: "/notes/note/[id]", params: {id: item.id}}}>
                 <View style={styles.noteHeader}>
-                    <ThemedText type="defaultSemiBold">{item.title}</ThemedText>
+                    <ThemedText type="defaultSemiBold">{item.title.length > 15 ? `${item.title.slice(0, 15)}...` : item.title}</ThemedText>
                     
                 </View>
-                <ThemedText>{item.content}</ThemedText>
+                <ThemedText>{item.content.length > 30 ? `${item.content.slice(0, 30)}...` : item.content}</ThemedText>
             </Link>
         )
     }

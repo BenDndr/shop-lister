@@ -1,7 +1,8 @@
-import { View, StyleSheet, TouchableOpacity, Pressable, ScrollView, FlatList, Dimensions } from 'react-native';
+import { View, StyleSheet, TextInput, Pressable } from 'react-native';
+import Animated, { useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 import { Colors } from '@/constants/Colors';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faPen, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faXmark, faPen } from '@fortawesome/free-solid-svg-icons'
 import { PageContainer } from '@/components/PageContainer'
 import {ThemedText} from '@/components/ThemedText';
 import { useEffect, useState } from 'react';
@@ -25,8 +26,15 @@ export default function ShowNote() {
     console.log("note", note)
     const dispatch = useAppDispatch()
     const [editTitleMode, setEditTitleMode] = useState(false)
+    const [editContentMode, setEditContentMode] = useState(false)
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
+
+    const translateX = useSharedValue<number>(-100);
+
+    useEffect(() => {
+        translateX.value = withSpring(-200)
+    }, [])
 
     useEffect(() => {
         if (note) {
@@ -35,14 +43,37 @@ export default function ShowNote() {
         }
     }, [note])
 
-    const editTitle = () => {
-        if (note) {
-            dispatch(updateNote({
-                id: note.id,
-                title: title,
-                content: note.content,
-            }))
+    useEffect(() => {
+        translateX.value = withSpring(0)
+    }, [editContentMode])
+
+    const handleEditMode = (title: boolean) => {
+        if (title) {
+            setEditTitleMode(true)
+            setEditContentMode(false)
+        } else {
+            setEditContentMode(true)
             setEditTitleMode(false)
+        }
+    }
+
+    const handleEdit = (titleEdit: boolean) => {
+        if (note) {
+            if (titleEdit) {
+                dispatch(updateNote({
+                    id: note.id,
+                    title: title,
+                    content: note.content,
+                }))
+                setEditTitleMode(false)
+            } else {
+                dispatch(updateNote({
+                    id: note.id,
+                    title: note.title,
+                    content: content,
+                }))
+                setEditContentMode(false)
+            }
         }
     }
 
@@ -52,16 +83,26 @@ export default function ShowNote() {
                 { editTitleMode ?
                 <CustomInput
                     placeholder={"New title"}
-                    validate={editTitle}
+                    validate={() => handleEdit(true)}
                     onChangeText={(e) => setTitle(e)}
                     value={title}
-                    style={{height: 44, width: '80%', fontSize: 18, }}
+                    style={{height: 44, width: '70%', fontSize: 18, }}
                 />
                 :
-                <Pressable onPress={() => setEditTitleMode(true)} style={{width: "80%"}}>
+                <Pressable onPress={() => handleEditMode(true)} style={{width: "70%"}}>
                     <ThemedText type="smalltitle">{note?.title}</ThemedText>
                 </Pressable>
 
+                }
+                {
+                    editContentMode ?
+                    <Pressable onPress={() => handleEdit(false)} style={styles.validateButton}>
+                        <FontAwesomeIcon icon={faCheck} size={25} color={Colors.backGround}/>
+                    </Pressable>
+                    :
+                    <Pressable onPress={() => setEditContentMode(true)} style={styles.validateButton}>
+                        <FontAwesomeIcon icon={faPen} size={25} color={Colors.backGround}/>
+                    </Pressable>
                 }
                 <Pressable 
                     style={styles.closeNoteButton}
@@ -71,7 +112,23 @@ export default function ShowNote() {
                 </Pressable>
             </View>
             <View style={styles.noteCard}>
-                <ThemedText>{note?.content}</ThemedText>
+                {
+                    editContentMode ?
+                    <TextInput
+                        style={styles.contentInput}
+                        placeholder="Write your note here..."
+                        value={content}
+                        onChangeText={setContent}
+                        multiline={true}
+                        numberOfLines={10}
+                        textAlignVertical="top"
+                    />
+                    :
+                    <Pressable onPress={() => handleEditMode(false)} style={styles.contentEdit}>
+                        <ThemedText>{note?.content}</ThemedText>
+                    </Pressable>
+                }
+                    
             </View>
         </PageContainer>
     )
@@ -101,5 +158,25 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 25,
         marginBottom: 11,
+    },
+    contentEdit: {
+        height: "90%",
+        width: "100%",
+    },
+    contentInput: {
+        height: "80%",
+        width: "100%",
+        fontSize: 18,
+        borderRadius: 10,
+        backgroundColor: "white",
+    },
+    validateButton: {
+        marginBottom: 10,
+        width: 50,
+        height: 50,
+        backgroundColor: Colors.teal700,
+        borderRadius: 25,
+        justifyContent: "center",
+        alignItems: "center",
     }
 })
