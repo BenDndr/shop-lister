@@ -24,57 +24,37 @@ export default function ShowNote() {
     const {id} =  useLocalSearchParams()
     const note = useAppSelector(state => state.notes).notes.find(note => note.id === id)
     console.log("note", note)
+    const content = note?.content
     const dispatch = useAppDispatch()
     const [editTitleMode, setEditTitleMode] = useState(false)
-    const [editContentMode, setEditContentMode] = useState(false)
     const [title, setTitle] = useState("")
-    const [content, setContent] = useState("")
-
-    const translateX = useSharedValue<number>(-100);
-
-    useEffect(() => {
-        translateX.value = withSpring(-200)
-    }, [])
 
     useEffect(() => {
         if (note) {
             setTitle(note.title)
-            setContent(note.content)
         }
     }, [note])
 
-    useEffect(() => {
-        translateX.value = withSpring(0)
-    }, [editContentMode])
-
-    const handleEditMode = (title: boolean) => {
-        if (title) {
-            setEditTitleMode(true)
-            setEditContentMode(false)
-        } else {
-            setEditContentMode(true)
-            setEditTitleMode(false)
-        }
+    const handleEditTitle = () => {
+        setEditTitleMode(true)
     }
 
-    const handleEdit = (titleEdit: boolean) => {
-        if (note) {
-            if (titleEdit) {
-                dispatch(updateNote({
-                    id: note.id,
-                    title: title,
-                    content: note.content,
-                }))
-                setEditTitleMode(false)
-            } else {
-                dispatch(updateNote({
-                    id: note.id,
-                    title: note.title,
-                    content: content,
-                }))
-                setEditContentMode(false)
-            }
-        }
+    const validatelEditTitle = () => {
+        if (!note) return
+        dispatch(updateNote({
+            id: note.id,
+            title: title,
+            content: note.content,
+        }))
+    }
+
+    const editContent = (content: string) => {
+        if (!note) return
+        dispatch(updateNote({
+            id: note.id,
+            title: note.title,
+            content: content,
+        }))
     }
 
     return (
@@ -83,26 +63,15 @@ export default function ShowNote() {
                 { editTitleMode ?
                 <CustomInput
                     placeholder={"New title"}
-                    validate={() => handleEdit(true)}
+                    validate={validatelEditTitle}
                     onChangeText={(e) => setTitle(e)}
                     value={title}
                     style={{height: 44, width: '70%', fontSize: 18, }}
                 />
                 :
-                <Pressable onPress={() => handleEditMode(true)} style={{width: "70%"}}>
+                <Pressable onPress={handleEditTitle} style={{width: "70%"}}>
                     <ThemedText type="smalltitle">{note?.title}</ThemedText>
                 </Pressable>
-
-                }
-                {
-                    editContentMode ?
-                    <Pressable onPress={() => handleEdit(false)} style={styles.validateButton}>
-                        <FontAwesomeIcon icon={faCheck} size={25} color={Colors.backGround}/>
-                    </Pressable>
-                    :
-                    <Pressable onPress={() => setEditContentMode(true)} style={styles.validateButton}>
-                        <FontAwesomeIcon icon={faPen} size={25} color={Colors.backGround}/>
-                    </Pressable>
                 }
                 <Pressable 
                     style={styles.closeNoteButton}
@@ -112,23 +81,15 @@ export default function ShowNote() {
                 </Pressable>
             </View>
             <View style={styles.noteCard}>
-                {
-                    editContentMode ?
-                    <TextInput
-                        style={styles.contentInput}
-                        placeholder="Write your note here..."
-                        value={content}
-                        onChangeText={setContent}
-                        multiline={true}
-                        numberOfLines={10}
-                        textAlignVertical="top"
-                    />
-                    :
-                    <Pressable onPress={() => handleEditMode(false)} style={styles.contentEdit}>
-                        <ThemedText>{note?.content}</ThemedText>
-                    </Pressable>
-                }
-                    
+                <TextInput
+                    style={styles.contentInput}
+                    placeholder="Write your note here..."
+                    value={content}
+                    onChangeText={(e) => editContent(e)}
+                    multiline={true}
+                    numberOfLines={10}
+                    textAlignVertical="top"
+                />
             </View>
         </PageContainer>
     )
@@ -159,16 +120,10 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         marginBottom: 11,
     },
-    contentEdit: {
+    contentInput: {
         height: "90%",
         width: "100%",
-    },
-    contentInput: {
-        height: "80%",
-        width: "100%",
-        fontSize: 18,
-        borderRadius: 10,
-        backgroundColor: "white",
+        fontSize: 16,
     },
     validateButton: {
         marginBottom: 10,
