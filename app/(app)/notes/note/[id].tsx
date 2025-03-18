@@ -9,21 +9,13 @@ import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { updateNote, deleteNote } from '@/store/slices/notesSlice'
 import { Link, useRouter, useLocalSearchParams } from 'expo-router';
-import { useRoute } from '@react-navigation/native';
 import { CustomInput } from '@/components/CustomInput';
-
-interface Note {
-    id: string;
-    title: string;
-    content: string;
-}
 
 export default function ShowNote() {
 
     const router = useRouter();
     const {id} =  useLocalSearchParams()
     const note = useAppSelector(state => state.notes).notes.find(note => note.id === id)
-    console.log("note", note)
     const content = note?.content
     const dispatch = useAppDispatch()
     const [editTitleMode, setEditTitleMode] = useState(false)
@@ -46,6 +38,7 @@ export default function ShowNote() {
             title: title,
             content: note.content,
         }))
+        setEditTitleMode(false)
     }
 
     const editContent = (content: string) => {
@@ -125,13 +118,4 @@ const styles = StyleSheet.create({
         width: "100%",
         fontSize: 16,
     },
-    validateButton: {
-        marginBottom: 10,
-        width: 50,
-        height: 50,
-        backgroundColor: Colors.teal700,
-        borderRadius: 25,
-        justifyContent: "center",
-        alignItems: "center",
-    }
 })

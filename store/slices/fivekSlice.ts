@@ -31,6 +31,7 @@ export const fivekSlice = createSlice({
         },
         resetScore: (state) => {
             state.turns = []
+            state.players.map(player => player.toseCount = 0)
         },
         addPlayer: (state, action: PayloadAction<string>) => {
             state.players.push({id: Date.now().toString(), name: action.payload, toseCount: 0})
