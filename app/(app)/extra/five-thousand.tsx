@@ -44,7 +44,7 @@ export default function FiveThousand() {
         }
     };
 
-    useEffect(() => {
+    const nextPlayer = () => {
         const players = fivek.players.map(player => player.id)
         if (fivek.players.length > 0) {
             if (activePlayerId == "") {
@@ -54,11 +54,11 @@ export default function FiveThousand() {
                 setActivePlayerId(players[activePlayerIndex + 1] || players[0])
             }
         }
-    }, [fivek.turns])
+    }
 
-    useEffect(() => {
-        fivek.players.length > 0 &&setActivePlayerId(fivek.players[fivek.players.length - 1].id)
-    }, [fivek.players])
+    // useEffect(() => {
+    //     fivek.players.length > 0 &&setActivePlayerId(fivek.players[fivek.players.length - 1].id)
+    // }, [fivek.players])
 
     const createPlayer = () => {
         if (newPlayer == "" || fivek.players.find(player => player.name == newPlayer)) {
@@ -73,12 +73,14 @@ export default function FiveThousand() {
         if (playerId != "") {
             dispatch(addTurn({id: Date.now().toString(), playerId: playerId, score: 0}))
             playSound()
+            nextPlayer()
         }
     }
 
     const enterScore = () => {
         fivek.players.length > 0 && dispatch(addTurn({id: Date.now().toString(), playerId: activePlayerId, score: parseInt(newScore)}))
         setNewScore("")
+        nextPlayer()
     }
 
     const startNewGame = (hard: boolean = false) => {
