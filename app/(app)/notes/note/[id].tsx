@@ -70,7 +70,7 @@ export default function ShowNote() {
                     style={styles.closeNoteButton}
                     onPress={() => router.back()}
                 >
-                    <FontAwesomeIcon icon={faXmark} size={25}/>
+                    <FontAwesomeIcon icon={faCheck} size={25}/>
                 </Pressable>
             </View>
             <View style={styles.noteCard}>
@@ -80,7 +80,7 @@ export default function ShowNote() {
                     value={content}
                     onChangeText={(e) => editContent(e)}
                     multiline={true}
-                    numberOfLines={10}
+                    numberOfLines={20}
                     textAlignVertical="top"
                 />
             </View>

@@ -19,6 +19,7 @@ export default function NoteIndex() {
     const dispatch = useAppDispatch()
     const [deleteAllModalVisible, setDeleteAllModalVisible] = useState(false)
     const router = useRouter()
+    const [activeNoteId, setActiveNoteId] = useState("")
 
     const createNewNote = () => {
         dispatch(addNote())
@@ -32,17 +33,32 @@ export default function NoteIndex() {
 
     const renderNote = ({item}: {item: Note}) =>{
 
+        const active = item.id == activeNoteId
+
         return (
-            <Link 
+            <Pressable 
                 key={item.id} 
-                style={styles.noteCard} 
-                href={{pathname: "/notes/note/[id]", params: {id: item.id}}}>
+                style={{...styles.noteCard, opacity: (active || activeNoteId == "") ? 1 : 0.8}} 
+                onPress={() => router.push({ 
+                    pathname: "/notes/note/[id]",
+                    params: { id: item.id } 
+                })}
+                onLongPress={() => active ? setActiveNoteId("") : setActiveNoteId(item.id)}
+            >
+                { activeNoteId === item.id &&
+                    <Pressable
+                        style={styles.deleteCardButton}
+                        onPress={() => dispatch(deleteNote(item.id))}
+                    >
+                        <FontAwesomeIcon icon={faXmark} size={20} color={Colors.pink500}/>
+                    </Pressable>
+                }
                 <View style={styles.noteHeader}>
                     <ThemedText type="defaultSemiBold">{item.title.length > 15 ? `${item.title.slice(0, 15)}...` : item.title}</ThemedText>
                     
                 </View>
-                <ThemedText>{item.content.length > 30 ? `${item.content.slice(0, 30)}...` : item.content}</ThemedText>
-            </Link>
+                <ThemedText>{item.content.length > 60 ? `${item.content.slice(0, 60)}...` : item.content}</ThemedText>
+            </Pressable>
         )
     }
 
@@ -166,5 +182,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    deleteCardButton: {
+        height: 30,
+        width: 30,
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 5,
+        right: 5,
+        backgroundColor: Colors.backGround,
+        elevation: 3,
     }
 })
