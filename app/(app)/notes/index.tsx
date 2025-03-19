@@ -48,7 +48,7 @@ export default function NoteIndex() {
                 { activeNoteId === item.id &&
                     <Pressable
                         style={styles.deleteCardButton}
-                        onPress={() => dispatch(deleteNote(item.id))}
+                        onPress={() => {dispatch(deleteNote(item.id)); setActiveNoteId("")}}
                     >
                         <FontAwesomeIcon icon={faXmark} size={20} color={Colors.pink500}/>
                     </Pressable>
