@@ -1,11 +1,11 @@
-import { View, StyleSheet, FlatList, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, Dimensions, Pressable } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faGear, faCaretRight, faRotateLeft, faPen } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faCaretRight, faRotateLeft, faPen, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { PageContainer } from '@/components/PageContainer';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
-import { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem } from '@/store/slices/itemsSlice'
+import { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeItemByList, editItem } from '@/store/slices/itemsSlice'
 import { addList, editList, removeList, resetList } from '@/store/slices/listsSlice'
 import { CustomButton } from '@/components/CustomButton'
 import { CustomInput } from '@/components/CustomInput'
@@ -28,11 +28,14 @@ export default function ListIndex() {
     const containerWidth = screenWidth - 24
     const [modalVisible, setModalVisible] = useState(false);
     const [errorMessageVisible, setErrorMessageVisible] = useState(false);
-    const [addListModal, setAddListModal] = useState(false);
     const [newList, setNewList] = useState("")
     const [ShowButtonsPannel, setShowButtonsPannel] = useState(false);
     const translateX = useSharedValue<number>(420);
-    const [resetAllModal, setResetAllModal] = useState(false)
+    const [addListModal, setAddListModal] = useState(false);
+    // const [resetAllModal, setResetAllModal] = useState(false)
+    // const [cleanListModal, setCleanListModal] = useState(false)
+    // const [deleteModal, setDeleteModal] = useState(false)
+    const [modalType, setModalType] = useState<"resetAll" | "clearList" | "deleteList">("resetAll")
 
     const slide = () => {
         if (ShowButtonsPannel) {
@@ -64,7 +67,7 @@ export default function ListIndex() {
     }
     
     const clearList = (listId: string) => {
-        dispatch(removeByList(listId))
+        dispatch(removeItemByList(listId))
         setModalVisible(false)
     }
 
@@ -99,9 +102,29 @@ export default function ListIndex() {
         }
     }
 
-    const handleModal = (resetAll: boolean = false) => {
-        resetAll ? setResetAllModal(true) : setResetAllModal(false)
+    const deleteList = (id: string) => {
+        dispatch(removeList(id))
+        dispatch(removeItemByList(id))
+        setModalVisible(false)
+    }
+
+    const handleModal = (type: "resetAll" | "clearList" | "deleteList") => {
+        setModalType(type)
         setModalVisible(true)
+    }
+
+    const modalAction = (id: string) => {
+        switch (modalType) {
+            case "resetAll":
+                cleanListsAndItems()
+                break;
+            case "clearList":    
+                clearList(id)
+                break;
+            case "deleteList":
+                deleteList(id)
+                break;
+        }
     }
 
     const renderCarouselView = (list: { id: string, name: string }) => {
@@ -109,8 +132,11 @@ export default function ListIndex() {
             <View key={list.id} style={{flex: 1}}>
                 {modalVisible && <ModalLayout heightProps={200} closeModal={() => setModalVisible(false)}>
                     <View>
-                        <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>{resetAllModal ? "Are you sure you want to clear all data ?" : "Are you sure you want to clear the list ?"}</ThemedText>
-                        <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.pink500, color2: Colors.pink300}} text={"Yes"} onPress={resetAllModal ? () => cleanListsAndItems() : () => clearList(list.id)} lightText/>
+                        <ThemedText style={{marginBottom: 20}} type={"defaultSemiBold"} center>{modalType == "resetAll" && "Are you sure you want to clear all data ?"}
+                        {modalType == "clearList" && "Are you sure you want to clear the list ?"}
+                        {modalType == "deleteList" && "Are you sure you want to delete the list ?"}
+                        </ThemedText>
+                        <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.pink500, color2: Colors.pink300}} text={"Yes"} onPress={() => modalAction(list.id)} lightText/>
                         <CustomButton style={{width: 300}} lightText hapticFeel color={{color1: Colors.teal500, color2: Colors.teal300}} text={"No"} onPress={() => setModalVisible(false)}/>
                     </View>
                 </ModalLayout>}
@@ -126,10 +152,12 @@ export default function ListIndex() {
                         style={{height: 44, width: '80%', fontSize: 18, }}
                     />
                     :
-                    <ThemedText style={{alignItems: 'center', maxWidth: screenWidth - 40}} type={"title"} >{list.name || "MY LIST"}</ThemedText>
+                    <Pressable onPress={() => {setEditListNameActive(true); setEditedList(list.name)}}>
+                        <ThemedText style={{alignItems: 'center', maxWidth: screenWidth - 40}} type={"title"} >{list.name || "MY LIST"}</ThemedText>
+                    </Pressable>
                     }
-                    <TouchableOpacity style={styles.addListButton} onPress={() => {setEditListNameActive(!editListNameActive); setEditedList(list.name)}}>
-                        <FontAwesomeIcon icon={faPen} color={Colors.teal900} size={24}/>
+                    <TouchableOpacity style={styles.addListButton} onPress={() => handleModal("deleteList")}>
+                        <FontAwesomeIcon icon={faTrashCan} color={Colors.teal900} size={24}/>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.content, {width: containerWidth}]}>
@@ -188,9 +216,9 @@ export default function ListIndex() {
             {
                 lists.lists.length == 0 ?
                 <View>
-                    <ThemedText light type={"title"} center>ADD LIST</ThemedText>
-                    <CustomInput placeholder='List name' value={newList} onChangeText={(e) => setNewList(e)} />
-                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.orange500, color2: Colors.orange300}} text={"Create new list"} onPress={() => createNewList()} />
+                    <ThemedText type={"title"} center>ADD LIST</ThemedText>
+                    <CustomInput placeholder="List's name" value={newList} onChangeText={(e) => setNewList(e)} />
+                    <CustomButton style={{width: 300, marginBottom: 10}} hapticFeel color={{color1: Colors.pink500, color2: Colors.pink300}} text={"Create new list"} onPress={() => createNewList()} lightText/>
                 </View>
                 :
                 <View>
@@ -213,14 +241,14 @@ export default function ListIndex() {
                             </TouchableOpacity>
                             <View style={styles.buttonPanelRight}>
                                 <View style={styles.buttonPanelRow}>
-                                    <CustomButton color={{color1: Colors.teal700, color2: Colors.teal500}} text={"Clear the list"} onPress={() => handleModal()} style={{width: '40%'}} hapticFeel lightText/>
+                                    <CustomButton color={{color1: Colors.teal700, color2: Colors.teal500}} text={"Clear the list"} onPress={() => handleModal("clearList")} style={{width: '40%'}} hapticFeel lightText/>
                                     <CustomButton color={{color1: Colors.pink300, color2: Colors.pink100}} onPress={() => dispatch(restoreLastDiscardedItem())} style={{width: '40%'}} hapticFeel>
                                         <FontAwesomeIcon icon={faRotateLeft} color={Colors.pink900}/>
                                     </ CustomButton>
                                 </View>
                                 <View style={styles.buttonPanelRow}>
                                     <CustomButton color={{color1: Colors.teal700, color2: Colors.teal500}} text={"Create list"} onPress={() => setAddListModal(true)} style={{width: '40%'}}  hapticFeel lightText/>
-                                    <CustomButton color={{color1: Colors.teal700, color2: Colors.teal500}} text={"Reset all"} onPress={() => handleModal(true)} style={{width: '40%'}} hapticFeel lightText/>
+                                    <CustomButton color={{color1: Colors.teal700, color2: Colors.teal500}} text={"Reset all"} onPress={() => handleModal("resetAll")} style={{width: '40%'}} hapticFeel lightText/>
                                 </View>
                             </View>
                         </View>
@@ -301,6 +329,8 @@ const styles = StyleSheet.create({
         width: "19%",
         height: 40,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: Colors.grey100,
     }
 })

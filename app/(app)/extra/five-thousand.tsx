@@ -56,10 +56,6 @@ export default function FiveThousand() {
         }
     }
 
-    // useEffect(() => {
-    //     fivek.players.length > 0 &&setActivePlayerId(fivek.players[fivek.players.length - 1].id)
-    // }, [fivek.players])
-
     const createPlayer = () => {
         if (newPlayer == "" || fivek.players.find(player => player.name == newPlayer)) {
             setErrorMessageVisible(true)

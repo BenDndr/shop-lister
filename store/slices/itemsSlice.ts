@@ -45,7 +45,7 @@ export const itemsSlice = createSlice({
         state.items.push(state.discardedItems.pop()!);
       }
     },
-    removeByList: (state, action: PayloadAction<string>) => {
+    removeItemByList: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item: ItemsState) => {
         return item.listId != action.payload
       })
@@ -63,5 +63,5 @@ export const itemsSlice = createSlice({
   },
 })
 
-export const { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeByList, editItem } = itemsSlice.actions
+export const { addItem, resetItems, removeSpecificItem, restoreLastDiscardedItem, removeItemByList, editItem } = itemsSlice.actions
 export default itemsSlice.reducer
