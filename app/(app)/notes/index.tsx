@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity, Pressable, ScrollView, FlatList, Dimensions } from 'react-native';
+import { View, StyleSheet, Pressable, FlatList } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faPlus, faEraser, faXmark } from '@fortawesome/free-solid-svg-icons'
@@ -8,7 +8,7 @@ import { ModalLayout } from '@/components/ModalLayout';
 import {ThemedText} from '@/components/ThemedText';
 import { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/store/hooks'
-import { addNote, updateNote, deleteNote, resetNotes } from '@/store/slices/notesSlice'
+import { addNote, deleteNote, resetNotes } from '@/store/slices/notesSlice'
 import { Link, useRouter } from 'expo-router';
 
 
@@ -20,10 +20,6 @@ export default function NoteIndex() {
     const [deleteAllModalVisible, setDeleteAllModalVisible] = useState(false)
     const router = useRouter()
     const [activeNoteId, setActiveNoteId] = useState("")
-
-    const createNewNote = () => {
-        dispatch(addNote())
-    }
 
     interface Note {
         id: string;
@@ -109,7 +105,7 @@ export default function NoteIndex() {
                         <Pressable 
                             style={styles.plusButton} 
                             android_ripple={{ color: Colors.teal500, borderless: false }}
-                            onPress={createNewNote}
+                            onPress={() => dispatch(addNote())}
                         >
                             <FontAwesomeIcon icon={faPlus} size={36}/>
                         </Pressable>
