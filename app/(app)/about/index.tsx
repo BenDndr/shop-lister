@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Linking, TouchableOpacity } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faOtter } from '@fortawesome/free-solid-svg-icons'
@@ -6,6 +6,8 @@ import { CustomButton } from '@/components/CustomButton';
 import { PageContainer } from '@/components/PageContainer';
 import {ThemedText} from '@/components/ThemedText';
 import { useState } from 'react';
+import { faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
+
 
 export default function AboutIndex() {
 
@@ -20,7 +22,15 @@ export default function AboutIndex() {
                 <Text>My name is Benjamin Dandre, I'm a web and mobile developper and this is one of my personal projects. I'm currently looking for a job, if you are looking for a developper feel free to contact me.</Text>
                 <FontAwesomeIcon icon={faOtter} size={24}/>
                 <ThemedText type="defaultSemiBold">You want to get in touch ?</ThemedText>
-                <ThemedText>test@gmail.com</ThemedText>
+                <View style={styles.rsView}>
+                    <TouchableOpacity style={styles.rsButton} onPress={() => Linking.openURL("https://www.linkedin.com/in/benjamin-dandre/")}>
+                        <FontAwesomeIcon icon={faLinkedin} size={24}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.rsButton} onPress={() => Linking.openURL("https://github.com/BenDndr")}>
+                        <FontAwesomeIcon icon={faGithub} size={24}/>
+                    </TouchableOpacity>
+                </View>
+
             </View>
         </PageContainer>
     )
@@ -46,5 +56,15 @@ const styles = StyleSheet.create({
         borderWidth: 4,
         position: "absolute",
         top: -50,
+    },
+    rsView: {
+        flexDirection: 'row',
+        gap: 20,
+    },
+    rsButton: {
+        elevation: 2,
+        padding: 10,
+        boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 4px',
+        borderRadius: 8,
     }
 })
