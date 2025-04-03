@@ -16,7 +16,12 @@
         "foregroundImage": "./assets/images/SLLogo.png",
         "backgroundColor": "#ffffff"
       },
-       "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ],
+      "package": "com.bendndr.shoplister"
     },
     "web": {
       "bundler": "metro",
@@ -43,6 +48,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "5b99760b-4363-485a-bd2a-2c8861fcb760"
+      }
     }
   }
 }
