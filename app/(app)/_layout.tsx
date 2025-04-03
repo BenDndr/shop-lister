@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import TabBar from '@/components/navigation/TabBar';
+import Tabbar from '@/components/navigation/Tabbar';
 
 
 export default function AppLayout() {
@@ -11,7 +11,7 @@ export default function AppLayout() {
         headerShown: false,
         tabBarHideOnKeyboard: false,
       }}
-      tabBar={(props) => <TabBar {...props}/>}
+      tabBar={(props) => <Tabbar {...props}/>}
       >
       <Tabs.Screen
         name="index"

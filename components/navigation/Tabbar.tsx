@@ -8,7 +8,7 @@ interface CustomTabBarProps extends BottomTabBarProps {
 
 }
 
-const TabBar: React.FC<CustomTabBarProps>  = ({ state, descriptors, navigation }) => {
+const Tabbar: React.FC<CustomTabBarProps>  = ({ state, descriptors, navigation }) => {
 
   const getIcon = (routeName: string) => {
     switch (routeName) {
@@ -117,4 +117,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default TabBar
+export default Tabbar
