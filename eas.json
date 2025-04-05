@@ -17,6 +17,11 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./service-account-shop-lister.json",
+        "track": "internal"
+      }
+    }
   }
 }
