@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     buttonPanel: {
         flexDirection: 'row', 
         marginBottom: 70,        
-        backgroundColor: Colors.teal100,
+        backgroundColor: "white",
         position: 'absolute',
         bottom: 10,
         alignItems: 'center',
@@ -301,6 +301,8 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         elevation: 2,
         height: 150,
+        borderWidth: 1,
+        borderColor: Colors.grey100,
     },
     buttonPanelLeft: {
         backgroundColor: Colors.teal700,

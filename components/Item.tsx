@@ -52,27 +52,30 @@ export function Item({
     return (
         <Animated.View style={{translateX, opacity, translateY}}>
             <View style={[styles.itemContainer, style]}>
-                {editMode ? 
-                    <TextInput
-                        style={styles.editInput} 
-                        placeholder={name}
-                        value={editedName} 
-                        onSubmitEditing={() => validate(editedName)}
-                        onChangeText={(e) => setEditedName(e)}
-                        autoFocus={true}
-                        onBlur={blurAction}
-                    />
-                    : 
-                    <ThemedText>{name}</ThemedText>
-                }
-                <View style={styles.actionView}>
-                    <TouchableOpacity onPress={() => {activateEditMode(index)}} style={{...styles.actionButton, backgroundColor: Colors.teal100}}>
-                        <FontAwesomeIcon icon={faPen} color={Colors.teal900}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={discardItem} style={{...styles.actionButton, backgroundColor: Colors.pink300}}>
+                <View style={styles.left}>
+                    <TouchableOpacity onPress={discardItem} style={{...styles.actionButton, ...styles.checkButton}}>
                         <FontAwesomeIcon icon={faCheck} color={Colors.pink900}/>
                     </TouchableOpacity>
+                    {editMode ? 
+                        <TextInput
+                            style={styles.editInput} 
+                            placeholder={name}
+                            value={editedName} 
+                            onSubmitEditing={() => validate(editedName)}
+                            onChangeText={(e) => setEditedName(e)}
+                            autoFocus={true}
+                            onBlur={blurAction}
+                        />
+                        : 
+                        <ThemedText>{name}</ThemedText>
+                    }
                 </View>
+                
+                    <TouchableOpacity onPress={() => {activateEditMode(index)}} style={{...styles.actionButton, ...styles.editButton}}>
+                        <FontAwesomeIcon icon={faPen} color={Colors.teal900}/>
+                    </TouchableOpacity>
+                    
+                
             </View>
         </Animated.View>
     )
@@ -83,24 +86,35 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 10,
         padding: 6,
-        paddingLeft: 16,
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
         marginBottom: 4,
     },
-    actionView: {
+    left: {
         flexDirection: 'row',
-        gap: 4
+        gap: 4,
+        alignItems: "center",
+        maxWidth: '85%',
     },
     actionButton: {
         padding: 8,
-        borderRadius: 8,
-        height: 40,
-        width: 40,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    checkButton: {
+        height: 30,
+        width: 30,
+        backgroundColor: Colors.pink100, 
+        borderRadius: 20, 
+        marginRight: 8
+    },
+    editButton: {
+        height: 40,
+        width: 40,
+        backgroundColor: Colors.teal100, 
+        borderRadius: 8
     },
     editInput: {
         backgroundColor: Colors.backGround,
