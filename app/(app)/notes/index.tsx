@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         elevation: 3,
         marginBottom: 10,
+        overflow: 'hidden',
     },
     noteHeader: {
         width: "100%",
