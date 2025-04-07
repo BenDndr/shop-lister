@@ -2,7 +2,7 @@
   "expo": {
     "name": "Shop Lister",
     "slug": "shop-lister",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/SLLogo.png",
     "scheme": "myapp",

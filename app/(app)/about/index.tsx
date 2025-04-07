@@ -17,7 +17,7 @@ export default function AboutIndex() {
                     source={require("../../../assets/images/Profile-pic.png")}
                 />
                 <ThemedText type="subtitle">Who am I ?</ThemedText>
-                <Text>My name is Benjamin Dandre, I'm a web and mobile developper and this is one of my personal projects. I'm currently looking for a job, if you are looking for a developper feel free to contact me.</Text>
+                <Text>My name is Benjamin Dandre. I'm a web and mobile developer, and this is one of my personal projects. I'm currently looking for a job. If you're interested, or if you just want to chat, feel free to contact me.</Text>
                 <FontAwesomeIcon icon={faOtter} size={24}/>
                 <ThemedText type="defaultSemiBold">Want to get in touch ?</ThemedText>
                 <View style={styles.rsView}>
