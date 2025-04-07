@@ -1,50 +1,20 @@
 # Shop Lister
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+My name is Benjamin Dandre, I'm a web and mobile developper and this is one of my personal projects. I'm currently looking for a job, if you are looking for a developper feel free to contact me.
 
-## Get started
+# Dev script:
 
-1. Install dependencies
+Run the project localy: 
+`expo start`
 
-   ```bash
-   npm install
-   ```
+# Build scripts:
 
-2. Start the app
+Build for android:
+`eas build --platform android`
 
-   ```bash
-    npx expo start
-   ```
+Deploy on Google Play Console:
+`eas submit --platform android`
 
-In the output, you'll find options to open the app in a
+Build and deploy on Google Play Console: 
+`eas build --platform android --auto-submit`
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
