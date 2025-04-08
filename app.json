@@ -4,7 +4,7 @@
     "slug": "shop-lister",
     "version": "1.0.2",
     "orientation": "portrait",
-    "icon": "./assets/images/SLLogo.png",
+    "icon": "./assets/images/IconLogo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
