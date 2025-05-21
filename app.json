@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/SLLogo.png",
+        "foregroundImage": "./assets/images/SLicon.png",
         "backgroundColor": "#ffffff"
       },
       "softwareKeyboardLayoutMode": "pan",
